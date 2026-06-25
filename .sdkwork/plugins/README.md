@@ -1,3 +1,3 @@
-# plugins
+# Repository Plugins
 
-See `../sdkwork-specs/SDKWORK_WORKSPACE_SPEC.md`.
+Add repository-local plugins under `.sdkwork/plugins/<plugin-name>/.codex-plugin/plugin.json`.

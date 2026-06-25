@@ -1,3 +1,3 @@
-# skills
+# Repository Skills
 
-See `../sdkwork-specs/SDKWORK_WORKSPACE_SPEC.md`.
+Add repository-local skills under `.sdkwork/skills/<skill-name>/SKILL.md`.
