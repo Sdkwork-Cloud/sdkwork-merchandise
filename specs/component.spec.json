@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "kind": "sdkwork.component.spec",
+  "component": {
+    "name": "sdkwork-merchandise-workspace",
+    "displayName": "SDKWork Merchandise Workspace",
+    "version": "0.1.0",
+    "type": "rust-crate",
+    "root": "sdkwork-merchandise",
+    "domain": "commerce",
+    "capability": "merchandise",
+    "languages": [
+      "typescript",
+      "rust"
+    ],
+    "generated": false,
+    "manifests": [
+      "package.json",
+      "Cargo.toml"
+    ]
+  },
+  "canonicalSpecs": [
+    {
+      "file": "WEB_FRAMEWORK_SPEC.md",
+      "path": "../sdkwork-specs/WEB_FRAMEWORK_SPEC.md"
+    },
+    {
+      "file": "DATABASE_FRAMEWORK_SPEC.md",
+      "path": "../sdkwork-specs/DATABASE_FRAMEWORK_SPEC.md"
+    },
+    {
+      "file": "API_SPEC.md",
+      "path": "../sdkwork-specs/API_SPEC.md"
+    },
+    {
+      "file": "APP_PC_ARCHITECTURE_SPEC.md",
+      "path": "../sdkwork-specs/APP_PC_ARCHITECTURE_SPEC.md"
+    }
+  ],
+  "contracts": {
+    "publicExports": [
+      "."
+    ],
+    "runtimeEntrypoints": [
+      "package.json#scripts.verify"
+    ],
+    "routeManifest": "sdks/_route-manifests/app-api/sdkwork-merchandise-api-server.route-manifest.json",
+    "sdkClients": [],
+    "events": [],
+    "configKeys": []
+  },
+  "verification": {
+    "commands": [
+      "pnpm verify"
+    ]
+  }
+}

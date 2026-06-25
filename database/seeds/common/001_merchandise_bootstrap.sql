@@ -1,0 +1,2 @@
+-- Optional bootstrap seed for local development
+-- INSERT INTO commerce_shop (...) VALUES (...);

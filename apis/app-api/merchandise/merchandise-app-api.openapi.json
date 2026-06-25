@@ -1,0 +1,80 @@
+{
+  "openapi": "3.1.2",
+  "info": {
+    "title": "SDKWork Merchandise App API",
+    "version": "1.0.0",
+    "description": "App/client contract for SDKWork commerce merchandise capability (SPU/SKU/product master data).",
+    "x-sdkwork-api-authority": "sdkwork-merchandise-app-api",
+    "x-sdkwork-sdk-family": "sdkwork-merchandise-app-sdk",
+    "x-sdkwork-owner": "sdkwork-merchandise"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:18091",
+      "description": "Local sdkwork-merchandise runtime"
+    }
+  ],
+  "paths": {
+    "/app/v3/api/catalog/products": {
+      "get": {
+        "operationId": "merchandise.catalog.products.list",
+        "summary": "List catalog products (placeholder)",
+        "tags": ["catalog"],
+        "x-sdkwork-api-surface": "app-api",
+        "x-sdkwork-request-context": "WebRequestContext",
+        "x-sdkwork-domain": "commerce",
+        "x-sdkwork-resource": "catalog.products",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "minimum": 1, "default": 1 }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "minimum": 1, "maximum": 200, "default": 20 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product list page",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "string", "format": "uuid" },
+                          "name": { "type": "string" },
+                          "status": { "type": "string" }
+                        },
+                        "required": ["id", "name", "status"]
+                      }
+                    },
+                    "page": { "type": "integer" },
+                    "page_size": { "type": "integer" },
+                    "total": { "type": "integer" }
+                  },
+                  "required": ["items", "page", "page_size", "total"]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "AuthToken": { "type": "http", "scheme": "bearer" },
+      "AccessToken": { "type": "apiKey", "in": "header", "name": "X-Access-Token" }
+    }
+  }
+}

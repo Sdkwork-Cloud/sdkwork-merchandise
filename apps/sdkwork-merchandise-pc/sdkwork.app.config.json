@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 3,
+  "kind": "sdkwork.app",
+  "app": {
+    "key": "sdkwork-merchandise-pc",
+    "name": "SDKWork Merchandise PC",
+    "displayName": "SDKWork Merchandise PC",
+    "description": "Merchant merchandise onboarding and configuration console.",
+    "vendor": "SDKWork",
+    "appType": "APP_REACT",
+    "versionSource": "package.json",
+    "identifiers": {
+      "desktopAppId": "com.sdkwork.merchandise.pc.desktop",
+      "containerImage": "registry.sdkwork.com/apps/sdkwork-merchandise-pc"
+    }
+  },
+  "backend": {
+    "profileKey": "backend-root-admin",
+    "ownerMode": "tenant",
+    "grantMode": "current",
+    "platform": "WEB",
+    "tenantId": "100001",
+    "organizationId": "0"
+  },
+  "runtime": {
+    "family": "web",
+    "framework": "react",
+    "runtimes": [
+      "WEB",
+      "BROWSER"
+    ],
+    "deliveryModes": [
+      "WEB_URL"
+    ],
+    "supportedDeploymentProfiles": [
+      "standalone",
+      "cloud"
+    ],
+    "defaultDeploymentProfile": "standalone"
+  },
+  "publish": {
+    "config": {
+      "workspaceRoot": "sdkwork-merchandise",
+      "managedBy": "sdkwork-merchandise-workspace"
+    }
+  },
+  "devApp": {
+    "sourceRoot": "apps/sdkwork-merchandise-pc"
+  },
+  "metadata": {
+    "standardOwner": "sdkwork-specs",
+    "initializedAt": "2026-06-21T00:00:00.000Z"
+  }
+}

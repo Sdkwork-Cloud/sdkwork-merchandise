@@ -1,0 +1,13 @@
+{
+  "name": "@sdkwork/merchandise-service",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@sdkwork/merchandise-contracts": "workspace:*",
+    "@sdkwork/utils": "workspace:*"
+  }
+}

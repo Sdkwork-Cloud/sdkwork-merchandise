@@ -1,0 +1,7 @@
+{
+  "tables": [
+    "commerce_shop",
+    "commerce_shop_application",
+    "commerce_shop_status_event"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "openapi": "3.1.2",
+  "info": {
+    "title": "SDKWork Merchandise Backend API",
+    "version": "1.0.0",
+    "description": "Backend/admin contract for SDKWork commerce merchandise capability.",
+    "x-sdkwork-api-authority": "sdkwork-merchandise-backend-api",
+    "x-sdkwork-owner": "sdkwork-merchandise"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:18091",
+      "description": "Local sdkwork-merchandise runtime"
+    }
+  ],
+  "paths": {
+    "/backend/v3/api/catalog/products": {
+      "get": {
+        "operationId": "merchandise.catalog.products.admin.list",
+        "summary": "Admin list catalog products (placeholder)",
+        "tags": ["catalog"],
+        "x-sdkwork-api-surface": "backend-api",
+        "x-sdkwork-request-context": "WebRequestContext",
+        "responses": {
+          "200": {
+            "description": "Product list page",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": { "type": "array", "items": { "type": "object" } }
+                  },
+                  "required": ["items"]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "kind": "sdkwork.database.seed",
+  "moduleId": "merchandise",
+  "defaultLocale": "zh-CN",
+  "profiles": {
+    "standard": {
+      "common": ["common/001_merchandise_bootstrap.sql"],
+      "locales": {}
+    }
+  }
+}

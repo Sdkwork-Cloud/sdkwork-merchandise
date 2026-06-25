@@ -1,0 +1,31 @@
+{
+  "name": "@sdkwork/merchandise-pc-app",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5180",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "pnpm --dir ../.. run test:vitest",
+    "lint": "pnpm run typecheck"
+  },
+  "dependencies": {
+    "@sdkwork/merchandise-pc-core": "workspace:*",
+    "@sdkwork/merchandise-pc-shell": "workspace:*",
+    "@sdkwork/merchandise-service": "workspace:*",
+    "@sdkwork/utils": "workspace:*",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.2",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "tailwindcss": "^4.2.2",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  }
+}

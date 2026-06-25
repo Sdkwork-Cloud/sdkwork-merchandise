@@ -1,0 +1,19 @@
+schema_version: 1
+kind: sdkwork.database.schema
+module_id: merchandise
+contract_version: 1.0.0
+owner_team: merchandise-platform
+compliance_level: L2
+engines:
+  - postgres
+table_prefix: commerce_
+tables:
+  - name: commerce_shop
+    lifecycle_status: active
+    owner: merchandise-platform
+  - name: commerce_shop_application
+    lifecycle_status: active
+    owner: merchandise-platform
+  - name: commerce_shop_status_event
+    lifecycle_status: active
+    owner: merchandise-platform

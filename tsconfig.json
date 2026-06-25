@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.base.json",
+  "include": [
+    "packages/common/merchandise/**/*.ts",
+    "apps/sdkwork-merchandise-pc/**/*.ts",
+    "apps/sdkwork-merchandise-pc/**/*.tsx",
+    "tests/**/*.ts"
+  ]
+}
