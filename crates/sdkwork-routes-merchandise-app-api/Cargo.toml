@@ -1,5 +1,5 @@
 [package]
-name = "sdkwork-router-merchandise-app-api"
+name = "sdkwork-routes-merchandise-app-api"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -20,5 +20,6 @@ sdkwork_iam_context_service.workspace = true
 sdkwork_merchandise_service_host.workspace = true
 sdkwork-web-core.workspace = true
 sdkwork-web-axum.workspace = true
+sdkwork-web-bootstrap.workspace = true
 sdkwork-iam-web-adapter.workspace = true
 uuid = { workspace = true }

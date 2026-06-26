@@ -1,0 +1,16 @@
+[package]
+name = "sdkwork-merchandise-gateway-assembly"
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+description = "Generated gateway assembly for sdkwork-merchandise application HTTP plane."
+
+[lib]
+name = "sdkwork_merchandise_gateway_assembly"
+path = "src/lib.rs"
+
+[dependencies]
+axum.workspace = true
+tokio = { version = "1.48", features = ["macros", "rt-multi-thread"] }
+sdkwork_routes_merchandise_app_api = { package = "sdkwork-routes-merchandise-app-api", path = "../sdkwork-routes-merchandise-app-api" }
+sdkwork_routes_merchandise_backend_api = { package = "sdkwork-routes-merchandise-backend-api", path = "../sdkwork-routes-merchandise-backend-api" }

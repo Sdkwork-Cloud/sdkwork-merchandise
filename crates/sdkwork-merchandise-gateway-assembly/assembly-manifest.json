@@ -1,0 +1,30 @@
+{
+  "kind": "sdkwork.gateway.assembly",
+  "schemaVersion": 1,
+  "applicationCode": "merchandise",
+  "packageName": "sdkwork-merchandise-gateway-assembly",
+  "crateDir": "crates/sdkwork-merchandise-gateway-assembly",
+  "generatedAt": "2026-06-25T13:08:05.573Z",
+  "routeCrates": [
+    {
+      "packageName": "sdkwork-routes-merchandise-app-api",
+      "memberDir": "crates/sdkwork-routes-merchandise-app-api",
+      "libName": "sdkwork_routes_merchandise_app_api",
+      "surface": "app-api",
+      "pathPrefix": null,
+      "mountOrder": 0,
+      "hasGatewayMount": true,
+      "hasGatewayRouteManifest": true
+    },
+    {
+      "packageName": "sdkwork-routes-merchandise-backend-api",
+      "memberDir": "crates/sdkwork-routes-merchandise-backend-api",
+      "libName": "sdkwork_routes_merchandise_backend_api",
+      "surface": "backend-api",
+      "pathPrefix": null,
+      "mountOrder": 1,
+      "hasGatewayMount": true,
+      "hasGatewayRouteManifest": true
+    }
+  ]
+}

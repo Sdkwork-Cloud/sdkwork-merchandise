@@ -33,7 +33,7 @@ Migration status: **complete**.
 | --- | --- | --- |
 | Domain commands/queries | `sdkwork-commerce-merchandise-service` | Business validation and ports |
 | SQL repositories | `sdkwork-commerce-merchandise-repository-sqlx` | Tenant-scoped persistence |
-| HTTP route builders | sdkwork-router-merchandise-app-api | `build_*_router` exports without IAM |
+| HTTP route builders | sdkwork-routes-merchandise-app-api | `build_*_router` exports without IAM |
 | IAM / gateway composition | `sdkwork-commerce` | Thin wrappers only |
 | OpenAPI / SDK authority | `sdkwork-commerce/sdks/` | Composed commerce SDK families |
 
@@ -43,7 +43,7 @@ Standard 7-crate capability workspace:
 
 - `crates/sdkwork-commerce-merchandise-service/`
 - `crates/sdkwork-commerce-merchandise-repository-sqlx/`
-- `crates/sdkwork-router-merchandise-app-api/`
+- `crates/sdkwork-routes-merchandise-app-api/`
 - `crates/sdkwork-merchandise-database-host/`
 - `crates/sdkwork-merchandise-service-host/`
 - `crates/sdkwork-merchandise-api-server/`
