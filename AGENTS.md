@@ -20,7 +20,7 @@ Application manifests live under `apps/*/sdkwork.app.config.json`. This reposito
 
 - Canonical domain: `commerce`; capability: `merchandise` (`DOMAIN_SPEC.md`).
 - This repository is the **authoritative owner** of merchandise capability (SPU/SKU/product master data).
-- Commerce platform (`../sdkwork-commerce`) consumes `sdkwork-commerce-merchandise-service` via sibling `Cargo.toml` path; do not duplicate merchandise domain crates there.
+- Composition consumer: `../sdkwork-clawrouter/vendor/sdkwork-commerce` (archived transitional platform snapshot)
 - Merchandise capability scope: SPU/SKU and product master data per DOMAIN_SPEC.md.
 - Database table prefix: `commerce_` for merchandise-owned tables.
 - App API prefix: `/app/v3/api/catalog/products`.

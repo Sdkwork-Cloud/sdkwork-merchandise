@@ -51,8 +51,8 @@ fn catalog_domain_contract_uses_standard_spu_sku_terms_without_legacy_product_ta
 #[test]
 fn validates_product_spu_for_physical_virtual_membership_and_points_products() {
     let spu = ProductSpuDraft::new(
-        "tenant-1",
-        "org-1",
+        "100001",
+        "0",
         "spu-membership-pro",
         "Pro membership",
         ProductType::Membership,
@@ -73,8 +73,8 @@ fn validates_product_spu_for_physical_virtual_membership_and_points_products() {
     );
     assert!(spu.visible_surfaces.contains(&CommerceSurfaceProfile::App));
     assert!(ProductSpuDraft::new(
-        "tenant-1",
-        "org-1",
+        "100001",
+        "0",
         "",
         "No code",
         ProductType::Physical,
@@ -88,8 +88,8 @@ fn validates_product_spu_for_physical_virtual_membership_and_points_products() {
 #[test]
 fn validates_product_sku_fulfillment_and_inventory_modes() {
     let sku = ProductSkuDraft::new(
-        "tenant-1",
-        "org-1",
+        "100001",
+        "0",
         "sku-membership-month-pro",
         "spu-membership-pro",
         "Monthly Pro membership",
@@ -121,8 +121,8 @@ fn validates_product_sku_fulfillment_and_inventory_modes() {
     );
     assert_eq!(InventoryTrackingMode::Tracked.as_storage_str(), "tracked");
     assert!(ProductSkuDraft::new(
-        "tenant-1",
-        "org-1",
+        "100001",
+        "0",
         "sku-bad",
         "spu-physical",
         "Bad physical SKU",
@@ -138,8 +138,8 @@ fn validates_product_sku_fulfillment_and_inventory_modes() {
 #[test]
 fn validates_categories_attributes_cart_items_and_buyer_addresses() {
     let category = ProductCategoryDraft::new(
-        "tenant-1",
-        "org-1",
+        "100001",
+        "0",
         "cat-membership",
         None,
         "Membership",
@@ -147,17 +147,17 @@ fn validates_categories_attributes_cart_items_and_buyer_addresses() {
     )
     .unwrap();
     let attribute = ProductAttributeDraft::new(
-        "tenant-1",
-        "org-1",
+        "100001",
+        "0",
         "attr-duration",
         "Duration",
         vec!["30 days".to_owned(), "365 days".to_owned()],
     )
     .unwrap();
     let cart_item =
-        CartItemDraft::new("tenant-1", "user-1", "sku-membership-month-pro", 2).unwrap();
+        CartItemDraft::new("100001", "user-1", "sku-membership-month-pro", 2).unwrap();
     let address = BuyerAddressDraft::new(
-        "tenant-1",
+        "100001",
         "user-1",
         "addr-1",
         "Alice",
@@ -177,9 +177,9 @@ fn validates_categories_attributes_cart_items_and_buyer_addresses() {
     assert_eq!(cart_item.quantity, 2);
     assert!(address.is_default);
     assert!(
-        ProductAttributeDraft::new("tenant-1", "org-1", "attr-empty", "Empty", Vec::new()).is_err()
+        ProductAttributeDraft::new("100001", "0", "attr-empty", "Empty", Vec::new()).is_err()
     );
-    assert!(CartItemDraft::new("tenant-1", "user-1", "sku-1", 0).is_err());
+    assert!(CartItemDraft::new("100001", "user-1", "sku-1", 0).is_err());
 }
 
 #[test]

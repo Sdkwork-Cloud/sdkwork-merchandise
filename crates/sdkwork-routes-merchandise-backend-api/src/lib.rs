@@ -1,3 +1,10 @@
+use axum::Router;
+use sdkwork_merchandise_service_host::ShopServiceHost;
+use sdkwork_web_core::HttpRouteManifest;
+use std::sync::Arc;
+
+use crate::http_route_manifest::backend_route_manifest;
+
 pub mod http_route_manifest;
 pub mod routes;
 pub mod web_bootstrap;
