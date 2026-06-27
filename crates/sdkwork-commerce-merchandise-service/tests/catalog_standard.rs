@@ -155,10 +155,10 @@ fn validates_categories_attributes_cart_items_and_buyer_addresses() {
     )
     .unwrap();
     let cart_item =
-        CartItemDraft::new("100001", "user-1", "sku-membership-month-pro", 2).unwrap();
+        CartItemDraft::new("100001", "1", "sku-membership-month-pro", 2).unwrap();
     let address = BuyerAddressDraft::new(
         "100001",
-        "user-1",
+        "1",
         "addr-1",
         "Alice",
         "13800000000",
@@ -179,7 +179,7 @@ fn validates_categories_attributes_cart_items_and_buyer_addresses() {
     assert!(
         ProductAttributeDraft::new("100001", "0", "attr-empty", "Empty", Vec::new()).is_err()
     );
-    assert!(CartItemDraft::new("100001", "user-1", "sku-1", 0).is_err());
+    assert!(CartItemDraft::new("100001", "1", "sku-1", 0).is_err());
 }
 
 #[test]

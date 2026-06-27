@@ -1,20 +1,19 @@
 [package]
-name = "sdkwork-merchandise-api-server"
+name = "sdkwork-merchandise-standalone-gateway"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 publish.workspace = true
 
+
 [[bin]]
-name = "merchandise-server"
+name = "sdkwork-merchandise-standalone-gateway"
 path = "src/main.rs"
 
 [dependencies]
 sdkwork_merchandise_gateway_assembly = { package = "sdkwork-merchandise-gateway-assembly", path = "../sdkwork-merchandise-gateway-assembly" }
 axum = { workspace = true }
 serde_json = { workspace = true }
-sdkwork_routes_merchandise_app_api.workspace = true
-sdkwork_routes_merchandise_backend_api.workspace = true
 sdkwork_merchandise_service_host.workspace = true
 tokio = { workspace = true }
 tower-http = { workspace = true }
@@ -22,6 +21,4 @@ tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
 sdkwork-web-bootstrap = { workspace = true }
 
-[[bin]]
-name = "sdkwork-merchandise-standalone-gateway"
-path = "src/main.rs"
+

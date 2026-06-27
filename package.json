@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "pnpm --dir apps/sdkwork-merchandise-pc dev",
     "build": "pnpm --dir apps/sdkwork-merchandise-pc build",
-    "start": "cargo run -p sdkwork-merchandise-api-server --bin merchandise-server",
+    "start": "cargo run -p sdkwork-merchandise-standalone-gateway --bin merchandise-server",
     "test": "pnpm test:node && pnpm test:vitest && cargo test --workspace",
     "test:node": "node --test tests/static/*.test.mjs tests/contract/*.test.mjs",
     "test:vitest": "vitest run --config vitest.config.ts --configLoader native --pool vmThreads",

@@ -8,13 +8,13 @@ Specs: REQUIREMENTS_SPEC.md, DOCUMENTATION_SPEC.md
 
 ## Document Map
 
-- Platform split alignment (commerce T0): `../sdkwork-commerce/docs/architecture/tech/TECH-2026-06-24-commerce-capability-repo-split-alignment.md`
+- Commerce repository dissolution: `../sdkwork-specs/MIGRATION_SPEC.md` §8
 
 ## 1. Background And Problem
 
 Product master data (SPU/SKU, catalog admin) must be owned by a dedicated merchandise capability rather than a monolithic commerce crate.
 
-This repository is a **T1 commerce capability building block**. `sdkwork-commerce` remains the T0 composition layer (gateway, IAM wrappers, composed SDK). This repository owns domain logic, persistence, and HTTP route builders for the **merchandise** capability.
+This repository is a **T1 commerce capability building block**. The `sdkwork-commerce` monolith has been dissolved; this repository is self-contained with its own domain logic, persistence, HTTP route builders, API server, and IAM middleware for the **merchandise** capability.
 
 ## 2. Target Users
 
@@ -25,7 +25,7 @@ Merchant catalog administrators, commerce operators, and integrators publishing 
 ### Goals
 
 - Own merchandise catalog SQL, domain commands/queries, and backend admin catalog HTTP routers.
-- Provide backend admin catalog surfaces consumed by commerce T0 with IAM wrappers.
+- Provide backend admin catalog surfaces consumed by the T1 `*-standalone-gateway` with IAM wrappers.
 - Keep table prefix and API naming aligned with commerce domain standards.
 
 ### Non-Goals
@@ -50,13 +50,13 @@ Migration status: **complete**.
 ## 5. User Scenarios
 
 - A catalog admin creates an SPU with SKUs and publishes it to the tenant catalog.
-- Shop routes in commerce consume merchandise catalog store traits for product coupling.
-- OpenAPI and SDK generation include catalog operations through commerce composed surfaces.
+- Shop routes in sibling T1 repos consume merchandise catalog store traits for product coupling.
+- OpenAPI and SDK generation include catalog operations through per-T1 SDK families.
 
 ## 6. Success Metrics
 
-- Catalog routes pass commerce api-server integration tests via thin IAM wrappers.
-- No local `sdkwork-commerce-catalog-service` duplicate in commerce workspace.
+- Catalog routes pass T1 standalone-gateway integration tests via IAM wrappers.
+- No local `sdkwork-commerce-catalog-service` duplicate in any workspace.
 
 ## 7. Phases
 
@@ -65,7 +65,7 @@ Migration status: **complete**.
 
 ## 8. Linked Requirements
 
-- Commerce capability split alignment: `../sdkwork-commerce/docs/architecture/tech/TECH-2026-06-24-commerce-capability-repo-split-alignment.md`
+- Commerce repository dissolution: `../sdkwork-specs/MIGRATION_SPEC.md` §8
 - Component contract: `specs/component.spec.json` (when present)
 - Machine contracts: local `specs/`, future `apis/`, and generated `sdks/`
 

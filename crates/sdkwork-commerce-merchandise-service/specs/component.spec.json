@@ -2,14 +2,14 @@
   "schemaVersion": 1,
   "kind": "sdkwork.component.spec",
   "component": {
-    "name": "sdkwork-commerce-catalog-service",
-    "displayName": "SDKWork Commerce Catalog",
+    "name": "sdkwork-commerce-merchandise-service",
+    "displayName": "SDKWork Commerce Merchandise",
     "version": "0.1.0",
     "type": "rust-crate",
-    "root": "sdkwork-commerce/crates/sdkwork-commerce-catalog-service",
+    "root": "crates/sdkwork-commerce-merchandise-service",
     "domain": "commerce",
     "declaredDomain": null,
-    "capability": "commerce",
+    "capability": "merchandise",
     "status": "stable",
     "languages": [
       "rust"

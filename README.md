@@ -7,7 +7,7 @@ SDKWork commerce **merchandise** capability building-block repository (domain `c
 - Domain service: `crates/sdkwork-commerce-merchandise-service/`
 - Repository SQL: `crates/sdkwork-commerce-merchandise-repository-sqlx/`
 - PC app: `apps/sdkwork-merchandise-pc/`
-- HTTP API server: `crates/sdkwork-merchandise-api-server/`
+- HTTP API server: `crates/sdkwork-merchandise-standalone-gateway/`
 
 ## Quick start
 

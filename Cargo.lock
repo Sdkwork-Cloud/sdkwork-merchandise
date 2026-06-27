@@ -1637,6 +1637,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "sdkwork-database-id"
+version = "0.1.0"
+dependencies = [
+ "sdkwork-database-config",
+ "sdkwork-database-sqlx",
+ "sdkwork-id-core",
+ "sqlx",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
 name = "sdkwork-database-lifecycle"
 version = "0.1.0"
 dependencies = [
@@ -1686,9 +1698,9 @@ dependencies = [
  "base64",
  "chrono",
  "rand_core 0.6.4",
+ "sdkwork-database-id",
  "sdkwork-iam-context-service",
  "sdkwork-iam-module-registry",
- "sdkwork-id-core",
  "sha2",
  "sqlx",
  "uuid",
@@ -1757,8 +1769,6 @@ dependencies = [
  "axum",
  "sdkwork-merchandise-gateway-assembly",
  "sdkwork-merchandise-service-host",
- "sdkwork-routes-merchandise-app-api",
- "sdkwork-routes-merchandise-backend-api",
  "sdkwork-web-bootstrap",
  "serde_json",
  "tokio",
@@ -1783,6 +1793,7 @@ name = "sdkwork-merchandise-gateway-assembly"
 version = "0.1.0"
 dependencies = [
  "axum",
+ "sdkwork-merchandise-service-host",
  "sdkwork-routes-merchandise-app-api",
  "sdkwork-routes-merchandise-backend-api",
  "tokio",
@@ -1839,11 +1850,14 @@ dependencies = [
 name = "sdkwork-utils-rust"
 version = "0.10.0"
 dependencies = [
+ "aes-gcm",
  "base64",
  "chrono",
+ "hkdf",
  "hmac",
  "rand 0.8.6",
  "regex",
+ "serde",
  "serde_json",
  "sha2",
  "urlencoding",

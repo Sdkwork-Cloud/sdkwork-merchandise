@@ -8,7 +8,7 @@ members = [
   "crates/sdkwork-routes-merchandise-backend-api",
   "crates/sdkwork-merchandise-database-host",
   "crates/sdkwork-merchandise-service-host",
-  "crates/sdkwork-merchandise-api-server",
+  "crates/sdkwork-merchandise-standalone-gateway",
 ]
 
 [workspace.package]
