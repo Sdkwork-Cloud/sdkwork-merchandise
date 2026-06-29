@@ -3,9 +3,9 @@
 SDKWork commerce **merchandise** capability building-block repository (domain `commerce`).
 
 - Standards: `../sdkwork-specs/README.md`
-- Composition consumer: `../sdkwork-clawrouter/vendor/sdkwork-commerce` (archived transitional platform snapshot)
-- Domain service: `crates/sdkwork-commerce-merchandise-service/`
-- Repository SQL: `crates/sdkwork-commerce-merchandise-repository-sqlx/`
+- Composition consumer: `../sdkwork-clawrouter/vendor/sdkwork-commerce (deleted)` (archived transitional platform snapshot)
+- Domain service: `crates/sdkwork-merchandise-service/`
+- Repository SQL: `crates/sdkwork-commerce (deleted)-merchandise-repository-sqlx/`
 - PC app: `apps/sdkwork-merchandise-pc/`
 - HTTP API server: `crates/sdkwork-merchandise-standalone-gateway/`
 

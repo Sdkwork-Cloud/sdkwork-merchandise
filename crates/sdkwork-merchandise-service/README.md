@@ -1,11 +1,11 @@
-# sdkwork-commerce-catalog-service
+# sdkwork-commerce (deleted)-catalog-service
 
 Domain: commerce
 Capability: commerce
 Package type: rust-crate
 Status: stable
 
-This README is the SDKWork module entrypoint for `sdkwork-commerce-catalog-service`. The machine-readable component contract is `specs/component.spec.json`; canonical standards are under `../../../sdkwork-specs/`.
+This README is the SDKWork module entrypoint for `sdkwork-commerce (deleted)-catalog-service`. The machine-readable component contract is `specs/component.spec.json`; canonical standards are under `../../../sdkwork-specs/`.
 
 ## Public API
 
@@ -33,7 +33,7 @@ Extension points are limited to public exports, runtime entrypoints, SDK clients
 
 ## Verification
 
-- `cargo test --manifest-path crates/sdkwork-commerce-catalog-service/Cargo.toml`
+- `cargo test --manifest-path crates/sdkwork-commerce (deleted)-catalog-service/Cargo.toml`
 
 ## Owner And Status
 

@@ -1,4 +1,4 @@
-use sdkwork_commerce_merchandise_service::{
+use sdkwork_merchandise_service::{
     AddCartItemCommand, AddressListQuery, AddressRecord, ArchiveSpuCommand, AttributeListQuery,
     AttributeRecord, CartItemRecord, CartRetrieveQuery, CategoryListQuery, CategoryRecord,
     CategoryRetrieveQuery, CreateAddressCommand, CreateAttributeCommand, CreateCategoryCommand,
@@ -9,7 +9,7 @@ use sdkwork_commerce_merchandise_service::{
     SkuRecord, SpuRecord, UpdateAddressCommand, UpdateCartItemCommand, UpdateCategoryCommand,
     UpdatePriceListCommand, UpdateProductSkuCommand, UpdateProductSpuCommand,
 };
-use sdkwork_commerce_contract_service::CommerceServiceError;
+use sdkwork_contract_service::CommerceServiceError;
 use sqlx::{Row, SqlitePool};
 
 #[derive(Debug, Clone)]
@@ -608,7 +608,7 @@ impl SqliteCommerceCatalogStore {
         .bind(&command.name)
         .bind(&command.title)
         .bind(command.price_amount.as_str())
-        .bind(command.original_price_amount.as_ref().map(|m: &sdkwork_commerce_contract_service::CommerceMoney| m.as_str()))
+        .bind(command.original_price_amount.as_ref().map(|m: &sdkwork_contract_service::CommerceMoney| m.as_str()))
         .bind(&command.currency_code)
         .bind(&command.fulfillment_type)
         .bind(&command.inventory_tracking)
@@ -644,8 +644,8 @@ impl SqliteCommerceCatalogStore {
         )
         .bind(command.name.as_deref())
         .bind(command.title.as_deref())
-        .bind(command.price_amount.as_ref().map(|m: &sdkwork_commerce_contract_service::CommerceMoney| m.as_str()))
-        .bind(command.original_price_amount.as_ref().map(|m: &sdkwork_commerce_contract_service::CommerceMoney| m.as_str()))
+        .bind(command.price_amount.as_ref().map(|m: &sdkwork_contract_service::CommerceMoney| m.as_str()))
+        .bind(command.original_price_amount.as_ref().map(|m: &sdkwork_contract_service::CommerceMoney| m.as_str()))
         .bind(command.currency_code.as_deref())
         .bind(command.fulfillment_type.as_deref())
         .bind(command.inventory_tracking.as_deref())

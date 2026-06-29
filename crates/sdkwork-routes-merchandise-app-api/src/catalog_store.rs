@@ -4,10 +4,7 @@ use std::future::Future;
 use std::pin::Pin;
 use std::sync::Arc;
 
-use axum::http::StatusCode;
-use axum::response::{IntoResponse, Response};
-use axum::Json;
-use sdkwork_commerce_merchandise_service::{
+use sdkwork_merchandise_service::{
     AddCartItemCommand, AddressListQuery, AddressRecord, ArchiveSpuCommand, AttributeListQuery,
     AttributeRecord, CartItemRecord, CartRetrieveQuery, CategoryAttributeListQuery,
     CategoryAttributeRecord, CategoryListQuery, CategoryRecord, CategoryRetrieveQuery,
@@ -21,12 +18,16 @@ use sdkwork_commerce_merchandise_service::{
     UpdateCartItemCommand, UpdateCategoryAttributeCommand, UpdateCategoryCommand,
     UpdatePriceListCommand, UpdateProductSkuCommand, UpdateProductSpuCommand,
 };
-use sdkwork_commerce_contract_service::CommerceServiceError;
-use sdkwork_commerce_merchandise_repository_sqlx::{
+use sdkwork_contract_service::CommerceServiceError;
+use sdkwork_merchandise_repository_sqlx::{
     PostgresCommerceCatalogStore, SqliteCommerceCatalogStore,
 };
 use serde::{Deserialize, Serialize};
 
+pub use crate::http_envelope::{
+    catalog_system_response, not_found_response, success_accepted, success_list, success_resource,
+    unauthorized_response, validation_response,
+};
 
 pub type CommerceCatalogFuture<'a, T> =
     Pin<Box<dyn Future<Output = Result<T, CommerceServiceError>> + Send + 'a>>;
@@ -412,15 +413,6 @@ pub struct UpdateAddressBody {
     pub province: Option<String>,
     pub city: Option<String>,
     pub detail_address: Option<String>,
-}
-
-#[derive(Debug, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct CatalogApiResult<T: Serialize> {
-    code: String,
-    msg: String,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    data: Option<T>,
 }
 
 #[derive(Debug, Serialize)]
@@ -1108,25 +1100,6 @@ impl CommerceCatalogStore for PostgresCommerceCatalogStore {
     }
 }
 
-impl<T: Serialize> CatalogApiResult<T> {
-    pub fn success(data: T) -> Self {
-        Self {
-            code: "2000".to_owned(),
-            msg: "SUCCESS".to_owned(),
-            data: Some(data),
-        }
-    }
-}
-
-impl CatalogApiResult<()> {
-    pub fn error(code: impl Into<String>, msg: impl Into<String>) -> Self {
-        Self {
-            code: code.into(),
-            msg: msg.into(),
-            data: None,
-        }
-    }
-}
 pub fn map_category(value: CategoryRecord) -> CategoryResponse {
     CategoryResponse {
         id: value.id,
@@ -1274,41 +1247,6 @@ pub fn map_address(value: AddressRecord) -> AddressResponse {
         created_at: value.created_at,
         updated_at: value.updated_at,
     }
-}
-
-pub fn unauthorized_response(message: String) -> Response {
-    (
-        StatusCode::UNAUTHORIZED,
-        Json(CatalogApiResult::error("4010", message)),
-    )
-        .into_response()
-}
-
-pub fn validation_response(message: impl Into<String>) -> Response {
-    (
-        StatusCode::BAD_REQUEST,
-        Json(CatalogApiResult::error("4001", message)),
-    )
-        .into_response()
-}
-
-pub fn not_found_response(message: impl Into<String>) -> Response {
-    (
-        StatusCode::NOT_FOUND,
-        Json(CatalogApiResult::error("4040", message)),
-    )
-        .into_response()
-}
-
-pub fn catalog_system_response(context: &str, error: CommerceServiceError) -> Response {
-    (
-        StatusCode::INTERNAL_SERVER_ERROR,
-        Json(CatalogApiResult::error(
-            "5000",
-            format!("{context}: {}", error.message()),
-        )),
-    )
-        .into_response()
 }
 
 #[path = "backend_catalog_router.rs"]

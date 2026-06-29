@@ -1,6 +1,6 @@
 use async_trait::async_trait;
 use chrono::Utc;
-use sdkwork_commerce_merchandise_service::{CreateShopCommand, ShopProfile, ShopRepository, ShopSummary};
+use sdkwork_merchandise_service::{CreateShopCommand, ShopProfile, ShopRepository, ShopSummary};
 use sdkwork_database_sqlx::DatabasePool;
 use sqlx::{PgPool, Row};
 use uuid::Uuid;

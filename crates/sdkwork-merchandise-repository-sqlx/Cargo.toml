@@ -1,5 +1,5 @@
 [package]
-name = "sdkwork-commerce-merchandise-repository-sqlx"
+name = "sdkwork-merchandise-repository-sqlx"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -13,8 +13,8 @@ async-trait = { workspace = true }
 chrono = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
-sdkwork_commerce_contract_service.workspace = true
-sdkwork_commerce_merchandise_service.workspace = true
+sdkwork_contract_service.workspace = true
+sdkwork_merchandise_service.workspace = true
 sdkwork_database_sqlx.workspace = true
 sqlx = { workspace = true }
 uuid = { workspace = true }

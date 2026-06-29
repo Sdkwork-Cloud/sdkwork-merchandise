@@ -1,9 +1,9 @@
-use sdkwork_commerce_merchandise_service::{
+use sdkwork_merchandise_service::{
     catalog_service_contract, BuyerAddressDraft, CartItemDraft, CatalogPortRequirement,
     CatalogRepositoryCommand, FulfillmentType, InventoryTrackingMode, ProductAttributeDraft,
     ProductCategoryDraft, ProductSkuDraft, ProductSpuDraft, ProductStatus, ProductType,
 };
-use sdkwork_commerce_contract_service::{CommerceMoney, CommerceSurfaceProfile};
+use sdkwork_contract_service::{CommerceMoney, CommerceSurfaceProfile};
 
 #[test]
 fn catalog_domain_contract_uses_standard_spu_sku_terms_without_legacy_product_table_debt() {

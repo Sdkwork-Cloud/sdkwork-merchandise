@@ -1,5 +1,5 @@
 use crate::{commands::*, queries::*};
-use sdkwork_commerce_contract_service::CommerceServiceError;
+use sdkwork_contract_service::CommerceServiceError;
 
 pub const CATALOG_REPOSITORY_PORT: &str = "catalog.repository";
 pub const CART_REPOSITORY_PORT: &str = "cart.repository";

@@ -8,9 +8,9 @@ Root SDKWork standards remain authoritative. Local component specs can narrow or
 
 | Field | Value |
 | --- | --- |
-| Name | `sdkwork-commerce-catalog-service` |
+| Name | `sdkwork-commerce (deleted)-catalog-service` |
 | Type | `rust-crate` |
-| Root | `sdkwork-commerce/crates/sdkwork-commerce-catalog-service` |
+| Root | `sdkwork-commerce (deleted)/crates/sdkwork-commerce (deleted)-catalog-service` |
 | Domain | `commerce` |
 | Capability | `commerce` |
 | Languages | `rust` |
@@ -54,4 +54,4 @@ Root SDKWork standards remain authoritative. Local component specs can narrow or
 
 ## Verification
 
-- `cargo test --manifest-path crates/sdkwork-commerce-catalog-service/Cargo.toml`
+- `cargo test --manifest-path crates/sdkwork-commerce (deleted)-catalog-service/Cargo.toml`

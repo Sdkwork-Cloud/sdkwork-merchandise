@@ -6,8 +6,8 @@ use axum::extract::{Extension, Path, Query, State};
 use axum::response::{IntoResponse, Response};
 use axum::routing::{get, patch, post};
 use axum::{Json, Router};
-use sdkwork_commerce_contract_service::CommerceMoney;
-use sdkwork_commerce_merchandise_service::{
+use sdkwork_contract_service::CommerceMoney;
+use sdkwork_merchandise_service::{
     ArchiveSpuCommand, AttributeListQuery, CategoryAttributeListQuery, CategoryListQuery,
     CreateAttributeCommand, CreateCategoryAttributeCommand,
     CreateCategoryCommand, CreatePriceListCommand, CreateProductSkuCommand,
@@ -16,7 +16,7 @@ use sdkwork_commerce_merchandise_service::{
     ProductSpuListQuery, ProductSpuRetrieveQuery, PublishSpuCommand, UpdateCategoryAttributeCommand,
     UpdateCategoryCommand, UpdatePriceListCommand, UpdateProductSkuCommand, UpdateProductSpuCommand,
 };
-use sdkwork_commerce_merchandise_repository_sqlx::{
+use sdkwork_merchandise_repository_sqlx::{
     PostgresCommerceCatalogStore, SqliteCommerceCatalogStore,
 };
 use sdkwork_iam_context_service::IamAppContext;
@@ -24,8 +24,9 @@ use sqlx::{PgPool, SqlitePool};
 
 use super::{
     catalog_system_response, map_attribute, map_category, map_category_attribute, map_price_list,
-    map_sku, map_spu, not_found_response, unauthorized_response, validation_response,
-    AttributeQueryParams, CatalogApiResult, CatalogState, CategoryAttributeQueryParams,
+    map_sku, map_spu, not_found_response, success_accepted, success_list, success_resource,
+    unauthorized_response, validation_response,
+    AttributeQueryParams, CatalogState, CategoryAttributeQueryParams,
     CategoryQueryParams, CommerceCatalogStore, CreateAttributeBody, CreateCategoryAttributeBody,
     CreateCategoryBody, CreatePriceListBody, CreateSkuBody, CreateSpuBody, PriceListQueryParams,
     SkuListQueryParams, SpuListQueryParams, UpdateCategoryAttributeBody, UpdateCategoryBody,
@@ -129,10 +130,7 @@ async fn backend_list_categories(
         Err(error) => return validation_response(error.message()),
     };
     match state.store.list_categories(query).await {
-        Ok(data) => Json(CatalogApiResult::success(
-            data.into_iter().map(map_category).collect::<Vec<_>>(),
-        ))
-        .into_response(),
+        Ok(data) => success_list(data.into_iter().map(map_category).collect()),
         Err(error) => catalog_system_response("category list is unavailable", error),
     }
 }
@@ -163,7 +161,7 @@ async fn backend_create_category(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.create_category(command).await {
-        Ok(data) => Json(CatalogApiResult::success(map_category(data))).into_response(),
+        Ok(data) => success_resource(map_category(data)),
         Err(error) => catalog_system_response("failed to create category", error),
     }
 }
@@ -191,7 +189,7 @@ async fn backend_update_category(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.update_category(command).await {
-        Ok(data) => Json(CatalogApiResult::success(map_category(data))).into_response(),
+        Ok(data) => success_resource(map_category(data)),
         Err(error) => catalog_system_response("failed to update category", error),
     }
 }
@@ -214,7 +212,7 @@ async fn backend_delete_category(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.delete_category(command).await {
-        Ok(()) => Json(CatalogApiResult::success(())).into_response(),
+        Ok(()) => success_accepted(),
         Err(error) => catalog_system_response("failed to delete category", error),
     }
 }
@@ -244,10 +242,7 @@ async fn backend_list_products(
         Err(error) => return validation_response(error.message()),
     };
     match state.store.list_spus(query).await {
-        Ok(data) => Json(CatalogApiResult::success(
-            data.into_iter().map(map_spu).collect::<Vec<_>>(),
-        ))
-        .into_response(),
+        Ok(data) => success_list(data.into_iter().map(map_spu).collect()),
         Err(error) => catalog_system_response("product list is unavailable", error),
     }
 }
@@ -266,7 +261,7 @@ async fn backend_retrieve_product(
         Err(error) => return validation_response(error.message()),
     };
     match state.store.retrieve_spu(query).await {
-        Ok(Some(data)) => Json(CatalogApiResult::success(map_spu(data))).into_response(),
+        Ok(Some(data)) => success_resource(map_spu(data)),
         Ok(None) => not_found_response("product was not found"),
         Err(error) => catalog_system_response("product read model is unavailable", error),
     }
@@ -301,7 +296,7 @@ async fn backend_create_product(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.create_spu(command).await {
-        Ok(data) => Json(CatalogApiResult::success(map_spu(data))).into_response(),
+        Ok(data) => success_resource(map_spu(data)),
         Err(error) => catalog_system_response("failed to create product", error),
     }
 }
@@ -330,7 +325,7 @@ async fn backend_update_product(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.update_spu(command).await {
-        Ok(data) => Json(CatalogApiResult::success(map_spu(data))).into_response(),
+        Ok(data) => success_resource(map_spu(data)),
         Err(error) => catalog_system_response("failed to update product", error),
     }
 }
@@ -353,7 +348,7 @@ async fn backend_delete_product(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.delete_spu(command).await {
-        Ok(()) => Json(CatalogApiResult::success(())).into_response(),
+        Ok(()) => success_accepted(),
         Err(error) => catalog_system_response("failed to delete product", error),
     }
 }
@@ -383,10 +378,7 @@ async fn backend_list_spus(
         Err(error) => return validation_response(error.message()),
     };
     match state.store.list_spus(query).await {
-        Ok(data) => Json(CatalogApiResult::success(
-            data.into_iter().map(map_spu).collect::<Vec<_>>(),
-        ))
-        .into_response(),
+        Ok(data) => success_list(data.into_iter().map(map_spu).collect()),
         Err(error) => catalog_system_response("spu list is unavailable", error),
     }
 }
@@ -420,7 +412,7 @@ async fn backend_create_spu(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.create_spu(command).await {
-        Ok(data) => Json(CatalogApiResult::success(map_spu(data))).into_response(),
+        Ok(data) => success_resource(map_spu(data)),
         Err(error) => catalog_system_response("failed to create spu", error),
     }
 }
@@ -449,7 +441,7 @@ async fn backend_update_spu(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.update_spu(command).await {
-        Ok(data) => Json(CatalogApiResult::success(map_spu(data))).into_response(),
+        Ok(data) => success_resource(map_spu(data)),
         Err(error) => catalog_system_response("failed to update spu", error),
     }
 }
@@ -472,7 +464,7 @@ async fn backend_publish_spu(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.publish_spu(command).await {
-        Ok(data) => Json(CatalogApiResult::success(map_spu(data))).into_response(),
+        Ok(data) => success_resource(map_spu(data)),
         Err(error) => catalog_system_response("failed to publish spu", error),
     }
 }
@@ -495,7 +487,7 @@ async fn backend_archive_spu(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.archive_spu(command).await {
-        Ok(data) => Json(CatalogApiResult::success(map_spu(data))).into_response(),
+        Ok(data) => success_resource(map_spu(data)),
         Err(error) => catalog_system_response("failed to archive spu", error),
     }
 }
@@ -524,10 +516,7 @@ async fn backend_list_skus(
         Err(error) => return validation_response(error.message()),
     };
     match state.store.list_skus(query).await {
-        Ok(data) => Json(CatalogApiResult::success(
-            data.into_iter().map(map_sku).collect::<Vec<_>>(),
-        ))
-        .into_response(),
+        Ok(data) => success_list(data.into_iter().map(map_sku).collect()),
         Err(error) => catalog_system_response("sku list is unavailable", error),
     }
 }
@@ -574,7 +563,7 @@ async fn backend_create_sku(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.create_sku(command).await {
-        Ok(data) => Json(CatalogApiResult::success(map_sku(data))).into_response(),
+        Ok(data) => success_resource(map_sku(data)),
         Err(error) => catalog_system_response("failed to create sku", error),
     }
 }
@@ -620,7 +609,7 @@ async fn backend_update_sku(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.update_sku(command).await {
-        Ok(data) => Json(CatalogApiResult::success(map_sku(data))).into_response(),
+        Ok(data) => success_resource(map_sku(data)),
         Err(error) => catalog_system_response("failed to update sku", error),
     }
 }
@@ -643,7 +632,7 @@ async fn backend_delete_sku(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.delete_sku(command).await {
-        Ok(()) => Json(CatalogApiResult::success(())).into_response(),
+        Ok(()) => success_accepted(),
         Err(error) => catalog_system_response("failed to delete sku", error),
     }
 }
@@ -669,10 +658,7 @@ async fn backend_list_attributes(
         Err(error) => return validation_response(error.message()),
     };
     match state.store.list_attributes(query).await {
-        Ok(data) => Json(CatalogApiResult::success(
-            data.into_iter().map(map_attribute).collect::<Vec<_>>(),
-        ))
-        .into_response(),
+        Ok(data) => success_list(data.into_iter().map(map_attribute).collect()),
         Err(error) => catalog_system_response("attribute list is unavailable", error),
     }
 }
@@ -702,7 +688,7 @@ async fn backend_create_attribute(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.create_attribute(command).await {
-        Ok(data) => Json(CatalogApiResult::success(map_attribute(data))).into_response(),
+        Ok(data) => success_resource(map_attribute(data)),
         Err(error) => catalog_system_response("failed to create attribute", error),
     }
 }
@@ -728,12 +714,9 @@ async fn backend_list_category_attributes(
         Err(error) => return validation_response(error.message()),
     };
     match state.store.list_category_attributes(query).await {
-        Ok(data) => Json(CatalogApiResult::success(
-            data.into_iter()
+        Ok(data) => success_list(data.into_iter()
                 .map(map_category_attribute)
-                .collect::<Vec<_>>(),
-        ))
-        .into_response(),
+                .collect()),
         Err(error) => catalog_system_response("category attribute list is unavailable", error),
     }
 }
@@ -766,7 +749,7 @@ async fn backend_create_category_attribute(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.create_category_attribute(command).await {
-        Ok(data) => Json(CatalogApiResult::success(map_category_attribute(data))).into_response(),
+        Ok(data) => success_resource(map_category_attribute(data)),
         Err(error) => catalog_system_response("failed to create category attribute", error),
     }
 }
@@ -794,7 +777,7 @@ async fn backend_update_category_attribute(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.update_category_attribute(command).await {
-        Ok(data) => Json(CatalogApiResult::success(map_category_attribute(data))).into_response(),
+        Ok(data) => success_resource(map_category_attribute(data)),
         Err(error) => catalog_system_response("failed to update category attribute", error),
     }
 }
@@ -817,7 +800,7 @@ async fn backend_delete_category_attribute(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.delete_category_attribute(command).await {
-        Ok(()) => Json(CatalogApiResult::success(())).into_response(),
+        Ok(()) => success_accepted(),
         Err(error) => catalog_system_response("failed to delete category attribute", error),
     }
 }
@@ -843,10 +826,7 @@ async fn backend_list_price_lists(
         Err(error) => return validation_response(error.message()),
     };
     match state.store.list_price_lists(query).await {
-        Ok(data) => Json(CatalogApiResult::success(
-            data.into_iter().map(map_price_list).collect::<Vec<_>>(),
-        ))
-        .into_response(),
+        Ok(data) => success_list(data.into_iter().map(map_price_list).collect()),
         Err(error) => catalog_system_response("price list is unavailable", error),
     }
 }
@@ -876,7 +856,7 @@ async fn backend_create_price_list(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.create_price_list(command).await {
-        Ok(data) => Json(CatalogApiResult::success(map_price_list(data))).into_response(),
+        Ok(data) => success_resource(map_price_list(data)),
         Err(error) => catalog_system_response("failed to create price list", error),
     }
 }
@@ -903,7 +883,7 @@ async fn backend_update_price_list(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.update_price_list(command).await {
-        Ok(data) => Json(CatalogApiResult::success(map_price_list(data))).into_response(),
+        Ok(data) => success_resource(map_price_list(data)),
         Err(error) => catalog_system_response("failed to update price list", error),
     }
 }

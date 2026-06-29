@@ -14,7 +14,7 @@ Specs: REQUIREMENTS_SPEC.md, DOCUMENTATION_SPEC.md
 
 Product master data (SPU/SKU, catalog admin) must be owned by a dedicated merchandise capability rather than a monolithic commerce crate.
 
-This repository is a **T1 commerce capability building block**. The `sdkwork-commerce` monolith has been dissolved; this repository is self-contained with its own domain logic, persistence, HTTP route builders, API server, and IAM middleware for the **merchandise** capability.
+This repository is a **T1 commerce capability building block**. The `sdkwork-commerce (deleted)` monolith has been dissolved; this repository is self-contained with its own domain logic, persistence, HTTP route builders, API server, and IAM middleware for the **merchandise** capability.
 
 ## 2. Target Users
 
@@ -56,7 +56,7 @@ Migration status: **complete**.
 ## 6. Success Metrics
 
 - Catalog routes pass T1 standalone-gateway integration tests via IAM wrappers.
-- No local `sdkwork-commerce-catalog-service` duplicate in any workspace.
+- No local `sdkwork-commerce (deleted)-catalog-service` duplicate in any workspace.
 
 ## 7. Phases
 
