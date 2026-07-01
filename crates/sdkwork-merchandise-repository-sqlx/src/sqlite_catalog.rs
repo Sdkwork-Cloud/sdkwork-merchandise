@@ -1,3 +1,4 @@
+use sdkwork_contract_service::CommerceServiceError;
 use sdkwork_merchandise_service::{
     AddCartItemCommand, AddressListQuery, AddressRecord, ArchiveSpuCommand, AttributeListQuery,
     AttributeRecord, CartItemRecord, CartRetrieveQuery, CategoryListQuery, CategoryRecord,
@@ -9,7 +10,6 @@ use sdkwork_merchandise_service::{
     SkuRecord, SpuRecord, UpdateAddressCommand, UpdateCartItemCommand, UpdateCategoryCommand,
     UpdatePriceListCommand, UpdateProductSkuCommand, UpdateProductSpuCommand,
 };
-use sdkwork_contract_service::CommerceServiceError;
 use sqlx::{Row, SqlitePool};
 
 #[derive(Debug, Clone)]

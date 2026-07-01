@@ -1,7 +1,8 @@
 use axum::response::{IntoResponse, Response};
 use axum::Json;
 use sdkwork_utils_rust::http_api::{
-    PageInfo, PageMode, SdkWorkApiResponse, SdkWorkCommandData, SdkWorkPageData, SdkWorkResourceData,
+    PageInfo, PageMode, SdkWorkApiResponse, SdkWorkCommandData, SdkWorkPageData,
+    SdkWorkResourceData,
 };
 use sdkwork_web_core::{
     problem_response, ProblemCorrelation, WebFrameworkError, WebFrameworkErrorKind,
@@ -23,10 +24,7 @@ pub fn success_item<T: Serialize>(trace_id: impl Into<String>, item: T) -> Json<
     )
 }
 
-pub fn success_page<T: Serialize>(
-    trace_id: impl Into<String>,
-    items: Vec<T>,
-) -> Json<Value> {
+pub fn success_page<T: Serialize>(trace_id: impl Into<String>, items: Vec<T>) -> Json<Value> {
     let item_count = items.len();
     Json(
         serde_json::to_value(SdkWorkApiResponse::success(
@@ -96,7 +94,10 @@ pub fn not_found_response(message: impl Into<String>) -> Response {
     problem_for(WebFrameworkErrorKind::NotFound, message)
 }
 
-pub fn catalog_system_response(context: &str, error: sdkwork_contract_service::CommerceServiceError) -> Response {
+pub fn catalog_system_response(
+    context: &str,
+    error: sdkwork_contract_service::CommerceServiceError,
+) -> Response {
     problem_for(
         WebFrameworkErrorKind::DependencyUnavailable,
         format!("{context}: {}", error.message()),

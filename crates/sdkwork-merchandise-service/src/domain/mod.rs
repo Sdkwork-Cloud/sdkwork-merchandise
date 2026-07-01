@@ -1,6 +1,4 @@
-use sdkwork_contract_service::{
-    CommerceMoney, CommerceServiceError, CommerceSurfaceProfile,
-};
+use sdkwork_contract_service::{CommerceMoney, CommerceServiceError, CommerceSurfaceProfile};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum ProductType {

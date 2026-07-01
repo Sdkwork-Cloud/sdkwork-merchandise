@@ -1,5 +1,6 @@
 packages:
-  - "packages/common/merchandise/*"
+  - "apps/sdkwork-merchandise-common"
+  - "apps/sdkwork-merchandise-common/packages/*"
   - "apps/sdkwork-merchandise-pc"
   - "apps/sdkwork-merchandise-pc/packages/*"
   - "../sdkwork-utils/packages/sdkwork-utils-typescript"

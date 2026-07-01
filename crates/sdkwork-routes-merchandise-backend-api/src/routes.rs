@@ -10,16 +10,12 @@ use crate::web_bootstrap::wrap_router_with_web_framework_from_env;
 
 pub fn build_merchandise_backend_router(host: Arc<ShopServiceHost>) -> Router {
     match host.database_pool() {
-        DatabasePool::Postgres(pool, _) => {
-            backend_catalog_router_with_postgres_pool(pool.clone())
-        }
+        DatabasePool::Postgres(pool, _) => backend_catalog_router_with_postgres_pool(pool.clone()),
         DatabasePool::Sqlite(pool, _) => backend_catalog_router_with_sqlite_pool(pool.clone()),
     }
 }
 
-pub async fn build_merchandise_backend_router_with_framework(
-    host: Arc<ShopServiceHost>,
-) -> Router {
+pub async fn build_merchandise_backend_router_with_framework(host: Arc<ShopServiceHost>) -> Router {
     wrap_router_with_web_framework_from_env(build_merchandise_backend_router(host)).await
 }
 

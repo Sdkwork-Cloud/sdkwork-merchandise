@@ -17,6 +17,6 @@ pub fn gateway_route_manifest() -> HttpRouteManifest {
     backend_route_manifest()
 }
 
-pub async fn gateway_mount(host: Arc<ShopServiceHost>,) -> Router {
+pub async fn gateway_mount(host: Arc<ShopServiceHost>) -> Router {
     build_merchandise_backend_router_with_framework(host).await
 }

@@ -1,4 +1,5 @@
 # sdkwork-merchandise
+repository-kind: application
 
 SDKWork commerce **merchandise** capability building-block repository (domain `commerce`).
 

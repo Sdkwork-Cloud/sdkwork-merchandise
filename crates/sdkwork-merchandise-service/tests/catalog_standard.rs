@@ -1,9 +1,9 @@
+use sdkwork_contract_service::{CommerceMoney, CommerceSurfaceProfile};
 use sdkwork_merchandise_service::{
     catalog_service_contract, BuyerAddressDraft, CartItemDraft, CatalogPortRequirement,
     CatalogRepositoryCommand, FulfillmentType, InventoryTrackingMode, ProductAttributeDraft,
     ProductCategoryDraft, ProductSkuDraft, ProductSpuDraft, ProductStatus, ProductType,
 };
-use sdkwork_contract_service::{CommerceMoney, CommerceSurfaceProfile};
 
 #[test]
 fn catalog_domain_contract_uses_standard_spu_sku_terms_without_legacy_product_table_debt() {
@@ -137,15 +137,9 @@ fn validates_product_sku_fulfillment_and_inventory_modes() {
 
 #[test]
 fn validates_categories_attributes_cart_items_and_buyer_addresses() {
-    let category = ProductCategoryDraft::new(
-        "100001",
-        "0",
-        "cat-membership",
-        None,
-        "Membership",
-        100,
-    )
-    .unwrap();
+    let category =
+        ProductCategoryDraft::new("100001", "0", "cat-membership", None, "Membership", 100)
+            .unwrap();
     let attribute = ProductAttributeDraft::new(
         "100001",
         "0",
@@ -154,8 +148,7 @@ fn validates_categories_attributes_cart_items_and_buyer_addresses() {
         vec!["30 days".to_owned(), "365 days".to_owned()],
     )
     .unwrap();
-    let cart_item =
-        CartItemDraft::new("100001", "1", "sku-membership-month-pro", 2).unwrap();
+    let cart_item = CartItemDraft::new("100001", "1", "sku-membership-month-pro", 2).unwrap();
     let address = BuyerAddressDraft::new(
         "100001",
         "1",
@@ -176,9 +169,7 @@ fn validates_categories_attributes_cart_items_and_buyer_addresses() {
     assert_eq!(attribute.values.len(), 2);
     assert_eq!(cart_item.quantity, 2);
     assert!(address.is_default);
-    assert!(
-        ProductAttributeDraft::new("100001", "0", "attr-empty", "Empty", Vec::new()).is_err()
-    );
+    assert!(ProductAttributeDraft::new("100001", "0", "attr-empty", "Empty", Vec::new()).is_err());
     assert!(CartItemDraft::new("100001", "1", "sku-1", 0).is_err());
 }
 

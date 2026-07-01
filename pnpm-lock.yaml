@@ -72,6 +72,17 @@ importers:
         specifier: ^5.7.2
         version: 5.9.3
 
+  apps/sdkwork-merchandise-common/packages/sdkwork-merchandise-contracts: {}
+
+  apps/sdkwork-merchandise-common/packages/sdkwork-merchandise-service:
+    dependencies:
+      '@sdkwork/merchandise-contracts':
+        specifier: workspace:*
+        version: link:../sdkwork-merchandise-contracts
+      '@sdkwork/utils':
+        specifier: workspace:*
+        version: link:../../../../../sdkwork-utils/packages/sdkwork-utils-typescript
+
   apps/sdkwork-merchandise-pc:
     dependencies:
       '@sdkwork/merchandise-pc-core':
@@ -82,10 +93,13 @@ importers:
         version: link:packages/sdkwork-merchandise-pc-shell
       '@sdkwork/merchandise-service':
         specifier: workspace:*
-        version: link:../../packages/common/merchandise/sdkwork-merchandise-service
+        version: link:../sdkwork-merchandise-common/packages/sdkwork-merchandise-service
       '@sdkwork/utils':
         specifier: workspace:*
         version: link:../../../sdkwork-utils/packages/sdkwork-utils-typescript
+      '@tailwindcss/vite':
+        specifier: ^4.2.2
+        version: 4.3.1(vite@8.0.16(@types/node@25.9.4)(jiti@2.7.0))
       react:
         specifier: 'catalog:'
         version: 19.2.7
@@ -95,10 +109,10 @@ importers:
       react-router-dom:
         specifier: 'catalog:'
         version: 7.18.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-    devDependencies:
-      '@tailwindcss/vite':
+      tailwindcss:
         specifier: ^4.2.2
-        version: 4.3.1(vite@8.0.16(@types/node@25.9.4)(jiti@2.7.0))
+        version: 4.3.1
+    devDependencies:
       '@types/react':
         specifier: 'catalog:'
         version: 19.2.17
@@ -108,9 +122,6 @@ importers:
       '@vitejs/plugin-react':
         specifier: 'catalog:'
         version: 6.0.2(vite@8.0.16(@types/node@25.9.4)(jiti@2.7.0))
-      tailwindcss:
-        specifier: ^4.2.2
-        version: 4.3.1
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -122,10 +133,10 @@ importers:
     dependencies:
       '@sdkwork/merchandise-contracts':
         specifier: workspace:*
-        version: link:../../../../packages/common/merchandise/sdkwork-merchandise-contracts
+        version: link:../../../sdkwork-merchandise-common/packages/sdkwork-merchandise-contracts
       '@sdkwork/merchandise-service':
         specifier: workspace:*
-        version: link:../../../../packages/common/merchandise/sdkwork-merchandise-service
+        version: link:../../../sdkwork-merchandise-common/packages/sdkwork-merchandise-service
 
   apps/sdkwork-merchandise-pc/packages/sdkwork-merchandise-pc-shell:
     dependencies:
@@ -135,17 +146,6 @@ importers:
       react:
         specifier: 'catalog:'
         version: 19.2.7
-
-  packages/common/merchandise/sdkwork-merchandise-contracts: {}
-
-  packages/common/merchandise/sdkwork-merchandise-service:
-    dependencies:
-      '@sdkwork/merchandise-contracts':
-        specifier: workspace:*
-        version: link:../sdkwork-merchandise-contracts
-      '@sdkwork/utils':
-        specifier: workspace:*
-        version: link:../../../../../sdkwork-utils/packages/sdkwork-utils-typescript
 
 packages:
 

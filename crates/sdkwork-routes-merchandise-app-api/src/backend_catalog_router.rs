@@ -7,30 +7,31 @@ use axum::response::{IntoResponse, Response};
 use axum::routing::{get, patch, post};
 use axum::{Json, Router};
 use sdkwork_contract_service::CommerceMoney;
-use sdkwork_merchandise_service::{
-    ArchiveSpuCommand, AttributeListQuery, CategoryAttributeListQuery, CategoryListQuery,
-    CreateAttributeCommand, CreateCategoryAttributeCommand,
-    CreateCategoryCommand, CreatePriceListCommand, CreateProductSkuCommand,
-    CreateProductSpuCommand, DeleteCategoryAttributeCommand, DeleteCategoryCommand,
-    DeleteProductSkuCommand, DeleteProductSpuCommand, PriceListListQuery, ProductSkuListQuery,
-    ProductSpuListQuery, ProductSpuRetrieveQuery, PublishSpuCommand, UpdateCategoryAttributeCommand,
-    UpdateCategoryCommand, UpdatePriceListCommand, UpdateProductSkuCommand, UpdateProductSpuCommand,
-};
+use sdkwork_iam_context_service::IamAppContext;
 use sdkwork_merchandise_repository_sqlx::{
     PostgresCommerceCatalogStore, SqliteCommerceCatalogStore,
 };
-use sdkwork_iam_context_service::IamAppContext;
+use sdkwork_merchandise_service::{
+    ArchiveSpuCommand, AttributeListQuery, CategoryAttributeListQuery, CategoryListQuery,
+    CreateAttributeCommand, CreateCategoryAttributeCommand, CreateCategoryCommand,
+    CreatePriceListCommand, CreateProductSkuCommand, CreateProductSpuCommand,
+    DeleteCategoryAttributeCommand, DeleteCategoryCommand, DeleteProductSkuCommand,
+    DeleteProductSpuCommand, PriceListListQuery, ProductSkuListQuery, ProductSpuListQuery,
+    ProductSpuRetrieveQuery, PublishSpuCommand, UpdateCategoryAttributeCommand,
+    UpdateCategoryCommand, UpdatePriceListCommand, UpdateProductSkuCommand,
+    UpdateProductSpuCommand,
+};
 use sqlx::{PgPool, SqlitePool};
 
 use super::{
     catalog_system_response, map_attribute, map_category, map_category_attribute, map_price_list,
     map_sku, map_spu, not_found_response, success_accepted, success_list, success_resource,
-    unauthorized_response, validation_response,
-    AttributeQueryParams, CatalogState, CategoryAttributeQueryParams,
-    CategoryQueryParams, CommerceCatalogStore, CreateAttributeBody, CreateCategoryAttributeBody,
-    CreateCategoryBody, CreatePriceListBody, CreateSkuBody, CreateSpuBody, PriceListQueryParams,
-    SkuListQueryParams, SpuListQueryParams, UpdateCategoryAttributeBody, UpdateCategoryBody,
-    UpdatePriceListBody, UpdateSkuBody, UpdateSpuBody,
+    unauthorized_response, validation_response, AttributeQueryParams, CatalogState,
+    CategoryAttributeQueryParams, CategoryQueryParams, CommerceCatalogStore, CreateAttributeBody,
+    CreateCategoryAttributeBody, CreateCategoryBody, CreatePriceListBody, CreateSkuBody,
+    CreateSpuBody, PriceListQueryParams, SkuListQueryParams, SpuListQueryParams,
+    UpdateCategoryAttributeBody, UpdateCategoryBody, UpdatePriceListBody, UpdateSkuBody,
+    UpdateSpuBody,
 };
 use crate::subject::app_runtime_subject_from_extension;
 
@@ -44,69 +45,69 @@ pub fn backend_catalog_router_with_postgres_pool(pool: PgPool) -> Router {
 
 pub fn build_backend_catalog_router(store: Arc<dyn CommerceCatalogStore>) -> Router {
     Router::new()
-            .route(
-                "/backend/v3/api/catalog/categories",
-                get(backend_list_categories).post(backend_create_category),
-            )
-            .route(
-                "/backend/v3/api/catalog/categories/{categoryId}",
-                patch(backend_update_category).delete(backend_delete_category),
-            )
-            .route(
-                "/backend/v3/api/catalog/products",
-                get(backend_list_products).post(backend_create_product),
-            )
-            .route(
-                "/backend/v3/api/catalog/products/{productId}",
-                get(backend_retrieve_product)
-                    .patch(backend_update_product)
-                    .delete(backend_delete_product),
-            )
-            .route(
-                "/backend/v3/api/catalog/spus",
-                get(backend_list_spus).post(backend_create_spu),
-            )
-            .route(
-                "/backend/v3/api/catalog/spus/{spuId}",
-                patch(backend_update_spu),
-            )
-            .route(
-                "/backend/v3/api/catalog/spus/{spuId}/publish",
-                post(backend_publish_spu),
-            )
-            .route(
-                "/backend/v3/api/catalog/spus/{spuId}/archive",
-                post(backend_archive_spu),
-            )
-            .route(
-                "/backend/v3/api/catalog/skus",
-                get(backend_list_skus).post(backend_create_sku),
-            )
-            .route(
-                "/backend/v3/api/catalog/skus/{skuId}",
-                patch(backend_update_sku).delete(backend_delete_sku),
-            )
-            .route(
-                "/backend/v3/api/catalog/attributes",
-                get(backend_list_attributes).post(backend_create_attribute),
-            )
-            .route(
-                "/backend/v3/api/catalog/category_attributes",
-                get(backend_list_category_attributes).post(backend_create_category_attribute),
-            )
-            .route(
-                "/backend/v3/api/catalog/category_attributes/{bindingId}",
-                patch(backend_update_category_attribute).delete(backend_delete_category_attribute),
-            )
-            .route(
-                "/backend/v3/api/catalog/price_lists",
-                get(backend_list_price_lists).post(backend_create_price_list),
-            )
-            .route(
-                "/backend/v3/api/catalog/price_lists/{priceListId}",
-                patch(backend_update_price_list),
-            )
-            .with_state(CatalogState { store })
+        .route(
+            "/backend/v3/api/catalog/categories",
+            get(backend_list_categories).post(backend_create_category),
+        )
+        .route(
+            "/backend/v3/api/catalog/categories/{categoryId}",
+            patch(backend_update_category).delete(backend_delete_category),
+        )
+        .route(
+            "/backend/v3/api/catalog/products",
+            get(backend_list_products).post(backend_create_product),
+        )
+        .route(
+            "/backend/v3/api/catalog/products/{productId}",
+            get(backend_retrieve_product)
+                .patch(backend_update_product)
+                .delete(backend_delete_product),
+        )
+        .route(
+            "/backend/v3/api/catalog/spus",
+            get(backend_list_spus).post(backend_create_spu),
+        )
+        .route(
+            "/backend/v3/api/catalog/spus/{spuId}",
+            patch(backend_update_spu),
+        )
+        .route(
+            "/backend/v3/api/catalog/spus/{spuId}/publish",
+            post(backend_publish_spu),
+        )
+        .route(
+            "/backend/v3/api/catalog/spus/{spuId}/archive",
+            post(backend_archive_spu),
+        )
+        .route(
+            "/backend/v3/api/catalog/skus",
+            get(backend_list_skus).post(backend_create_sku),
+        )
+        .route(
+            "/backend/v3/api/catalog/skus/{skuId}",
+            patch(backend_update_sku).delete(backend_delete_sku),
+        )
+        .route(
+            "/backend/v3/api/catalog/attributes",
+            get(backend_list_attributes).post(backend_create_attribute),
+        )
+        .route(
+            "/backend/v3/api/catalog/category_attributes",
+            get(backend_list_category_attributes).post(backend_create_category_attribute),
+        )
+        .route(
+            "/backend/v3/api/catalog/category_attributes/{bindingId}",
+            patch(backend_update_category_attribute).delete(backend_delete_category_attribute),
+        )
+        .route(
+            "/backend/v3/api/catalog/price_lists",
+            get(backend_list_price_lists).post(backend_create_price_list),
+        )
+        .route(
+            "/backend/v3/api/catalog/price_lists/{priceListId}",
+            patch(backend_update_price_list),
+        )
+        .with_state(CatalogState { store })
 }
 async fn backend_list_categories(
     State(state): State<CatalogState>,
@@ -714,9 +715,7 @@ async fn backend_list_category_attributes(
         Err(error) => return validation_response(error.message()),
     };
     match state.store.list_category_attributes(query).await {
-        Ok(data) => success_list(data.into_iter()
-                .map(map_category_attribute)
-                .collect()),
+        Ok(data) => success_list(data.into_iter().map(map_category_attribute).collect()),
         Err(error) => catalog_system_response("category attribute list is unavailable", error),
     }
 }

@@ -1,25 +1,57 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "baseUrl": ".",
     "paths": {
-      "@sdkwork/iam-app-sdk": ["../sdkwork-iam/sdks/sdkwork-iam-app-sdk/sdkwork-iam-app-sdk-typescript/generated/server-openapi/src/index.ts"],
-      "@sdkwork/appbase-pc-react": ["../sdkwork-appbase/packages/pc-react/foundation/sdkwork-appbase-pc-react/src/index.ts"],
-      "@sdkwork/auth-pc-react": ["../sdkwork-iam/apps/sdkwork-iam-pc/packages/sdkwork-auth-pc-react/src/index.ts"],
-      "@sdkwork/auth-runtime-pc-react": ["../sdkwork-iam/apps/sdkwork-iam-pc/packages/sdkwork-auth-runtime-pc-react/src/index.ts"],
-      "@sdkwork/iam-contracts": ["../sdkwork-iam/apps/sdkwork-iam-common/packages/sdkwork-iam-contracts/src/index.ts"],
-      "@sdkwork/iam-runtime": ["../sdkwork-iam/apps/sdkwork-iam-common/packages/sdkwork-iam-runtime/src/index.ts"],
-      "@sdkwork/runtime-bootstrap": ["../sdkwork-appbase/packages/common/foundation/sdkwork-runtime-bootstrap/src/index.ts"],
-      "@sdkwork/sdk-common": ["../sdkwork-sdk-commons/sdkwork-sdk-common-typescript/src/index.ts"],
-      "@sdkwork/ui-pc-react": ["../sdkwork-ui/sdkwork-ui-pc-react/src/index.ts"],
-      "@sdkwork/utils": ["../sdkwork-utils/packages/sdkwork-utils-typescript/src/index.ts"],
-      "@sdkwork/merchandise-contracts": ["packages/common/merchandise/sdkwork-merchandise-contracts/src/index.ts"],
-      "@sdkwork/merchandise-service": ["packages/common/merchandise/sdkwork-merchandise-service/src/index.ts"],
-      "@sdkwork/merchandise-pc-core": ["apps/sdkwork-merchandise-pc/packages/sdkwork-merchandise-pc-core/src/index.ts"],
-      "@sdkwork/merchandise-pc-shell": ["apps/sdkwork-merchandise-pc/packages/sdkwork-merchandise-pc-shell/src/index.tsx"]
+      "@sdkwork/iam-app-sdk": [
+        "../sdkwork-iam/sdks/sdkwork-iam-app-sdk/sdkwork-iam-app-sdk-typescript/generated/server-openapi/src/index.ts"
+      ],
+      "@sdkwork/appbase-pc-react": [
+        "../sdkwork-appbase/packages/pc-react/foundation/sdkwork-appbase-pc-react/src/index.ts"
+      ],
+      "@sdkwork/auth-pc-react": [
+        "../sdkwork-iam/apps/sdkwork-iam-pc/packages/sdkwork-auth-pc-react/src/index.ts"
+      ],
+      "@sdkwork/auth-runtime-pc-react": [
+        "../sdkwork-iam/apps/sdkwork-iam-pc/packages/sdkwork-auth-runtime-pc-react/src/index.ts"
+      ],
+      "@sdkwork/iam-contracts": [
+        "../sdkwork-iam/apps/sdkwork-iam-common/packages/sdkwork-iam-contracts/src/index.ts"
+      ],
+      "@sdkwork/iam-runtime": [
+        "../sdkwork-iam/apps/sdkwork-iam-common/packages/sdkwork-iam-runtime/src/index.ts"
+      ],
+      "@sdkwork/runtime-bootstrap": [
+        "../sdkwork-appbase/packages/common/foundation/sdkwork-runtime-bootstrap/src/index.ts"
+      ],
+      "@sdkwork/sdk-common": [
+        "../sdkwork-sdk-commons/sdkwork-sdk-common-typescript/src/index.ts"
+      ],
+      "@sdkwork/ui-pc-react": [
+        "../sdkwork-ui/sdkwork-ui-pc-react/src/index.ts"
+      ],
+      "@sdkwork/utils": [
+        "../sdkwork-utils/packages/sdkwork-utils-typescript/src/index.ts"
+      ],
+      "@sdkwork/merchandise-contracts": [
+        "apps/sdkwork-merchandise-common/packages/sdkwork-merchandise-contracts/src/index.ts"
+      ],
+      "@sdkwork/merchandise-service": [
+        "apps/sdkwork-merchandise-common/packages/sdkwork-merchandise-service/src/index.ts"
+      ],
+      "@sdkwork/merchandise-pc-core": [
+        "apps/sdkwork-merchandise-pc/packages/sdkwork-merchandise-pc-core/src/index.ts"
+      ],
+      "@sdkwork/merchandise-pc-shell": [
+        "apps/sdkwork-merchandise-pc/packages/sdkwork-merchandise-pc-shell/src/index.tsx"
+      ]
     },
     "allowImportingTsExtensions": true,
     "jsx": "react-jsx",
@@ -30,6 +62,9 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "types": ["node", "@testing-library/jest-dom"]
+    "types": [
+      "node",
+      "@testing-library/jest-dom"
+    ]
   }
 }

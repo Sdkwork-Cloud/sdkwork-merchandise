@@ -7,10 +7,7 @@ use crate::web_bootstrap::wrap_router_with_web_framework_from_env;
 
 /// Browse/open catalog HTTP is owned by `sdkwork-catalog`. Merchandise standalone app surface is health-only.
 pub fn build_merchandise_app_router(_host: Arc<ShopServiceHost>) -> Router {
-    Router::new().route(
-        "/app/v3/api/merchandise/health",
-        get(|| async { "ok" }),
-    )
+    Router::new().route("/app/v3/api/merchandise/health", get(|| async { "ok" }))
 }
 
 pub async fn build_merchandise_app_router_with_framework(host: Arc<ShopServiceHost>) -> Router {

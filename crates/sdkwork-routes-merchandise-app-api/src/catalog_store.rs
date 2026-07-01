@@ -4,6 +4,10 @@ use std::future::Future;
 use std::pin::Pin;
 use std::sync::Arc;
 
+use sdkwork_contract_service::CommerceServiceError;
+use sdkwork_merchandise_repository_sqlx::{
+    PostgresCommerceCatalogStore, SqliteCommerceCatalogStore,
+};
 use sdkwork_merchandise_service::{
     AddCartItemCommand, AddressListQuery, AddressRecord, ArchiveSpuCommand, AttributeListQuery,
     AttributeRecord, CartItemRecord, CartRetrieveQuery, CategoryAttributeListQuery,
@@ -17,10 +21,6 @@ use sdkwork_merchandise_service::{
     SetDefaultAddressCommand, SkuPriceRetrieveQuery, SkuRecord, SpuRecord, UpdateAddressCommand,
     UpdateCartItemCommand, UpdateCategoryAttributeCommand, UpdateCategoryCommand,
     UpdatePriceListCommand, UpdateProductSkuCommand, UpdateProductSpuCommand,
-};
-use sdkwork_contract_service::CommerceServiceError;
-use sdkwork_merchandise_repository_sqlx::{
-    PostgresCommerceCatalogStore, SqliteCommerceCatalogStore,
 };
 use serde::{Deserialize, Serialize};
 

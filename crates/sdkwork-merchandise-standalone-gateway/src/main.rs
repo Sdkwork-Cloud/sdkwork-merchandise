@@ -20,5 +20,7 @@ async fn main() {
     let listener = tokio::net::TcpListener::bind(&addr)
         .await
         .expect("bind merchandise server");
-    axum::serve(listener, app).await.expect("serve merchandise server");
+    axum::serve(listener, app)
+        .await
+        .expect("serve merchandise server");
 }

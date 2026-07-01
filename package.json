@@ -11,8 +11,8 @@
     "test": "pnpm test:node && pnpm test:vitest && cargo test --workspace",
     "test:node": "node --test tests/static/*.test.mjs tests/contract/*.test.mjs",
     "test:vitest": "vitest run --config vitest.config.ts --configLoader native --pool vmThreads",
-    "check": "pnpm route-manifest:check && pnpm sdk:check && pnpm db:validate && pnpm typecheck",
-    "verify": "pnpm check && pnpm fmt:rust:check && cargo clippy --workspace --tests -- -D warnings && cargo test --workspace",
+    "check": "pnpm run check:app-composition && pnpm route-manifest:check && pnpm sdk:check && pnpm db:validate && pnpm typecheck",
+    "verify": "pnpm check && pnpm fmt:rust:check && cargo clippy --workspace --tests -- -D warnings && cargo test --workspace && pnpm run check:app-composition",
     "clean": "node -e \"console.log('Remove target/, node_modules/, dist/ manually')\"",
     "typecheck": "tsc --noEmit",
     "fmt:rust": "cargo fmt --all",
@@ -39,7 +39,8 @@
     "gateway:package:cloud": "node ../sdkwork-app-topology/scripts/gateway-cloud-bundle.mjs bundle --root .",
     "gateway:validate:cloud": "node ../sdkwork-app-topology/scripts/gateway-cloud-bundle.mjs validate --root .",
     "gateway:assembly:materialize": "node scripts/gateway/assembly-materialize.mjs",
-    "gateway:assembly:validate": "node scripts/gateway/assembly-validate.mjs"
+    "gateway:assembly:validate": "node scripts/gateway/assembly-validate.mjs",
+    "check:app-composition": "node ../sdkwork-specs/tools/verify-repo.mjs --root ."
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.1",
