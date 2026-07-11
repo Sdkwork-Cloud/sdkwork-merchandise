@@ -4,7 +4,7 @@
   "applicationCode": "merchandise",
   "packageName": "sdkwork-merchandise-gateway-assembly",
   "crateDir": "crates/sdkwork-merchandise-gateway-assembly",
-  "generatedAt": "2026-06-25T13:08:05.573Z",
+  "generatedAt": "2026-07-08T01:34:15.506Z",
   "routeCrates": [
     {
       "packageName": "sdkwork-routes-merchandise-app-api",

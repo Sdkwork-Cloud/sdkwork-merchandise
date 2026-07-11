@@ -252,8 +252,7 @@ pub struct SpuListQueryParams {
     pub product_type: Option<String>,
     pub status: Option<String>,
     pub page: Option<i64>,
-    #[serde(rename = "pageSize", alias = "page_size")]
-    pub page_size: Option<i64>,
+        pub page_size: Option<i64>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -264,7 +263,6 @@ struct SkuListQueryParams {
     spu_id: Option<String>,
     status: Option<String>,
     page: Option<i64>,
-    #[serde(rename = "pageSize", alias = "page_size")]
     page_size: Option<i64>,
 }
 
