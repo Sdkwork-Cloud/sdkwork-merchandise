@@ -41,6 +41,7 @@ sdkwork-iam-web-adapter = { path = "../sdkwork-iam/crates/sdkwork-iam-web-adapte
 sdkwork-iam-context-service = { path = "../sdkwork-iam/crates/sdkwork-iam-context-service" }
 sdkwork-utils-rust = { path = "../sdkwork-utils/packages/sdkwork-utils-rust" }
 sdkwork-database-config = { path = "../sdkwork-database/crates/sdkwork-database-config" }
+sdkwork-database-id = { path = "../sdkwork-database/crates/sdkwork-database-id" }
 sdkwork-database-lifecycle = { path = "../sdkwork-database/crates/sdkwork-database-lifecycle" }
 sdkwork-database-spi = { path = "../sdkwork-database/crates/sdkwork-database-spi" }
 sdkwork-database-sqlx = { path = "../sdkwork-database/crates/sdkwork-database-sqlx" }
@@ -51,3 +52,4 @@ sdkwork_routes_merchandise_app_api = { path = "crates/sdkwork-routes-merchandise
 sdkwork_routes_merchandise_backend_api = { path = "crates/sdkwork-routes-merchandise-backend-api", package = "sdkwork-routes-merchandise-backend-api" }
 sdkwork_merchandise_database_host = { path = "crates/sdkwork-merchandise-database-host", package = "sdkwork-merchandise-database-host" }
 sdkwork_merchandise_service_host = { path = "crates/sdkwork-merchandise-service-host", package = "sdkwork-merchandise-service-host" }
+sdkwork_merchandise_gateway_assembly = { path = "crates/sdkwork-merchandise-gateway-assembly", package = "sdkwork-merchandise-gateway-assembly" }

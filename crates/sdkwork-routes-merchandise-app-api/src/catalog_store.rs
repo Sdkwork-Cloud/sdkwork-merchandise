@@ -252,7 +252,7 @@ pub struct SpuListQueryParams {
     pub product_type: Option<String>,
     pub status: Option<String>,
     pub page: Option<i64>,
-        pub page_size: Option<i64>,
+    pub page_size: Option<i64>,
 }
 
 #[derive(Debug, Deserialize)]

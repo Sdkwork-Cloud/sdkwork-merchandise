@@ -1,5 +1,9 @@
 use sdkwork_contract_service::CommerceServiceContract;
 
+mod single_sku_merchandise;
+
+pub use single_sku_merchandise::SingleSkuMerchandiseService;
+
 pub fn catalog_service_contract() -> CommerceServiceContract {
     CommerceServiceContract::new(
         "catalog",
@@ -52,6 +56,7 @@ pub fn catalog_service_contract() -> CommerceServiceContract {
             crate::ports::CART_REPOSITORY_PORT,
             crate::ports::BUYER_ADDRESS_REPOSITORY_PORT,
             crate::ports::IDEMPOTENCY_REPOSITORY_PORT,
+            crate::ports::SINGLE_SKU_MERCHANDISE_REPOSITORY_PORT,
         ],
         true,
     )

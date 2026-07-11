@@ -38,9 +38,17 @@
     }
   ],
   "contracts": {
+    "layerRole": "runtime-gateway",
     "publicExports": [
       "."
     ],
+    "providedPorts": [
+      {
+        "name": "merchandiseRuntime",
+        "export": "."
+      }
+    ],
+    "requiredPorts": [],
     "runtimeEntrypoints": [
       "package.json#scripts.verify"
     ],

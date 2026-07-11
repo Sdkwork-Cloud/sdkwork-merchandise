@@ -1654,6 +1654,7 @@ dependencies = [
 name = "sdkwork-database-sqlx"
 version = "0.1.0"
 dependencies = [
+ "libsqlite3-sys",
  "sdkwork-database-config",
  "serde",
  "sqlx",
@@ -1667,12 +1668,15 @@ name = "sdkwork-iam-bootstrap"
 version = "0.1.0"
 dependencies = [
  "aes-gcm",
+ "argon2",
  "base64",
  "chrono",
  "rand_core 0.6.4",
+ "rsa",
  "sdkwork-database-id",
  "sdkwork-iam-context-service",
  "sdkwork-iam-module-registry",
+ "serde_json",
  "sha2",
  "sqlx",
  "uuid",
@@ -1763,11 +1767,13 @@ dependencies = [
  "async-trait",
  "chrono",
  "sdkwork-contract-service",
+ "sdkwork-database-id",
  "sdkwork-database-sqlx",
  "sdkwork-merchandise-service",
  "serde",
  "serde_json",
  "sqlx",
+ "tokio",
  "uuid",
 ]
 
@@ -1778,6 +1784,7 @@ dependencies = [
  "async-trait",
  "chrono",
  "sdkwork-contract-service",
+ "sdkwork-utils-rust",
  "serde",
  "serde_json",
  "tokio",

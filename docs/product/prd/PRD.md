@@ -1,74 +1,95 @@
 # Merchandise PRD
 
-Status: active
-Owner: SDKWork maintainers
-Application: merchandise
-Updated: 2026-06-24
-Specs: REQUIREMENTS_SPEC.md, DOCUMENTATION_SPEC.md
-
-## Document Map
-
-- Commerce repository dissolution: `../sdkwork-specs/MIGRATION_SPEC.md` §8
+Status: active development  
+Owner: SDKWork maintainers  
+Application: `sdkwork-merchandise`  
+Updated: 2026-07-11  
+Specs: `REQUIREMENTS_SPEC.md`, `DOCUMENTATION_SPEC.md`, `DOMAIN_SPEC.md`
 
 ## 1. Background And Problem
 
-Product master data (SPU/SKU, catalog admin) must be owned by a dedicated merchandise capability rather than a monolithic commerce crate.
-
-This repository is a **T1 commerce capability building block**. The `sdkwork-commerce (deleted)` monolith has been dissolved; this repository is self-contained with its own domain logic, persistence, HTTP route builders, API server, and IAM middleware for the **merchandise** capability.
+Commerce applications need one authoritative owner for sellable SPU/SKU master
+data. Domain features such as notary services must be able to model a service
+as merchandise and reuse the common order and payment systems without creating
+parallel product tables or bespoke persistence.
 
 ## 2. Target Users
 
-Merchant catalog administrators, commerce operators, and integrators publishing or maintaining product master data.
+Commerce administrators, vertical-domain operators, backend integrators, and
+client applications that publish or select sellable merchandise.
 
 ## 3. Goals And Non-Goals
 
 ### Goals
 
-- Own merchandise catalog SQL, domain commands/queries, and backend admin catalog HTTP routers.
-- Provide backend admin catalog surfaces consumed by the T1 `*-standalone-gateway` with IAM wrappers.
-- Keep table prefix and API naming aligned with commerce domain standards.
+- Own SPU/SKU validation, lifecycle status, fulfillment classification, and
+  tenant/organization isolation.
+- Provide a reusable one-SPU/one-SKU boundary for service-like merchandise,
+  including Snowflake primary ids, deterministic idempotency business numbers,
+  and bounded management listing.
+- Let vertical capabilities reuse existing commerce order and payment
+  ownership without duplicating merchandise or database definitions.
+- Keep HTTP routes, SDK generation, and persistence aligned with SDKWork
+  contracts.
 
 ### Non-Goals
 
-- Public browse/open catalog routes (owned by `sdkwork-catalog`).
-- Shop deposit or order lifecycle.
-- Hand-written HTTP bypassing generated SDK contracts.
+- Owning order, payment, IAM, or Drive lifecycle.
+- Introducing new product tables, migrations, seeds, or schema registries for a
+  vertical capability.
+- Hand-written HTTP clients or direct consumer writes to commerce tables.
 
 ## 4. Scope
 
-- SPU/SKU catalog master data and backend admin mutations.
-- Backend catalog list/create/update routes.
-- Merchandise repository SQLx implementations and shared catalog store trait.
+- SPU/SKU catalog master data and backend administration.
+- Existing catalog route surfaces:
+  `/app/v3/api/catalog/products` and
+  `/backend/v3/api/catalog/products`.
+- Merchandise service ports and SQLx repository adapters for SQLite and
+  PostgreSQL.
+- Reusable single-SKU merchandise operations:
+  tenant/org/fulfillment/status filtering, bounded offset pagination,
+  `spec_json` public metadata, injected Snowflake IDs, deterministic SPU/SKU
+  numbers, atomic create, idempotent replay detection, and scoped update.
 
-Primary API prefixes:
-
-- App: `null`
-- Backend: `/backend/v3/api/catalog`
-
-Migration status: **complete**.
+The database lifecycle and table authority remain external to this repository's
+new boundary. No DDL or migration is added by the single-SKU capability.
 
 ## 5. User Scenarios
 
-- A catalog admin creates an SPU with SKUs and publishes it to the tenant catalog.
-- Shop routes in sibling T1 repos consume merchandise catalog store traits for product coupling.
-- OpenAPI and SDK generation include catalog operations through per-T1 SDK families.
+- An operator creates a notary service as one SPU with one SKU and a stable
+  idempotency key.
+- An operator searches one tenant and organization one page at a time, filtered
+  by fulfillment type, status, or text.
+- A vertical domain updates title, price, status, or public specification
+  through the merchandise owner and then creates an order through the order
+  owner.
+- A retry with the same idempotency key returns the same SKU when the payload
+  matches and fails closed when it differs.
 
 ## 6. Success Metrics
 
-- Catalog routes pass T1 standalone-gateway integration tests via IAM wrappers.
-- No local `sdkwork-commerce (deleted)-catalog-service` duplicate in any workspace.
+- All owner-boundary tests pass on the service and SQLx repository packages.
+- No consumer domain performs direct SPU/SKU writes.
+- List paths enforce store-level page bounds and tenant predicates.
+- No new database definitions are required for vertical merchandise adoption.
 
-## 7. Phases
+## 7. Delivery Phase
 
-- Phase 1 (complete): SQL + backend admin catalog routes owned in sdkwork-merchandise.
-- Phase 3 (complete): browse/open app routes owned by `sdkwork-catalog`.
+- Current phase: implementation and contract alignment.
+- Production release: not yet declared.
+- Completion gate: route, SDK, security, database, documentation, and topology
+  checks pass in the consuming application repository.
 
 ## 8. Linked Requirements
 
-- Commerce repository dissolution: `../sdkwork-specs/MIGRATION_SPEC.md` §8
-- Component contract: `specs/component.spec.json` (when present)
-- Machine contracts: local `specs/`, future `apis/`, and generated `sdks/`
+- Component contracts: `crates/*/specs/component.spec.json`
+- Technical architecture: [TECH_ARCHITECTURE.md](../../architecture/tech/TECH_ARCHITECTURE.md)
+- Change evidence: [CHANGELOG.md](../../changelogs/CHANGELOG.md)
+- Canonical standards: `../../../../sdkwork-specs/`
 
 ## 9. Open Questions
 
-
+The consuming application decides its operator-facing route composition and
+permission names. Those choices belong to the application/admin module and do
+not change merchandise ownership.

@@ -1,57 +1,45 @@
-# SDKWork Commerce Catalog Component Specs
+# sdkwork-merchandise-service component specs
 
-This directory is the local standards index for `sdkwork_commerce_catalog_service`.
-
-Root SDKWork standards remain authoritative. Local component specs can narrow or document this component, but they must not contradict [the root standards](../../../../../../../specs/README.md).
+This directory is the local contract index for the merchandise service crate.
+The machine-readable authority is [component.spec.json](./component.spec.json);
+global SDKWork standards remain authoritative.
 
 ## Component
 
 | Field | Value |
 | --- | --- |
-| Name | `sdkwork-commerce (deleted)-catalog-service` |
+| Name | `sdkwork-merchandise-service` |
 | Type | `rust-crate` |
-| Root | `sdkwork-commerce (deleted)/crates/sdkwork-commerce (deleted)-catalog-service` |
+| Root | `crates/sdkwork-merchandise-service` |
 | Domain | `commerce` |
-| Capability | `commerce` |
-| Languages | `rust` |
+| Capability | `merchandise` |
+| Layer | `backend-service` |
 | Status | `stable` |
 
-## Contract Manifest
+## Public Contract
 
-- [component.spec.json](./component.spec.json) is the machine-readable component contract.
-- Consumers should integrate through public exports, runtime entrypoints, SDK clients, or adapters declared in the manifest.
-- Generated SDK language outputs are represented at their SDK family root instead of duplicating local specs in generated folders.
+- Service port: `SingleSkuMerchandiseRepositoryPort`.
+- Service facade: `SingleSkuMerchandiseService`.
+- Nullable update contract: `NullablePatch<T>` distinguishes omitted, set, and
+  explicit-clear states for `description` and `original_price_amount`.
+- Package export: `.`.
+- No HTTP route or generated SDK is owned by this crate.
 
 ## Canonical Specs
 
-| Spec | Applies Because |
-| --- | --- |
-| [COMPONENT_SPEC.md](../../../../../../../specs/COMPONENT_SPEC.md) | Local component specs directory and manifest rules. |
-| [CONFIG_SPEC.md](../../../../../../../specs/CONFIG_SPEC.md) | Runtime configuration, environment, SDK bootstrap, and feature flag rules. |
-| [DEPLOYMENT_SPEC.md](../../../../../../../specs/DEPLOYMENT_SPEC.md) | SaaS/private/local runtime parity and deployment rules. |
-| [DOCUMENTATION_SPEC.md](../../../../../../../specs/DOCUMENTATION_SPEC.md) | Module README, examples, ADR, changelog, and runbook rules. |
-| [DOMAIN_SPEC.md](../../../../../../../specs/DOMAIN_SPEC.md) | Canonical domain ownership and naming. |
-| [GOVERNANCE_SPEC.md](../../../../../../../specs/GOVERNANCE_SPEC.md) | Standard ownership, exception, compatibility, and migration rules. |
-| [MODULE_SPEC.md](../../../../../../../specs/MODULE_SPEC.md) | Reusable package contract and dependency direction. |
-| [OBSERVABILITY_SPEC.md](../../../../../../../specs/OBSERVABILITY_SPEC.md) | Log, metric, trace, audit, and diagnostic rules. |
-| [PERFORMANCE_SPEC.md](../../../../../../../specs/PERFORMANCE_SPEC.md) | Latency, pagination, bundle, scalability, and retry budget rules. |
-| [PRIVACY_SPEC.md](../../../../../../../specs/PRIVACY_SPEC.md) | Personal, tenant, sensitive, and regulated data rules. |
-| [README.md](../../../../../../../specs/README.md) | SDKWork root standards entrypoint. |
-| [SECURITY_SPEC.md](../../../../../../../specs/SECURITY_SPEC.md) | Secure auth, token, secrets, CORS, validation, and logging rules. |
-| [TEST_SPEC.md](../../../../../../../specs/TEST_SPEC.md) | Contract, frontend, SDK, security, parity, and documentation verification rules. |
-
-## Public Exports
-
-- Public exports are not declared in the package manifest.
-
-## SDK Clients
-
-- No generated SDK client class is declared at this component boundary.
-
-## Local Extension Specs
-
-- No local extension specs are declared yet.
+- [COMPONENT_SPEC.md](../../../../sdkwork-specs/COMPONENT_SPEC.md)
+- [MODULE_SPEC.md](../../../../sdkwork-specs/MODULE_SPEC.md)
+- [DOMAIN_SPEC.md](../../../../sdkwork-specs/DOMAIN_SPEC.md)
+- [API_SPEC.md](../../../../sdkwork-specs/API_SPEC.md)
+- [PAGINATION_SPEC.md](../../../../sdkwork-specs/PAGINATION_SPEC.md)
+- [CODE_STYLE_SPEC.md](../../../../sdkwork-specs/CODE_STYLE_SPEC.md)
+- [NAMING_SPEC.md](../../../../sdkwork-specs/NAMING_SPEC.md)
+- [RUST_CODE_SPEC.md](../../../../sdkwork-specs/RUST_CODE_SPEC.md)
+- [SECURITY_SPEC.md](../../../../sdkwork-specs/SECURITY_SPEC.md)
+- [TEST_SPEC.md](../../../../sdkwork-specs/TEST_SPEC.md)
 
 ## Verification
 
-- `cargo test --manifest-path crates/sdkwork-commerce (deleted)-catalog-service/Cargo.toml`
+```bash
+cargo test -p sdkwork-merchandise-service
+```

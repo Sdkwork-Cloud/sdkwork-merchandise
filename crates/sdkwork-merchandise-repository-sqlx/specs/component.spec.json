@@ -2,11 +2,11 @@
   "schemaVersion": 1,
   "kind": "sdkwork.component.spec",
   "component": {
-    "name": "sdkwork-merchandise-service",
-    "displayName": "SDKWork Commerce Merchandise Service",
+    "name": "sdkwork-merchandise-repository-sqlx",
+    "displayName": "SDKWork Commerce Merchandise SQLx Repository",
     "version": "0.1.0",
     "type": "rust-crate",
-    "root": "crates/sdkwork-merchandise-service",
+    "root": "crates/sdkwork-merchandise-repository-sqlx",
     "domain": "commerce",
     "capability": "merchandise",
     "status": "stable",
@@ -33,17 +33,27 @@
     {
       "file": "DOMAIN_SPEC.md",
       "path": "../../../../sdkwork-specs/DOMAIN_SPEC.md",
-      "purpose": "Commerce merchandise ownership and terminology."
+      "purpose": "Commerce merchandise data ownership."
     },
     {
-      "file": "API_SPEC.md",
-      "path": "../../../../sdkwork-specs/API_SPEC.md",
-      "purpose": "Partial-update omission and explicit-null semantics."
+      "file": "DATABASE_SPEC.md",
+      "path": "../../../../sdkwork-specs/DATABASE_SPEC.md",
+      "purpose": "Tenant-scoped repository and transaction requirements."
+    },
+    {
+      "file": "DATABASE_FRAMEWORK_SPEC.md",
+      "path": "../../../../sdkwork-specs/DATABASE_FRAMEWORK_SPEC.md",
+      "purpose": "Approved pool and database lifecycle integration."
     },
     {
       "file": "PAGINATION_SPEC.md",
       "path": "../../../../sdkwork-specs/PAGINATION_SPEC.md",
-      "purpose": "Bounded list and search contracts."
+      "purpose": "Store-level bounded list and search behavior."
+    },
+    {
+      "file": "SUBJECT_ID_SPEC.md",
+      "path": "../../../../sdkwork-specs/SUBJECT_ID_SPEC.md",
+      "purpose": "Approved Snowflake entity-id generation and serialization."
     },
     {
       "file": "CODE_STYLE_SPEC.md",
@@ -63,28 +73,32 @@
     {
       "file": "SECURITY_SPEC.md",
       "path": "../../../../sdkwork-specs/SECURITY_SPEC.md",
-      "purpose": "Input validation and tenant isolation."
+      "purpose": "Tenant isolation, validation, and secure failure behavior."
     },
     {
       "file": "TEST_SPEC.md",
       "path": "../../../../sdkwork-specs/TEST_SPEC.md",
-      "purpose": "Unit and contract verification."
+      "purpose": "Repository and contract verification."
     }
   ],
   "contracts": {
-    "layerRole": "backend-service",
+    "layerRole": "backend-repository",
     "publicExports": [
       "."
     ],
     "providedPorts": [
       {
-        "name": "singleSkuMerchandiseService",
+        "name": "singleSkuMerchandiseRepository",
         "export": "."
       }
     ],
     "requiredPorts": [
       {
-        "name": "singleSkuMerchandiseRepository",
+        "name": "databasePool",
+        "export": "."
+      },
+      {
+        "name": "entityIdGenerator",
         "export": "."
       }
     ],
@@ -99,14 +113,14 @@
     "configKeys": []
   },
   "integration": {
-    "authority": "The merchandise service owns domain validation and the repository port; composition roots own persistence and transport.",
-    "dependencyPolicy": "Consumers integrate through the package export and the typed repository port.",
-    "sdkPolicy": "No HTTP SDK is owned or created by this crate.",
-    "languagePolicy": "Rust code follows the canonical Rust and code-style specifications."
+    "authority": "The merchandise repository owns SPU/SKU persistence; database schema lifecycle and Snowflake node allocation remain external to this crate.",
+    "dependencyPolicy": "Consumers use the service port and the exported SQLx adapter rather than writing merchandise tables directly.",
+    "sdkPolicy": "No HTTP SDK is owned or consumed by this crate.",
+    "languagePolicy": "Rust and SQLx code follow canonical Rust and database specifications."
   },
   "verification": {
     "commands": [
-      "cargo test -p sdkwork-merchandise-service"
+      "cargo test -p sdkwork-merchandise-repository-sqlx"
     ]
   },
   "metadata": {

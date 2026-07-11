@@ -1019,7 +1019,7 @@ fn map_spu_row(row: &sqlx::sqlite::SqliteRow) -> SpuRecord {
     }
 }
 
-fn map_sku_row(row: &sqlx::sqlite::SqliteRow) -> SkuRecord {
+pub(crate) fn map_sku_row(row: &sqlx::sqlite::SqliteRow) -> SkuRecord {
     SkuRecord {
         id: string_cell(row, "id"),
         tenant_id: string_cell(row, "tenant_id"),

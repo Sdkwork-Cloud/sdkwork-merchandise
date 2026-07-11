@@ -996,7 +996,7 @@ fn map_spu_row(row: &sqlx::postgres::PgRow) -> SpuRecord {
     }
 }
 
-fn map_sku_row(row: &sqlx::postgres::PgRow) -> SkuRecord {
+pub(crate) fn map_sku_row(row: &sqlx::postgres::PgRow) -> SkuRecord {
     SkuRecord {
         id: string_cell(row, "id"),
         tenant_id: string_cell(row, "tenant_id"),

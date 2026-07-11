@@ -5,8 +5,8 @@
     "name": "@sdkwork/merchandise-pc-core",
     "type": "typescript-package",
     "root": "apps/sdkwork-merchandise-pc/packages/sdkwork-merchandise-pc-core",
-    "domain": "merchandise",
-    "capability": "core",
+    "domain": "commerce",
+    "capability": "merchandise",
     "surface": "app",
     "languages": [
       "typescript"
@@ -14,6 +14,23 @@
     "generated": false
   },
   "contracts": {
+    "layerRole": "frontend-core",
+    "publicExports": [
+      "."
+    ],
+    "providedPorts": [
+      {
+        "name": "merchandiseServices",
+        "export": "."
+      }
+    ],
+    "requiredPorts": [
+      {
+        "name": "merchandiseAppSdk",
+        "export": "."
+      }
+    ],
+    "runtimeEntrypoints": [],
     "sdkDependencies": [
       {
         "workspace": "sdkwork-merchandise-app-sdk",

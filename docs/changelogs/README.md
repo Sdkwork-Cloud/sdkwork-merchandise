@@ -1,5 +1,6 @@
-# changelogs
+# Changelogs
 
-See `DOCUMENTATION_SPEC.md` section 2.
-
-See `DOCUMENTATION_SPEC.md` section 2.
+Change records for `sdkwork-merchandise` live in
+[CHANGELOG.md](CHANGELOG.md) and follow
+`../../../sdkwork-specs/DOCUMENTATION_SPEC.md` and
+`../../../sdkwork-specs/RELEASE_SPEC.md`.

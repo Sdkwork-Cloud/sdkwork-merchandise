@@ -1,6 +1,10 @@
 use crate::{commands::*, queries::*};
 use sdkwork_contract_service::CommerceServiceError;
 
+mod single_sku_merchandise;
+
+pub use single_sku_merchandise::*;
+
 pub const CATALOG_REPOSITORY_PORT: &str = "catalog.repository";
 pub const CART_REPOSITORY_PORT: &str = "cart.repository";
 pub const BUYER_ADDRESS_REPOSITORY_PORT: &str = "buyer_address.repository";

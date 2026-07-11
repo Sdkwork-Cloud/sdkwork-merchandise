@@ -1,16 +1,8 @@
-# docs
+# Documentation
 
-See `../sdkwork-specs/SDKWORK_WORKSPACE_SPEC.md`.
-
-## Canon Documents
-
-| Document | Path |
-| --- | --- |
-| Product PRD | [product/prd/PRD.md](product/prd/PRD.md) |
-| Technical architecture | [architecture/tech/TECH_ARCHITECTURE.md](architecture/tech/TECH_ARCHITECTURE.md) |
-
-- [docs/product/prd/PRD.md](product/prd/PRD.md)
-- [docs/architecture/tech/TECH_ARCHITECTURE.md](architecture/tech/TECH_ARCHITECTURE.md)
+Repository: `sdkwork-merchandise`  
+Status: active development  
+Standards: `../sdkwork-specs/DOCUMENTATION_SPEC.md`
 
 ## Canon Documents
 
@@ -18,26 +10,14 @@ See `../sdkwork-specs/SDKWORK_WORKSPACE_SPEC.md`.
 | --- | --- |
 | Product PRD | [product/prd/PRD.md](product/prd/PRD.md) |
 | Technical architecture | [architecture/tech/TECH_ARCHITECTURE.md](architecture/tech/TECH_ARCHITECTURE.md) |
+| Changelog | [changelogs/CHANGELOG.md](changelogs/CHANGELOG.md) |
 
-- [docs/product/prd/PRD.md](product/prd/PRD.md)
-- [docs/architecture/tech/TECH_ARCHITECTURE.md](architecture/tech/TECH_ARCHITECTURE.md)
+## Supporting Indexes
 
-## Canon Documents
-
-| Document | Path |
-| --- | --- |
-| Product PRD | [product/prd/PRD.md](product/prd/PRD.md) |
-| Technical architecture | [architecture/tech/TECH_ARCHITECTURE.md](architecture/tech/TECH_ARCHITECTURE.md) |
-
-- [docs/product/prd/PRD.md](product/prd/PRD.md)
-- [docs/architecture/tech/TECH_ARCHITECTURE.md](architecture/tech/TECH_ARCHITECTURE.md)
-
-## Canon Documents
-
-| Document | Path |
-| --- | --- |
-| Product PRD | [product/prd/PRD.md](product/prd/PRD.md) |
-| Technical architecture | [architecture/tech/TECH_ARCHITECTURE.md](architecture/tech/TECH_ARCHITECTURE.md) |
-
-- [docs/product/prd/PRD.md](product/prd/PRD.md)
-- [docs/architecture/tech/TECH_ARCHITECTURE.md](architecture/tech/TECH_ARCHITECTURE.md)
+- [Product documentation](product/README.md)
+- [Architecture documentation](architecture/README.md)
+- [Developer guides](guides/developer/README.md)
+- [Operator guides](guides/operator/README.md)
+- [Integrator guides](guides/integrator/README.md)
+- [Engineering reviews](engineering/reviews/README.md)
+- [Documentation index](INDEX.yaml)
