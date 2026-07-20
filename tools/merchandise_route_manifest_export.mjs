@@ -8,7 +8,7 @@ const checkMode = process.argv.includes("--check");
 
 const manifestPath = path.join(
   root,
-  "sdks/_route-manifests/app-api/sdkwork-merchandise-standalone-gateway.route-manifest.json",
+  "sdks/_route-manifests/app-api/sdkwork-api-merchandise-standalone-gateway.route-manifest.json",
 );
 const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
 

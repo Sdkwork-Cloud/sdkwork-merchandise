@@ -12,8 +12,8 @@ yet a production release.
 - SQL repository: [sdkwork-merchandise-repository-sqlx](crates/sdkwork-merchandise-repository-sqlx/)
 - App routes: [sdkwork-routes-merchandise-app-api](crates/sdkwork-routes-merchandise-app-api/)
 - Backend routes: [sdkwork-routes-merchandise-backend-api](crates/sdkwork-routes-merchandise-backend-api/)
-- Runtime gateways: `crates/sdkwork-merchandise-standalone-gateway/` and
-  `crates/sdkwork-merchandise-gateway-assembly/`
+- Runtime gateways: `crates/sdkwork-api-merchandise-standalone-gateway/` and
+  `crates/sdkwork-api-merchandise-assembly/`
 - PC application: [apps/sdkwork-merchandise-pc](apps/sdkwork-merchandise-pc/)
 
 ## Capability Ownership

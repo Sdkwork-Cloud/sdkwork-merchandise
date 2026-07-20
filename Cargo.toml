@@ -2,14 +2,14 @@
 resolver = "2"
 members = [
     "crates/sdkwork-api-merchandise-assembly",
-    "crates/sdkwork-merchandise-gateway-assembly",
+    "crates/sdkwork-api-merchandise-assembly",
   "crates/sdkwork-merchandise-service",
   "crates/sdkwork-merchandise-repository-sqlx",
   "crates/sdkwork-routes-merchandise-app-api",
   "crates/sdkwork-routes-merchandise-backend-api",
   "crates/sdkwork-merchandise-database-host",
   "crates/sdkwork-merchandise-service-host",
-  "crates/sdkwork-merchandise-standalone-gateway",
+  "crates/sdkwork-api-merchandise-standalone-gateway",
 ]
 
 [workspace.package]
@@ -53,4 +53,4 @@ sdkwork_routes_merchandise_app_api = { path = "crates/sdkwork-routes-merchandise
 sdkwork_routes_merchandise_backend_api = { path = "crates/sdkwork-routes-merchandise-backend-api", package = "sdkwork-routes-merchandise-backend-api" }
 sdkwork_merchandise_database_host = { path = "crates/sdkwork-merchandise-database-host", package = "sdkwork-merchandise-database-host" }
 sdkwork_merchandise_service_host = { path = "crates/sdkwork-merchandise-service-host", package = "sdkwork-merchandise-service-host" }
-sdkwork_merchandise_gateway_assembly = { path = "crates/sdkwork-merchandise-gateway-assembly", package = "sdkwork-merchandise-gateway-assembly" }
+sdkwork_api_merchandise_assembly = { path = "crates/sdkwork-api-merchandise-assembly", package = "sdkwork-api-merchandise-assembly" }

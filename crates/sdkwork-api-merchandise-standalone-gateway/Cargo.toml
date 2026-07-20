@@ -1,5 +1,5 @@
 [package]
-name = "sdkwork-merchandise-standalone-gateway"
+name = "sdkwork-api-merchandise-standalone-gateway"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -7,11 +7,11 @@ publish.workspace = true
 
 
 [[bin]]
-name = "sdkwork-merchandise-standalone-gateway"
+name = "sdkwork-api-merchandise-standalone-gateway"
 path = "src/main.rs"
 
 [dependencies]
-sdkwork_merchandise_gateway_assembly.workspace = true
+sdkwork_api_merchandise_assembly.workspace = true
 axum = { workspace = true }
 serde_json = { workspace = true }
 sdkwork_merchandise_service_host.workspace = true

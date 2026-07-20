@@ -8,7 +8,7 @@
     "stop": "pnpm exec sdkwork-app stop",
     "dev": "pnpm dev:standalone",
     "build": "pnpm exec sdkwork-app build",
-    "start": "cargo run -p sdkwork-merchandise-standalone-gateway --bin merchandise-server",
+    "start": "cargo run -p sdkwork-api-merchandise-standalone-gateway --bin merchandise-server",
     "test": "pnpm exec sdkwork-app test",
     "test:node": "node --test tests/static/*.test.mjs tests/contract/*.test.mjs",
     "test:vitest": "vitest run --config vitest.config.ts --configLoader native --pool vmThreads",

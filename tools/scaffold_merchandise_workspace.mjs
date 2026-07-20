@@ -121,7 +121,7 @@ SDKWork commerce **merchandise** capability application: merchant merchandise co
 - Standards: \`../sdkwork-specs/README.md\`
 - Domain: \`commerce\` / capability: \`merchandise\`
 - PC app: \`apps/sdkwork-merchandise-pc/\`
-- HTTP API: \`crates/sdkwork-merchandise-standalone-gateway/\`
+- HTTP API: \`crates/sdkwork-api-merchandise-standalone-gateway/\`
 - Database: \`database/\` via \`sdkwork-database\`
 
 ## Quick start
@@ -161,7 +161,7 @@ await writeAlways(
       contracts: {
         publicExports: ["."],
         runtimeEntrypoints: ["package.json#scripts.verify"],
-        routeManifest: "sdks/_route-manifests/app-api/sdkwork-merchandise-standalone-gateway.route-manifest.json",
+        routeManifest: "sdks/_route-manifests/app-api/sdkwork-api-merchandise-standalone-gateway.route-manifest.json",
         sdkClients: [],
         events: [],
         configKeys: [],

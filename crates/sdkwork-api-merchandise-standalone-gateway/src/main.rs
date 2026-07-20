@@ -1,4 +1,4 @@
-use sdkwork_merchandise_gateway_assembly::assemble_application_router;
+use sdkwork_api_merchandise_assembly::assemble_api_router;
 use sdkwork_merchandise_service_host::ShopServiceHost;
 use sdkwork_web_bootstrap::{service_router, ServiceRouterConfig};
 use std::sync::Arc;
@@ -9,7 +9,7 @@ async fn main() {
     tracing::info!("Starting SDKWork Merchandise API Server...");
 
     let host = Arc::new(ShopServiceHost::new().await);
-    let assembly = assemble_application_router(host).await;
+    let assembly = assemble_api_router(host).await;
 
     let business = assembly.router.layer(
         sdkwork_web_bootstrap::application_cors_layer_from_env(

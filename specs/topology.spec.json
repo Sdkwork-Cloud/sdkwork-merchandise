@@ -72,7 +72,7 @@
   },
   "components": {
     "applicationServer": {
-      "crate": "sdkwork-merchandise-standalone-gateway",
+      "crate": "sdkwork-api-merchandise-standalone-gateway",
       "binary": "merchandise-server"
     }
   },
@@ -82,7 +82,7 @@
         "processes": [
           {
             "id": "application.public-ingress",
-            "crate": "sdkwork-merchandise-standalone-gateway",
+            "crate": "sdkwork-api-merchandise-standalone-gateway",
             "binary": "merchandise-server",
             "required": true,
             "role": "api-standalone-gateway"
@@ -103,7 +103,7 @@
         "processes": [
           {
             "id": "application.public-ingress",
-            "crate": "sdkwork-merchandise-standalone-gateway",
+            "crate": "sdkwork-api-merchandise-standalone-gateway",
             "binary": "merchandise-server",
             "required": true,
             "role": "api-standalone-gateway"
@@ -118,7 +118,7 @@
         "processes": [
           {
             "id": "application.public-ingress",
-            "crate": "sdkwork-merchandise-standalone-gateway",
+            "crate": "sdkwork-api-merchandise-standalone-gateway",
             "binary": "merchandise-server",
             "required": true,
             "role": "api-standalone-gateway"

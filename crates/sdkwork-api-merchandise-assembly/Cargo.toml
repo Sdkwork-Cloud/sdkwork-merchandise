@@ -12,5 +12,6 @@ path = "src/lib.rs"
 [dependencies]
 axum.workspace = true
 tokio.workspace = true
+sdkwork_merchandise_service_host.workspace = true
 sdkwork-routes-merchandise-app-api = { path = "../sdkwork-routes-merchandise-app-api" }
 sdkwork-routes-merchandise-backend-api = { path = "../sdkwork-routes-merchandise-backend-api" }

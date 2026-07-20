@@ -52,7 +52,7 @@ Snowflake provider. The boundary does not add tables or schema assets.
 | Persistence adapter | `sdkwork-merchandise-repository-sqlx` | Tenant-scoped SQL, transactions, Snowflake ids, idempotency replay, bounded listing |
 | App routes | `sdkwork-routes-merchandise-app-api` | App HTTP contract and SDK authority |
 | Backend routes | `sdkwork-routes-merchandise-backend-api` | Operator/admin HTTP contract and SDK authority |
-| Runtime composition | `sdkwork-merchandise-standalone-gateway` | Pool, IAM, route, and readiness wiring |
+| Runtime composition | `sdkwork-api-merchandise-standalone-gateway` | Pool, IAM, route, and readiness wiring |
 | Database lifecycle | approved database host/framework | Existing schema, migrations, drift, and health |
 
 Vertical domains consume the service/repository boundary and reuse order and
@@ -66,8 +66,8 @@ payment owners. They do not own or write merchandise tables.
 - `crates/sdkwork-routes-merchandise-backend-api/`
 - `crates/sdkwork-merchandise-database-host/`
 - `crates/sdkwork-merchandise-service-host/`
-- `crates/sdkwork-merchandise-standalone-gateway/`
-- `crates/sdkwork-merchandise-gateway-assembly/`
+- `crates/sdkwork-api-merchandise-standalone-gateway/`
+- `crates/sdkwork-api-merchandise-assembly/`
 - `apps/sdkwork-merchandise-pc/`
 
 Each authored crate owns its local `specs/component.spec.json` contract.
