@@ -1,0 +1,16 @@
+[package]
+name = "sdkwork-api-merchandise-assembly"
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+description = "Generated API assembly for sdkwork-merchandise application HTTP plane."
+
+[lib]
+name = "sdkwork_api_merchandise_assembly"
+path = "src/lib.rs"
+
+[dependencies]
+axum.workspace = true
+tokio.workspace = true
+sdkwork-routes-merchandise-app-api = { path = "../sdkwork-routes-merchandise-app-api" }
+sdkwork-routes-merchandise-backend-api = { path = "../sdkwork-routes-merchandise-backend-api" }
