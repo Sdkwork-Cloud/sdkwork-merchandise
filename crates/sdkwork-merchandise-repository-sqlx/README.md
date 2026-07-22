@@ -19,7 +19,6 @@ construction or schema lifecycle.
   constructor for hosts that already own a configured Snowflake node id.
 - `SqliteCommerceCatalogStore` and `PostgresCommerceCatalogStore` expose the
   existing catalog repository surfaces.
-- `SqlxShopRepository` exposes the merchandise shop repository surface.
 
 The single-SKU repository performs tenant- and organization-scoped bounded
 listing, atomic one-SPU/one-SKU creation, deterministic idempotency business

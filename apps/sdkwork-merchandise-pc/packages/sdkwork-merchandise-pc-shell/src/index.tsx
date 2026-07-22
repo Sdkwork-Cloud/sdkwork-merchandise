@@ -1,12 +1,12 @@
-import { buildShopDraft, describeShop } from "@sdkwork/merchandise-pc-core";
+import { buildProductDraft, describeProduct } from "@sdkwork/merchandise-pc-admin-core";
 
-const demoShop = buildShopDraft({ name: "示例店铺", slug: "" });
+const productDraft = buildProductDraft({ name: "Product catalog", slug: "" });
 
-export function ShopAppShell() {
-  const headline = describeShop({
-    id: "demo",
-    name: demoShop.name,
-    slug: demoShop.slug,
+export function MerchandiseAppShell() {
+  const headline = describeProduct({
+    id: "catalog",
+    name: productDraft.name,
+    slug: productDraft.slug,
     status: "draft",
   });
 
@@ -15,7 +15,6 @@ export function ShopAppShell() {
       <section className="merchandise-card">
         <h1>SDKWork Merchandise</h1>
         <p>{headline}</p>
-        <p>Merchant merchandise console scaffold aligned with sdkwork-specs.</p>
       </section>
     </main>
   );

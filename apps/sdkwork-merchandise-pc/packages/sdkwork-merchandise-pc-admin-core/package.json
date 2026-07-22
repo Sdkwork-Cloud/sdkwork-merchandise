@@ -1,5 +1,5 @@
 {
-  "name": "@sdkwork/merchandise-pc-core",
+  "name": "@sdkwork/merchandise-pc-admin-core",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@sdkwork/merchandise-contracts": "workspace:*",
-    "@sdkwork/merchandise-service": "workspace:*"
+    "@sdkwork/merchandise-service": "workspace:*",
+    "@sdkwork/shop-backend-sdk": "workspace:*"
   }
 }

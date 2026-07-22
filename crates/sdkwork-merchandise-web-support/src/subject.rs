@@ -2,14 +2,14 @@ use axum::Extension;
 use sdkwork_iam_context_service::IamAppContext;
 
 #[derive(Debug, Clone)]
-pub(crate) struct AppRuntimeSubject {
+pub(crate) struct WebRuntimeSubject {
     pub tenant_id: String,
     pub organization_id: Option<String>,
 }
 
 pub(crate) fn app_runtime_subject_from_extension(
     context: Option<Extension<IamAppContext>>,
-) -> Result<AppRuntimeSubject, String> {
+) -> Result<WebRuntimeSubject, String> {
     let Some(Extension(context)) = context else {
         return Err("authenticated runtime context is required".to_owned());
     };
@@ -18,7 +18,7 @@ pub(crate) fn app_runtime_subject_from_extension(
 
 pub(crate) fn app_runtime_subject_from_iam(
     context: &IamAppContext,
-) -> Result<AppRuntimeSubject, String> {
+) -> Result<WebRuntimeSubject, String> {
     let tenant_id = required_context_text(&context.tenant_id, "tenant_id")?;
     required_context_text(&context.user_id, "user_id")?;
     let organization_id = context
@@ -28,7 +28,7 @@ pub(crate) fn app_runtime_subject_from_iam(
         .filter(|value| !value.is_empty())
         .map(str::to_owned);
 
-    Ok(AppRuntimeSubject {
+    Ok(WebRuntimeSubject {
         tenant_id,
         organization_id,
     })

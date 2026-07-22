@@ -2,12 +2,12 @@
   "schemaVersion": 1,
   "kind": "sdkwork.component.spec",
   "component": {
-    "name": "@sdkwork/merchandise-pc-core",
+    "name": "@sdkwork/merchandise-pc-admin-core",
     "type": "typescript-package",
-    "root": "apps/sdkwork-merchandise-pc/packages/sdkwork-merchandise-pc-core",
+    "root": "apps/sdkwork-merchandise-pc/packages/sdkwork-merchandise-pc-admin-core",
     "domain": "commerce",
     "capability": "merchandise",
-    "surface": "app",
+    "surface": "backend-admin",
     "languages": [
       "typescript"
     ],
@@ -16,7 +16,8 @@
   "contracts": {
     "layerRole": "frontend-core",
     "publicExports": [
-      "."
+      ".",
+      "./sdk"
     ],
     "providedPorts": [
       {
@@ -26,16 +27,16 @@
     ],
     "requiredPorts": [
       {
-        "name": "merchandiseAppSdk",
-        "export": "."
+        "name": "shopBackendSdk",
+        "export": "./sdk"
       }
     ],
     "runtimeEntrypoints": [],
     "sdkDependencies": [
       {
-        "workspace": "sdkwork-merchandise-app-sdk",
-        "surface": "app-api",
-        "credentialMode": "authenticated-app-api"
+        "workspace": "sdkwork-shop-backend-sdk",
+        "surface": "backend-api",
+        "credentialMode": "authenticated-backend-admin"
       }
     ],
     "dependencyApiExports": [],
@@ -49,6 +50,12 @@
         {
           "moduleId": "merchandise",
           "manifestRef": "../../../../../specs/iam.module.manifest.json",
+          "inheritPermissions": true,
+          "inheritRoles": true
+        },
+        {
+          "moduleId": "shop",
+          "manifestRef": "../../../../../../sdkwork-shop/specs/iam.module.manifest.json",
           "inheritPermissions": true,
           "inheritRoles": true
         }

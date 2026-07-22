@@ -1,13 +1,13 @@
-export type ShopStatus = "draft" | "pending" | "active" | "suspended";
+export type ProductStatus = "draft" | "pending" | "active" | "suspended";
 
-export interface ShopProfile {
+export interface ProductProfile {
   id: string;
   name: string;
   slug: string;
-  status: ShopStatus | string;
+  status: ProductStatus | string;
 }
 
-export interface CreateShopInput {
+export interface CreateProductInput {
   name: string;
   slug: string;
 }

@@ -1,4 +1,4 @@
-//! Shared catalog store trait, HTTP DTOs, and response mappers.
+//! Shared merchandise store port, HTTP DTOs, and response mappers.
 
 use std::future::Future;
 use std::pin::Pin;
@@ -25,18 +25,43 @@ use sdkwork_merchandise_service::{
 use serde::{Deserialize, Serialize};
 
 pub use crate::http_envelope::{
-    catalog_system_response, not_found_response, success_accepted, success_list, success_resource,
-    unauthorized_response, validation_response,
+    catalog_system_response, not_found_response, success_accepted, success_created_resource,
+    success_list, success_no_content, success_offset_page, success_resource, unauthorized_response,
+    validation_response,
 };
 
 pub type CommerceCatalogFuture<'a, T> =
     Pin<Box<dyn Future<Output = Result<T, CommerceServiceError>> + Send + 'a>>;
+
+#[derive(Debug)]
+pub struct CatalogOffsetPage<T> {
+    pub items: Vec<T>,
+    pub page: i64,
+    pub page_size: i64,
+    pub total_items: i64,
+}
+
+impl<T> CatalogOffsetPage<T> {
+    fn new(items: Vec<T>, page: Option<i64>, page_size: Option<i64>, total_items: i64) -> Self {
+        Self {
+            items,
+            page: page.unwrap_or(1),
+            page_size: page_size.unwrap_or(20),
+            total_items,
+        }
+    }
+}
 
 pub trait CommerceCatalogStore: Send + Sync {
     fn list_categories<'a>(
         &'a self,
         query: CategoryListQuery,
     ) -> CommerceCatalogFuture<'a, Vec<CategoryRecord>>;
+
+    fn list_categories_page<'a>(
+        &'a self,
+        query: CategoryListQuery,
+    ) -> CommerceCatalogFuture<'a, CatalogOffsetPage<CategoryRecord>>;
 
     fn retrieve_category<'a>(
         &'a self,
@@ -62,6 +87,11 @@ pub trait CommerceCatalogStore: Send + Sync {
         &'a self,
         query: AttributeListQuery,
     ) -> CommerceCatalogFuture<'a, Vec<AttributeRecord>>;
+
+    fn list_attributes_page<'a>(
+        &'a self,
+        query: AttributeListQuery,
+    ) -> CommerceCatalogFuture<'a, CatalogOffsetPage<AttributeRecord>>;
 
     fn create_attribute<'a>(
         &'a self,
@@ -108,6 +138,11 @@ pub trait CommerceCatalogStore: Send + Sync {
         query: ProductSpuListQuery,
     ) -> CommerceCatalogFuture<'a, Vec<SpuRecord>>;
 
+    fn list_spus_page<'a>(
+        &'a self,
+        query: ProductSpuListQuery,
+    ) -> CommerceCatalogFuture<'a, CatalogOffsetPage<SpuRecord>>;
+
     fn retrieve_spu<'a>(
         &'a self,
         query: ProductSpuRetrieveQuery,
@@ -140,6 +175,11 @@ pub trait CommerceCatalogStore: Send + Sync {
         query: ProductSkuListQuery,
     ) -> CommerceCatalogFuture<'a, Vec<SkuRecord>>;
 
+    fn list_skus_page<'a>(
+        &'a self,
+        query: ProductSkuListQuery,
+    ) -> CommerceCatalogFuture<'a, CatalogOffsetPage<SkuRecord>>;
+
     fn retrieve_sku<'a>(
         &'a self,
         query: ProductSkuRetrieveQuery,
@@ -167,6 +207,11 @@ pub trait CommerceCatalogStore: Send + Sync {
         query: CartRetrieveQuery,
     ) -> CommerceCatalogFuture<'a, Vec<CartItemRecord>>;
 
+    fn list_cart_items_page<'a>(
+        &'a self,
+        query: CartRetrieveQuery,
+    ) -> CommerceCatalogFuture<'a, CatalogOffsetPage<CartItemRecord>>;
+
     fn add_cart_item<'a>(
         &'a self,
         command: AddCartItemCommand,
@@ -186,6 +231,11 @@ pub trait CommerceCatalogStore: Send + Sync {
         &'a self,
         query: AddressListQuery,
     ) -> CommerceCatalogFuture<'a, Vec<AddressRecord>>;
+
+    fn list_addresses_page<'a>(
+        &'a self,
+        query: AddressListQuery,
+    ) -> CommerceCatalogFuture<'a, CatalogOffsetPage<AddressRecord>>;
 
     fn create_address<'a>(
         &'a self,
@@ -213,42 +263,37 @@ pub struct CatalogState {
 
 #[derive(Debug, Deserialize)]
 pub struct CategoryQueryParams {
-    #[serde(rename = "organizationId", alias = "organization_id")]
     pub organization_id: Option<String>,
-    #[serde(rename = "parentId", alias = "parent_id")]
     pub parent_id: Option<String>,
     pub status: Option<String>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct AttributeQueryParams {
-    #[serde(rename = "organizationId", alias = "organization_id")]
     pub organization_id: Option<String>,
     pub status: Option<String>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
 }
 
 #[derive(Debug, Deserialize)]
 struct PriceListQueryParams {
-    #[serde(rename = "organizationId", alias = "organization_id")]
     organization_id: Option<String>,
     status: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]
 struct CategoryAttributeQueryParams {
-    #[serde(rename = "organizationId", alias = "organization_id")]
     organization_id: Option<String>,
-    #[serde(rename = "categoryId", alias = "category_id")]
     category_id: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct SpuListQueryParams {
-    #[serde(rename = "organizationId", alias = "organization_id")]
     pub organization_id: Option<String>,
-    #[serde(rename = "categoryId", alias = "category_id")]
     pub category_id: Option<String>,
-    #[serde(rename = "productType", alias = "product_type")]
     pub product_type: Option<String>,
     pub status: Option<String>,
     pub page: Option<i64>,
@@ -257,9 +302,7 @@ pub struct SpuListQueryParams {
 
 #[derive(Debug, Deserialize)]
 struct SkuListQueryParams {
-    #[serde(rename = "organizationId", alias = "organization_id")]
     organization_id: Option<String>,
-    #[serde(rename = "spuId", alias = "spu_id")]
     spu_id: Option<String>,
     status: Option<String>,
     page: Option<i64>,
@@ -393,7 +436,6 @@ pub struct UpdateCartItemBody {
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CreateAddressBody {
-    pub address_id: String,
     pub receiver_name: String,
     pub receiver_phone: String,
     pub country_code: String,
@@ -417,8 +459,6 @@ pub struct UpdateAddressBody {
 #[serde(rename_all = "camelCase")]
 pub struct CategoryResponse {
     id: String,
-    tenant_id: String,
-    organization_id: Option<String>,
     category_no: String,
     parent_id: Option<String>,
     path: String,
@@ -434,8 +474,6 @@ pub struct CategoryResponse {
 #[serde(rename_all = "camelCase")]
 pub struct AttributeResponse {
     id: String,
-    tenant_id: String,
-    organization_id: Option<String>,
     attribute_no: String,
     name: String,
     value_type: String,
@@ -450,8 +488,6 @@ pub struct AttributeResponse {
 #[serde(rename_all = "camelCase")]
 pub struct SpuResponse {
     id: String,
-    tenant_id: String,
-    organization_id: Option<String>,
     spu_no: String,
     title: String,
     subtitle: Option<String>,
@@ -469,8 +505,6 @@ pub struct SpuResponse {
 #[serde(rename_all = "camelCase")]
 pub struct SkuResponse {
     id: String,
-    tenant_id: String,
-    organization_id: Option<String>,
     spu_id: String,
     sku_no: String,
     name: String,
@@ -535,8 +569,6 @@ pub struct CategoryAttributeResponse {
 #[serde(rename_all = "camelCase")]
 pub struct CartItemResponse {
     id: String,
-    tenant_id: String,
-    owner_user_id: String,
     sku_id: String,
     quantity: i64,
     created_at: String,
@@ -547,9 +579,6 @@ pub struct CartItemResponse {
 #[serde(rename_all = "camelCase")]
 pub struct AddressResponse {
     id: String,
-    tenant_id: String,
-    owner_user_id: String,
-    address_id: String,
     receiver_name: String,
     receiver_phone: String,
     country_code: String,
@@ -568,6 +597,22 @@ impl CommerceCatalogStore for SqliteCommerceCatalogStore {
         query: CategoryListQuery,
     ) -> CommerceCatalogFuture<'a, Vec<CategoryRecord>> {
         Box::pin(async move { self.list_categories(&query).await })
+    }
+
+    fn list_categories_page<'a>(
+        &'a self,
+        query: CategoryListQuery,
+    ) -> CommerceCatalogFuture<'a, CatalogOffsetPage<CategoryRecord>> {
+        Box::pin(async move {
+            let items = self.list_categories(&query).await?;
+            let total_items = self.count_categories(&query).await?;
+            Ok(CatalogOffsetPage::new(
+                items,
+                query.page,
+                query.page_size,
+                total_items,
+            ))
+        })
     }
 
     fn retrieve_category<'a>(
@@ -603,6 +648,22 @@ impl CommerceCatalogStore for SqliteCommerceCatalogStore {
         query: AttributeListQuery,
     ) -> CommerceCatalogFuture<'a, Vec<AttributeRecord>> {
         Box::pin(async move { self.list_attributes(&query).await })
+    }
+
+    fn list_attributes_page<'a>(
+        &'a self,
+        query: AttributeListQuery,
+    ) -> CommerceCatalogFuture<'a, CatalogOffsetPage<AttributeRecord>> {
+        Box::pin(async move {
+            let items = self.list_attributes(&query).await?;
+            let total_items = self.count_attributes(&query).await?;
+            Ok(CatalogOffsetPage::new(
+                items,
+                query.page,
+                query.page_size,
+                total_items,
+            ))
+        })
     }
 
     fn create_attribute<'a>(
@@ -684,6 +745,22 @@ impl CommerceCatalogStore for SqliteCommerceCatalogStore {
         Box::pin(async move { self.list_spus(&query).await })
     }
 
+    fn list_spus_page<'a>(
+        &'a self,
+        query: ProductSpuListQuery,
+    ) -> CommerceCatalogFuture<'a, CatalogOffsetPage<SpuRecord>> {
+        Box::pin(async move {
+            let items = self.list_spus(&query).await?;
+            let total_items = self.count_spus(&query).await?;
+            Ok(CatalogOffsetPage::new(
+                items,
+                query.page,
+                query.page_size,
+                total_items,
+            ))
+        })
+    }
+
     fn retrieve_spu<'a>(
         &'a self,
         query: ProductSpuRetrieveQuery,
@@ -730,6 +807,22 @@ impl CommerceCatalogStore for SqliteCommerceCatalogStore {
         Box::pin(async move { self.list_skus(&query).await })
     }
 
+    fn list_skus_page<'a>(
+        &'a self,
+        query: ProductSkuListQuery,
+    ) -> CommerceCatalogFuture<'a, CatalogOffsetPage<SkuRecord>> {
+        Box::pin(async move {
+            let items = self.list_skus(&query).await?;
+            let total_items = self.count_skus(&query).await?;
+            Ok(CatalogOffsetPage::new(
+                items,
+                query.page,
+                query.page_size,
+                total_items,
+            ))
+        })
+    }
+
     fn retrieve_sku<'a>(
         &'a self,
         query: ProductSkuRetrieveQuery,
@@ -773,6 +866,22 @@ impl CommerceCatalogStore for SqliteCommerceCatalogStore {
         Box::pin(async move { self.list_cart_items(&query).await })
     }
 
+    fn list_cart_items_page<'a>(
+        &'a self,
+        query: CartRetrieveQuery,
+    ) -> CommerceCatalogFuture<'a, CatalogOffsetPage<CartItemRecord>> {
+        Box::pin(async move {
+            let items = self.list_cart_items(&query).await?;
+            let total_items = self.count_cart_items(&query).await?;
+            Ok(CatalogOffsetPage::new(
+                items,
+                query.page,
+                query.page_size,
+                total_items,
+            ))
+        })
+    }
+
     fn add_cart_item<'a>(
         &'a self,
         command: AddCartItemCommand,
@@ -799,6 +908,22 @@ impl CommerceCatalogStore for SqliteCommerceCatalogStore {
         query: AddressListQuery,
     ) -> CommerceCatalogFuture<'a, Vec<AddressRecord>> {
         Box::pin(async move { self.list_addresses(&query).await })
+    }
+
+    fn list_addresses_page<'a>(
+        &'a self,
+        query: AddressListQuery,
+    ) -> CommerceCatalogFuture<'a, CatalogOffsetPage<AddressRecord>> {
+        Box::pin(async move {
+            let items = self.list_addresses(&query).await?;
+            let total_items = self.count_addresses(&query).await?;
+            Ok(CatalogOffsetPage::new(
+                items,
+                query.page,
+                query.page_size,
+                total_items,
+            ))
+        })
     }
 
     fn create_address<'a>(
@@ -838,6 +963,22 @@ impl CommerceCatalogStore for PostgresCommerceCatalogStore {
         Box::pin(async move { self.list_categories(&query).await })
     }
 
+    fn list_categories_page<'a>(
+        &'a self,
+        query: CategoryListQuery,
+    ) -> CommerceCatalogFuture<'a, CatalogOffsetPage<CategoryRecord>> {
+        Box::pin(async move {
+            let items = self.list_categories(&query).await?;
+            let total_items = self.count_categories(&query).await?;
+            Ok(CatalogOffsetPage::new(
+                items,
+                query.page,
+                query.page_size,
+                total_items,
+            ))
+        })
+    }
+
     fn retrieve_category<'a>(
         &'a self,
         query: CategoryRetrieveQuery,
@@ -871,6 +1012,22 @@ impl CommerceCatalogStore for PostgresCommerceCatalogStore {
         query: AttributeListQuery,
     ) -> CommerceCatalogFuture<'a, Vec<AttributeRecord>> {
         Box::pin(async move { self.list_attributes(&query).await })
+    }
+
+    fn list_attributes_page<'a>(
+        &'a self,
+        query: AttributeListQuery,
+    ) -> CommerceCatalogFuture<'a, CatalogOffsetPage<AttributeRecord>> {
+        Box::pin(async move {
+            let items = self.list_attributes(&query).await?;
+            let total_items = self.count_attributes(&query).await?;
+            Ok(CatalogOffsetPage::new(
+                items,
+                query.page,
+                query.page_size,
+                total_items,
+            ))
+        })
     }
 
     fn create_attribute<'a>(
@@ -952,6 +1109,22 @@ impl CommerceCatalogStore for PostgresCommerceCatalogStore {
         Box::pin(async move { self.list_spus(&query).await })
     }
 
+    fn list_spus_page<'a>(
+        &'a self,
+        query: ProductSpuListQuery,
+    ) -> CommerceCatalogFuture<'a, CatalogOffsetPage<SpuRecord>> {
+        Box::pin(async move {
+            let items = self.list_spus(&query).await?;
+            let total_items = self.count_spus(&query).await?;
+            Ok(CatalogOffsetPage::new(
+                items,
+                query.page,
+                query.page_size,
+                total_items,
+            ))
+        })
+    }
+
     fn retrieve_spu<'a>(
         &'a self,
         query: ProductSpuRetrieveQuery,
@@ -998,6 +1171,22 @@ impl CommerceCatalogStore for PostgresCommerceCatalogStore {
         Box::pin(async move { self.list_skus(&query).await })
     }
 
+    fn list_skus_page<'a>(
+        &'a self,
+        query: ProductSkuListQuery,
+    ) -> CommerceCatalogFuture<'a, CatalogOffsetPage<SkuRecord>> {
+        Box::pin(async move {
+            let items = self.list_skus(&query).await?;
+            let total_items = self.count_skus(&query).await?;
+            Ok(CatalogOffsetPage::new(
+                items,
+                query.page,
+                query.page_size,
+                total_items,
+            ))
+        })
+    }
+
     fn retrieve_sku<'a>(
         &'a self,
         query: ProductSkuRetrieveQuery,
@@ -1041,6 +1230,22 @@ impl CommerceCatalogStore for PostgresCommerceCatalogStore {
         Box::pin(async move { self.list_cart_items(&query).await })
     }
 
+    fn list_cart_items_page<'a>(
+        &'a self,
+        query: CartRetrieveQuery,
+    ) -> CommerceCatalogFuture<'a, CatalogOffsetPage<CartItemRecord>> {
+        Box::pin(async move {
+            let items = self.list_cart_items(&query).await?;
+            let total_items = self.count_cart_items(&query).await?;
+            Ok(CatalogOffsetPage::new(
+                items,
+                query.page,
+                query.page_size,
+                total_items,
+            ))
+        })
+    }
+
     fn add_cart_item<'a>(
         &'a self,
         command: AddCartItemCommand,
@@ -1067,6 +1272,22 @@ impl CommerceCatalogStore for PostgresCommerceCatalogStore {
         query: AddressListQuery,
     ) -> CommerceCatalogFuture<'a, Vec<AddressRecord>> {
         Box::pin(async move { self.list_addresses(&query).await })
+    }
+
+    fn list_addresses_page<'a>(
+        &'a self,
+        query: AddressListQuery,
+    ) -> CommerceCatalogFuture<'a, CatalogOffsetPage<AddressRecord>> {
+        Box::pin(async move {
+            let items = self.list_addresses(&query).await?;
+            let total_items = self.count_addresses(&query).await?;
+            Ok(CatalogOffsetPage::new(
+                items,
+                query.page,
+                query.page_size,
+                total_items,
+            ))
+        })
     }
 
     fn create_address<'a>(
@@ -1101,8 +1322,6 @@ impl CommerceCatalogStore for PostgresCommerceCatalogStore {
 pub fn map_category(value: CategoryRecord) -> CategoryResponse {
     CategoryResponse {
         id: value.id,
-        tenant_id: value.tenant_id,
-        organization_id: value.organization_id,
         category_no: value.category_no,
         parent_id: value.parent_id,
         path: value.path,
@@ -1118,8 +1337,6 @@ pub fn map_category(value: CategoryRecord) -> CategoryResponse {
 pub fn map_attribute(value: AttributeRecord) -> AttributeResponse {
     AttributeResponse {
         id: value.id,
-        tenant_id: value.tenant_id,
-        organization_id: value.organization_id,
         attribute_no: value.attribute_no,
         name: value.name,
         value_type: value.value_type,
@@ -1134,8 +1351,6 @@ pub fn map_attribute(value: AttributeRecord) -> AttributeResponse {
 pub fn map_spu(value: SpuRecord) -> SpuResponse {
     SpuResponse {
         id: value.id,
-        tenant_id: value.tenant_id,
-        organization_id: value.organization_id,
         spu_no: value.spu_no,
         title: value.title,
         subtitle: value.subtitle,
@@ -1153,8 +1368,6 @@ pub fn map_spu(value: SpuRecord) -> SpuResponse {
 pub fn map_sku(value: SkuRecord) -> SkuResponse {
     SkuResponse {
         id: value.id,
-        tenant_id: value.tenant_id,
-        organization_id: value.organization_id,
         spu_id: value.spu_id,
         sku_no: value.sku_no,
         name: value.name,
@@ -1219,8 +1432,6 @@ fn map_category_attribute(value: CategoryAttributeRecord) -> CategoryAttributeRe
 pub fn map_cart_item(value: CartItemRecord) -> CartItemResponse {
     CartItemResponse {
         id: value.id,
-        tenant_id: value.tenant_id,
-        owner_user_id: value.owner_user_id,
         sku_id: value.sku_id,
         quantity: value.quantity,
         created_at: value.created_at,
@@ -1231,9 +1442,6 @@ pub fn map_cart_item(value: CartItemRecord) -> CartItemResponse {
 pub fn map_address(value: AddressRecord) -> AddressResponse {
     AddressResponse {
         id: value.id,
-        tenant_id: value.tenant_id,
-        owner_user_id: value.owner_user_id,
-        address_id: value.address_id,
         receiver_name: value.receiver_name,
         receiver_phone: value.receiver_phone,
         country_code: value.country_code,

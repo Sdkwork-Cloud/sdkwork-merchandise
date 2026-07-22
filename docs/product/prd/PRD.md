@@ -42,9 +42,8 @@ client applications that publish or select sellable merchandise.
 ## 4. Scope
 
 - SPU/SKU catalog master data and backend administration.
-- Existing catalog route surfaces:
-  `/app/v3/api/catalog/products` and
-  `/backend/v3/api/catalog/products`.
+- Backend catalog route surface: `/backend/v3/api/catalog/*`, contributed to
+  `sdkwork-shop-backend-api` and generated in `sdkwork-shop-backend-sdk`.
 - Merchandise service ports and SQLx repository adapters for SQLite and
   PostgreSQL.
 - Reusable single-SKU merchandise operations:
@@ -78,8 +77,8 @@ new boundary. No DDL or migration is added by the single-SKU capability.
 
 - Current phase: implementation and contract alignment.
 - Production release: not yet declared.
-- Completion gate: route, SDK, security, database, documentation, and topology
-  checks pass in the consuming application repository.
+- Completion gate: route, Shop backend SDK authority, security, database,
+  documentation, and topology checks pass in the owning repositories.
 
 ## 8. Linked Requirements
 
@@ -90,6 +89,6 @@ new boundary. No DDL or migration is added by the single-SKU capability.
 
 ## 9. Open Questions
 
-The consuming application decides its operator-facing route composition and
-permission names. Those choices belong to the application/admin module and do
-not change merchandise ownership.
+Shop owns the backend API authority and SDK family. Merchandise owns the
+catalog capability implementation and contributes its route module under the
+canonical `commerce.catalog.read` and `commerce.catalog.manage` permissions.

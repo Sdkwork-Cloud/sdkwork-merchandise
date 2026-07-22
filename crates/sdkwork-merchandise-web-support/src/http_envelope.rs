@@ -1,3 +1,6 @@
+//! SDKWork v3 response helpers shared by merchandise HTTP adapters.
+
+use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 use axum::Json;
 use sdkwork_utils_rust::http_api::{
@@ -48,6 +51,42 @@ pub fn success_page<T: Serialize>(trace_id: impl Into<String>, items: Vec<T>) ->
     )
 }
 
+pub fn success_offset_page<T: Serialize>(
+    items: Vec<T>,
+    page: i64,
+    page_size: i64,
+    total_items: i64,
+) -> Response {
+    let page_info = offset_page_info(page, page_size, total_items);
+    Json(
+        serde_json::to_value(SdkWorkApiResponse::success(
+            SdkWorkPageData { items, page_info },
+            resolve_trace_id(),
+        ))
+        .unwrap_or_else(|_| {
+            json!({ "code": 0, "data": { "items": [], "pageInfo": { "mode": "offset" } }, "traceId": "" })
+        }),
+    )
+    .into_response()
+}
+
+fn offset_page_info(page: i64, page_size: i64, total_items: i64) -> PageInfo {
+    let total_pages = if total_items == 0 {
+        0
+    } else {
+        (total_items + page_size - 1) / page_size
+    };
+    PageInfo {
+        mode: PageMode::Offset,
+        page: i32::try_from(page).ok(),
+        page_size: i32::try_from(page_size).ok(),
+        total_items: Some(total_items.to_string()),
+        total_pages: i32::try_from(total_pages).ok(),
+        next_cursor: None,
+        has_more: Some(page < total_pages),
+    }
+}
+
 pub fn success_command(trace_id: impl Into<String>) -> Json<Value> {
     Json(
         serde_json::to_value(SdkWorkApiResponse::success(
@@ -60,6 +99,14 @@ pub fn success_command(trace_id: impl Into<String>) -> Json<Value> {
 
 pub fn success_resource<T: Serialize>(item: T) -> Response {
     success_item(resolve_trace_id(), item).into_response()
+}
+
+pub fn success_created_resource<T: Serialize>(item: T) -> Response {
+    (StatusCode::CREATED, success_item(resolve_trace_id(), item)).into_response()
+}
+
+pub fn success_no_content() -> Response {
+    StatusCode::NO_CONTENT.into_response()
 }
 
 pub fn success_list<T: Serialize>(items: Vec<T>) -> Response {
@@ -80,6 +127,29 @@ fn problem_for(kind: WebFrameworkErrorKind, message: impl Into<String>) -> Respo
         },
         ProblemCorrelation::from(Some(trace_id.as_str())),
     )
+}
+
+#[cfg(test)]
+mod tests {
+    use super::offset_page_info;
+
+    #[test]
+    fn offset_page_info_reports_real_boundaries() {
+        let value = serde_json::to_value(offset_page_info(2, 20, 41)).unwrap();
+        assert_eq!(value["mode"], "offset");
+        assert_eq!(value["page"], 2);
+        assert_eq!(value["pageSize"], 20);
+        assert_eq!(value["totalItems"], "41");
+        assert_eq!(value["totalPages"], 3);
+        assert_eq!(value["hasMore"], true);
+    }
+
+    #[test]
+    fn offset_page_info_handles_empty_results() {
+        let value = serde_json::to_value(offset_page_info(1, 20, 0)).unwrap();
+        assert_eq!(value["totalPages"], 0);
+        assert_eq!(value["hasMore"], false);
+    }
 }
 
 pub fn unauthorized_response(message: impl Into<String>) -> Response {

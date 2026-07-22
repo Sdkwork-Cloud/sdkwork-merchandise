@@ -185,7 +185,6 @@ pub struct RemoveCartItemCommand {
 pub struct CreateAddressCommand {
     pub tenant_id: String,
     pub owner_user_id: String,
-    pub address_id: String,
     pub receiver_name: String,
     pub receiver_phone: String,
     pub country_code: String,
@@ -311,7 +310,6 @@ impl_required_text_command!(
     CreateAddressCommand,
     tenant_id,
     owner_user_id,
-    address_id,
     receiver_name,
     receiver_phone,
     country_code,

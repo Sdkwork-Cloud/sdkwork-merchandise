@@ -5,7 +5,7 @@ use sdkwork_web_core::WebRequestContextProfile;
 
 use crate::http_route_manifest::backend_route_manifest;
 
-pub fn shop_backend_api_public_path_prefixes() -> Vec<String> {
+pub fn merchandise_backend_api_public_path_prefixes() -> Vec<String> {
     sdkwork_web_bootstrap::infra_public_path_prefixes()
 }
 
@@ -15,12 +15,12 @@ pub fn wrap_router_with_web_framework(
 ) -> Router {
     let route_manifest = backend_route_manifest();
     route_manifest
-        .validate_public_path_prefixes(&shop_backend_api_public_path_prefixes())
+        .validate_public_path_prefixes(&merchandise_backend_api_public_path_prefixes())
         .expect("merchandise backend-api public prefixes must not cover protected manifest routes");
 
     let layer = WebFrameworkLayer::new(resolver)
         .with_profile(WebRequestContextProfile {
-            public_path_prefixes: shop_backend_api_public_path_prefixes(),
+            public_path_prefixes: merchandise_backend_api_public_path_prefixes(),
             ..WebRequestContextProfile::default()
         })
         .with_route_manifest(route_manifest);

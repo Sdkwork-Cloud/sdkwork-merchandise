@@ -26,6 +26,8 @@ impl PostgresCommerceCatalogStore {
         &self,
         query: &CategoryListQuery,
     ) -> Result<Vec<CategoryRecord>, CommerceServiceError> {
+        let limit = query.page_size.unwrap_or(20).min(200);
+        let offset = (query.page.unwrap_or(1) - 1).max(0) * limit;
         let rows = sqlx::query(
             r#"
             SELECT id, tenant_id, organization_id, category_no, parent_id, path, level_no,
@@ -36,17 +38,42 @@ impl PostgresCommerceCatalogStore {
               AND ($3 IS NULL OR parent_id = CAST($3 AS TEXT))
               AND ($4 IS NULL OR status = $4)
             ORDER BY sort_order ASC, created_at ASC
+            LIMIT $5 OFFSET $6
             "#,
         )
         .bind(&query.tenant_id)
         .bind(query.organization_id.as_deref())
         .bind(query.parent_id.as_deref())
         .bind(query.status.as_deref())
+        .bind(limit)
+        .bind(offset)
         .fetch_all(&self.pool)
         .await
         .map_err(|e| store_error("failed to list categories", e))?;
 
         Ok(rows.iter().map(map_category_row).collect())
+    }
+
+    pub async fn count_categories(
+        &self,
+        query: &CategoryListQuery,
+    ) -> Result<i64, CommerceServiceError> {
+        sqlx::query_scalar(
+            r#"
+            SELECT COUNT(*) FROM commerce_product_category
+            WHERE tenant_id = CAST($1 AS TEXT)
+              AND ($2 IS NULL OR organization_id = CAST($2 AS TEXT))
+              AND ($3 IS NULL OR parent_id = CAST($3 AS TEXT))
+              AND ($4 IS NULL OR status = $4)
+            "#,
+        )
+        .bind(&query.tenant_id)
+        .bind(query.organization_id.as_deref())
+        .bind(query.parent_id.as_deref())
+        .bind(query.status.as_deref())
+        .fetch_one(&self.pool)
+        .await
+        .map_err(|e| store_error("failed to count categories", e))
     }
 
     pub async fn retrieve_category(
@@ -163,6 +190,8 @@ impl PostgresCommerceCatalogStore {
         &self,
         query: &AttributeListQuery,
     ) -> Result<Vec<AttributeRecord>, CommerceServiceError> {
+        let limit = query.page_size.unwrap_or(20).min(200);
+        let offset = (query.page.unwrap_or(1) - 1).max(0) * limit;
         let rows = sqlx::query(
             r#"
             SELECT id, tenant_id, organization_id, attribute_no, name, value_type, scope, status, sort_order, created_at, updated_at
@@ -171,16 +200,39 @@ impl PostgresCommerceCatalogStore {
               AND ($2 IS NULL OR organization_id = CAST($2 AS TEXT))
               AND ($3 IS NULL OR status = $3)
             ORDER BY sort_order ASC, created_at ASC
+            LIMIT $4 OFFSET $5
             "#,
         )
         .bind(&query.tenant_id)
         .bind(query.organization_id.as_deref())
         .bind(query.status.as_deref())
+        .bind(limit)
+        .bind(offset)
         .fetch_all(&self.pool)
         .await
         .map_err(|e| store_error("failed to list attributes", e))?;
 
         Ok(rows.iter().map(map_attribute_row).collect())
+    }
+
+    pub async fn count_attributes(
+        &self,
+        query: &AttributeListQuery,
+    ) -> Result<i64, CommerceServiceError> {
+        sqlx::query_scalar(
+            r#"
+            SELECT COUNT(*) FROM commerce_product_attribute
+            WHERE tenant_id = CAST($1 AS TEXT)
+              AND ($2 IS NULL OR organization_id = CAST($2 AS TEXT))
+              AND ($3 IS NULL OR status = $3)
+            "#,
+        )
+        .bind(&query.tenant_id)
+        .bind(query.organization_id.as_deref())
+        .bind(query.status.as_deref())
+        .fetch_one(&self.pool)
+        .await
+        .map_err(|e| store_error("failed to count attributes", e))
     }
 
     pub async fn create_attribute(
@@ -351,6 +403,31 @@ impl PostgresCommerceCatalogStore {
         .map_err(|e| store_error("failed to list spus", e))?;
 
         Ok(rows.iter().map(map_spu_row).collect())
+    }
+
+    pub async fn count_spus(
+        &self,
+        query: &ProductSpuListQuery,
+    ) -> Result<i64, CommerceServiceError> {
+        sqlx::query_scalar(
+            r#"
+            SELECT COUNT(*)
+            FROM commerce_product_spu
+            WHERE tenant_id = CAST($1 AS TEXT)
+              AND ($2 IS NULL OR organization_id = CAST($2 AS TEXT))
+              AND ($3 IS NULL OR category_id = CAST($3 AS TEXT))
+              AND ($4 IS NULL OR product_type = $4)
+              AND ($5 IS NULL OR status = $5)
+            "#,
+        )
+        .bind(&query.tenant_id)
+        .bind(query.organization_id.as_deref())
+        .bind(query.category_id.as_deref())
+        .bind(query.product_type.as_deref())
+        .bind(query.status.as_deref())
+        .fetch_one(&self.pool)
+        .await
+        .map_err(|e| store_error("failed to count spus", e))
     }
 
     pub async fn retrieve_spu(
@@ -542,6 +619,29 @@ impl PostgresCommerceCatalogStore {
         Ok(rows.iter().map(map_sku_row).collect())
     }
 
+    pub async fn count_skus(
+        &self,
+        query: &ProductSkuListQuery,
+    ) -> Result<i64, CommerceServiceError> {
+        sqlx::query_scalar(
+            r#"
+            SELECT COUNT(*)
+            FROM commerce_product_sku
+            WHERE tenant_id = CAST($1 AS TEXT)
+              AND ($2 IS NULL OR organization_id = CAST($2 AS TEXT))
+              AND ($3 IS NULL OR spu_id = CAST($3 AS TEXT))
+              AND ($4 IS NULL OR status = $4)
+            "#,
+        )
+        .bind(&query.tenant_id)
+        .bind(query.organization_id.as_deref())
+        .bind(query.spu_id.as_deref())
+        .bind(query.status.as_deref())
+        .fetch_one(&self.pool)
+        .await
+        .map_err(|e| store_error("failed to count skus", e))
+    }
+
     pub async fn retrieve_sku(
         &self,
         query: &ProductSkuRetrieveQuery,
@@ -664,6 +764,8 @@ impl PostgresCommerceCatalogStore {
         &self,
         query: &CartRetrieveQuery,
     ) -> Result<Vec<CartItemRecord>, CommerceServiceError> {
+        let limit = query.page_size.unwrap_or(20).min(200);
+        let offset = (query.page.unwrap_or(1) - 1).max(0) * limit;
         let rows = sqlx::query(
             r#"
             SELECT ci.id, ci.tenant_id, c.owner_user_id, ci.sku_id, ci.quantity, ci.created_at, ci.updated_at
@@ -671,15 +773,39 @@ impl PostgresCommerceCatalogStore {
             JOIN commerce_cart c ON c.tenant_id = ci.tenant_id AND c.id = ci.cart_id
             WHERE ci.tenant_id = CAST($1 AS TEXT) AND c.owner_user_id = CAST($2 AS TEXT) AND c.status = 'active'
             ORDER BY ci.created_at ASC
+            LIMIT $3 OFFSET $4
             "#,
         )
         .bind(&query.tenant_id)
         .bind(&query.owner_user_id)
+        .bind(limit)
+        .bind(offset)
         .fetch_all(&self.pool)
         .await
         .map_err(|e| store_error("failed to list cart items", e))?;
 
         Ok(rows.iter().map(map_cart_item_row).collect())
+    }
+
+    pub async fn count_cart_items(
+        &self,
+        query: &CartRetrieveQuery,
+    ) -> Result<i64, CommerceServiceError> {
+        sqlx::query_scalar(
+            r#"
+            SELECT COUNT(*)
+            FROM commerce_cart_item ci
+            JOIN commerce_cart c ON c.tenant_id = ci.tenant_id AND c.id = ci.cart_id
+            WHERE ci.tenant_id = CAST($1 AS TEXT)
+              AND c.owner_user_id = CAST($2 AS TEXT)
+              AND c.status = 'active'
+            "#,
+        )
+        .bind(&query.tenant_id)
+        .bind(&query.owner_user_id)
+        .fetch_one(&self.pool)
+        .await
+        .map_err(|e| store_error("failed to count cart items", e))
     }
 
     pub async fn add_cart_item(
@@ -765,6 +891,8 @@ impl PostgresCommerceCatalogStore {
         &self,
         query: &AddressListQuery,
     ) -> Result<Vec<AddressRecord>, CommerceServiceError> {
+        let limit = query.page_size.unwrap_or(20).min(200);
+        let offset = (query.page.unwrap_or(1) - 1).max(0) * limit;
         let rows = sqlx::query(
             r#"
             SELECT id, tenant_id, owner_user_id, receiver_name, receiver_phone,
@@ -772,15 +900,37 @@ impl PostgresCommerceCatalogStore {
             FROM commerce_user_address
             WHERE tenant_id = CAST($1 AS TEXT) AND owner_user_id = CAST($2 AS TEXT) AND status = 'active'
             ORDER BY is_default DESC, created_at ASC
+            LIMIT $3 OFFSET $4
             "#,
         )
         .bind(&query.tenant_id)
         .bind(&query.owner_user_id)
+        .bind(limit)
+        .bind(offset)
         .fetch_all(&self.pool)
         .await
         .map_err(|e| store_error("failed to list addresses", e))?;
 
         Ok(rows.iter().map(map_address_row).collect())
+    }
+
+    pub async fn count_addresses(
+        &self,
+        query: &AddressListQuery,
+    ) -> Result<i64, CommerceServiceError> {
+        sqlx::query_scalar(
+            r#"
+            SELECT COUNT(*) FROM commerce_user_address
+            WHERE tenant_id = CAST($1 AS TEXT)
+              AND owner_user_id = CAST($2 AS TEXT)
+              AND status = 'active'
+            "#,
+        )
+        .bind(&query.tenant_id)
+        .bind(&query.owner_user_id)
+        .fetch_one(&self.pool)
+        .await
+        .map_err(|e| store_error("failed to count addresses", e))
     }
 
     pub async fn create_address(
@@ -1035,7 +1185,6 @@ fn map_address_row(row: &sqlx::postgres::PgRow) -> AddressRecord {
         id: string_cell(row, "id"),
         tenant_id: string_cell(row, "tenant_id"),
         owner_user_id: string_cell(row, "owner_user_id"),
-        address_id: string_cell(row, "id"),
         receiver_name: string_cell(row, "receiver_name"),
         receiver_phone: string_cell(row, "receiver_phone"),
         country_code: string_cell(row, "country_code"),

@@ -2,14 +2,13 @@
   "schemaVersion": 1,
   "kind": "sdkwork.component.spec",
   "component": {
-    "name": "sdkwork-routes-merchandise-app-api",
-    "displayName": "SDKWork Merchandise APP API Routes",
+    "name": "sdkwork-merchandise-web-support",
+    "displayName": "SDKWork Merchandise Web Support",
     "version": "0.1.0",
-    "type": "rust-route-crate",
-    "root": "crates/sdkwork-routes-merchandise-app-api",
+    "type": "rust-library",
+    "root": "crates/sdkwork-merchandise-web-support",
     "domain": "commerce",
-    "capability": "merchandise",
-    "surface": "app-api",
+    "capability": "merchandise-web-support",
     "languages": [
       "rust"
     ],
@@ -61,25 +60,18 @@
     }
   ],
   "contracts": {
-    "layerRole": "backend-route",
+    "layerRole": "backend-provider",
     "publicExports": [
       "."
     ],
     "providedPorts": [],
     "requiredPorts": [],
     "runtimeEntrypoints": [
-      "app_route_manifest",
       "backend_catalog_router_with_postgres_pool",
       "backend_catalog_router_with_sqlite_pool",
-      "build_backend_catalog_router",
-      "build_merchandise_app_router",
-      "build_merchandise_app_router_with_framework",
-      "gateway_mount",
-      "gateway_route_manifest",
-      "wrap_router_with_web_framework",
-      "wrap_router_with_web_framework_from_env"
+      "build_backend_catalog_router"
     ],
-    "routeManifest": "sdks/_route-manifests/app-api/sdkwork-routes-merchandise-app-api.route-manifest.json",
+    "routeManifest": null,
     "sdkClients": [],
     "sdkDependencies": [],
     "dependencyApiExports": [],
@@ -89,7 +81,7 @@
   },
   "verification": {
     "commands": [
-      "cargo test -p sdkwork-routes-merchandise-app-api"
+      "cargo test -p sdkwork-merchandise-web-support"
     ]
   }
 }

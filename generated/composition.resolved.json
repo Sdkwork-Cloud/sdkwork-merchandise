@@ -4,29 +4,400 @@
   "repository": "sdkwork-merchandise",
   "integrations": [
     {
-      "workspace": "sdkwork-merchandise-app-sdk",
-      "surface": "app-api",
-      "apiPrefix": "/app/v3/api",
+      "workspace": "sdkwork-shop-backend-sdk",
+      "surface": "backend-api",
+      "apiPrefix": "/backend/v3/api",
       "connectivityPlane": "application",
       "runtimeMode": "same-origin-embedded",
       "mountStatus": null,
-      "envKey": "VITE_SDKWORK_MERCHANDISE_APP_API_BASE_URL",
-      "forbidProductSameOriginFallback": false,
-      "corePackage": "@sdkwork/merchandise-pc-core",
-      "source": "apps/sdkwork-merchandise-pc/packages/sdkwork-merchandise-pc-core/specs/component.spec.json"
+      "envKey": "VITE_SDKWORK_SHOP_BACKEND_API_BASE_URL",
+      "forbidApplicationSameOriginFallback": false,
+      "corePackage": "@sdkwork/merchandise-pc-admin-core",
+      "source": "apps/sdkwork-merchandise-pc/packages/sdkwork-merchandise-pc-admin-core/specs/component.spec.json"
     }
   ],
   "permissions": {
     "inheritanceMode": "module-catalog-with-overrides",
-    "inheritedManifests": []
+    "inheritedManifests": [
+      {
+        "workspace": "sdkwork-shop-backend-sdk",
+        "manifestRef": "../sdkwork-shop/specs/iam.module.manifest.json",
+        "inheritPermissions": true
+      }
+    ]
+  },
+  "architecture": {
+    "components": [
+      {
+        "name": "@sdkwork/merchandise-pc-admin-core",
+        "type": "typescript-package",
+        "root": "apps/sdkwork-merchandise-pc/packages/sdkwork-merchandise-pc-admin-core",
+        "domain": "commerce",
+        "capability": "merchandise",
+        "surface": "backend-admin",
+        "languages": [
+          "typescript"
+        ],
+        "source": "apps/sdkwork-merchandise-pc/packages/sdkwork-merchandise-pc-admin-core/specs/component.spec.json",
+        "layerRole": "frontend-core",
+        "publicExports": [
+          ".",
+          "./sdk"
+        ],
+        "providedPorts": [
+          {
+            "name": "merchandiseServices",
+            "export": "."
+          }
+        ],
+        "requiredPorts": [
+          {
+            "name": "shopBackendSdk",
+            "export": "./sdk"
+          }
+        ],
+        "sdkDependencies": [
+          {
+            "workspace": "sdkwork-shop-backend-sdk",
+            "surface": "backend-api",
+            "credentialMode": "authenticated-backend-admin"
+          }
+        ],
+        "routeManifest": null,
+        "runtimeEntrypoints": [],
+        "dependencyApiSurfaces": []
+      },
+      {
+        "name": "sdkwork-api-merchandise-assembly",
+        "type": "rust-api-assembly",
+        "root": "crates/sdkwork-api-merchandise-assembly",
+        "domain": "application",
+        "capability": "api-assembly",
+        "surface": "api-assembly",
+        "languages": [
+          "rust"
+        ],
+        "source": "crates/sdkwork-api-merchandise-assembly/specs/component.spec.json",
+        "layerRole": "runtime-composition",
+        "publicExports": [
+          "."
+        ],
+        "providedPorts": [],
+        "requiredPorts": [],
+        "sdkDependencies": [],
+        "routeManifest": "assembly-manifest.json",
+        "runtimeEntrypoints": [
+          "sdkwork_api_merchandise_assembly::assemble_api_router",
+          "sdkwork_api_merchandise_assembly::assemble_api_router_from_env"
+        ],
+        "dependencyApiSurfaces": []
+      },
+      {
+        "name": "sdkwork-merchandise-repository-sqlx",
+        "type": "rust-crate",
+        "root": "crates/sdkwork-merchandise-repository-sqlx",
+        "domain": "commerce",
+        "capability": "merchandise",
+        "surface": null,
+        "languages": [
+          "rust"
+        ],
+        "source": "crates/sdkwork-merchandise-repository-sqlx/specs/component.spec.json",
+        "layerRole": "backend-repository",
+        "publicExports": [
+          "."
+        ],
+        "providedPorts": [
+          {
+            "name": "singleSkuMerchandiseRepository",
+            "export": "."
+          }
+        ],
+        "requiredPorts": [
+          {
+            "name": "databasePool",
+            "export": "."
+          },
+          {
+            "name": "entityIdGenerator",
+            "export": "."
+          }
+        ],
+        "sdkDependencies": [],
+        "routeManifest": null,
+        "runtimeEntrypoints": [],
+        "dependencyApiSurfaces": []
+      },
+      {
+        "name": "sdkwork-merchandise-service",
+        "type": "rust-crate",
+        "root": "crates/sdkwork-merchandise-service",
+        "domain": "commerce",
+        "capability": "merchandise",
+        "surface": null,
+        "languages": [
+          "rust"
+        ],
+        "source": "crates/sdkwork-merchandise-service/specs/component.spec.json",
+        "layerRole": "backend-service",
+        "publicExports": [
+          "."
+        ],
+        "providedPorts": [
+          {
+            "name": "singleSkuMerchandiseService",
+            "export": "."
+          }
+        ],
+        "requiredPorts": [
+          {
+            "name": "singleSkuMerchandiseRepository",
+            "export": "."
+          }
+        ],
+        "sdkDependencies": [],
+        "routeManifest": null,
+        "runtimeEntrypoints": [],
+        "dependencyApiSurfaces": []
+      },
+      {
+        "name": "sdkwork-merchandise-web-support",
+        "type": "rust-library",
+        "root": "crates/sdkwork-merchandise-web-support",
+        "domain": "commerce",
+        "capability": "merchandise-web-support",
+        "surface": null,
+        "languages": [
+          "rust"
+        ],
+        "source": "crates/sdkwork-merchandise-web-support/specs/component.spec.json",
+        "layerRole": "backend-provider",
+        "publicExports": [
+          "."
+        ],
+        "providedPorts": [],
+        "requiredPorts": [],
+        "sdkDependencies": [],
+        "routeManifest": null,
+        "runtimeEntrypoints": [
+          "backend_catalog_router_with_postgres_pool",
+          "backend_catalog_router_with_sqlite_pool",
+          "build_backend_catalog_router"
+        ],
+        "dependencyApiSurfaces": []
+      },
+      {
+        "name": "sdkwork-routes-merchandise-backend-api",
+        "type": "rust-route-crate",
+        "root": "crates/sdkwork-routes-merchandise-backend-api",
+        "domain": "commerce",
+        "capability": "merchandise",
+        "surface": "backend-api",
+        "languages": [
+          "rust"
+        ],
+        "source": "crates/sdkwork-routes-merchandise-backend-api/specs/component.spec.json",
+        "layerRole": "backend-route",
+        "publicExports": [
+          "."
+        ],
+        "providedPorts": [],
+        "requiredPorts": [],
+        "sdkDependencies": [],
+        "routeManifest": "src/http_route_manifest.rs#backend_route_manifest",
+        "runtimeEntrypoints": [
+          "backend_route_manifest",
+          "build_merchandise_backend_router",
+          "build_merchandise_backend_router_with_framework",
+          "gateway_mount",
+          "gateway_route_manifest",
+          "wrap_router_with_web_framework",
+          "wrap_router_with_web_framework_from_env"
+        ],
+        "dependencyApiSurfaces": []
+      },
+      {
+        "name": "sdkwork-merchandise-workspace",
+        "type": "rust-crate",
+        "root": "sdkwork-merchandise",
+        "domain": "commerce",
+        "capability": "merchandise",
+        "surface": null,
+        "languages": [
+          "typescript",
+          "rust"
+        ],
+        "source": "specs/component.spec.json",
+        "layerRole": "runtime-gateway",
+        "publicExports": [
+          "."
+        ],
+        "providedPorts": [
+          {
+            "name": "merchandiseRuntime",
+            "export": "."
+          }
+        ],
+        "requiredPorts": [],
+        "sdkDependencies": [],
+        "routeManifest": "sdks/_route-manifests/backend-api/sdkwork-routes-merchandise-backend-api.route-manifest.json",
+        "runtimeEntrypoints": [
+          "package.json#scripts.verify"
+        ],
+        "dependencyApiSurfaces": []
+      }
+    ],
+    "frontend": {
+      "packages": [
+        {
+          "appRoot": "apps/sdkwork-merchandise-pc",
+          "architecture": "pc",
+          "directoryName": "sdkwork-merchandise-pc-admin-core",
+          "name": "@sdkwork/merchandise-pc-admin-core",
+          "role": "core"
+        },
+        {
+          "appRoot": "apps/sdkwork-merchandise-pc",
+          "architecture": "pc",
+          "directoryName": "sdkwork-merchandise-pc-shell",
+          "name": "@sdkwork/merchandise-pc-shell",
+          "role": "shell"
+        }
+      ]
+    },
+    "rust": {
+      "crates": [
+        {
+          "packageName": "sdkwork-api-merchandise-assembly",
+          "manifest": "crates/sdkwork-api-merchandise-assembly/Cargo.toml",
+          "dependencies": [
+            "axum",
+            "tokio",
+            "sdkwork-merchandise-service-host",
+            "sdkwork-routes-merchandise-backend-api"
+          ]
+        },
+        {
+          "packageName": "sdkwork-api-merchandise-standalone-gateway",
+          "manifest": "crates/sdkwork-api-merchandise-standalone-gateway/Cargo.toml",
+          "dependencies": [
+            "sdkwork-api-merchandise-assembly",
+            "axum",
+            "serde-json",
+            "sdkwork-merchandise-service-host",
+            "tokio",
+            "tower-http",
+            "tracing",
+            "tracing-subscriber",
+            "sdkwork-web-bootstrap"
+          ]
+        },
+        {
+          "packageName": "sdkwork-merchandise-database-host",
+          "manifest": "crates/sdkwork-merchandise-database-host/Cargo.toml",
+          "dependencies": [
+            "dotenvy",
+            "sdkwork-database-config",
+            "sdkwork-database-lifecycle",
+            "sdkwork-database-spi",
+            "sdkwork-database-sqlx"
+          ]
+        },
+        {
+          "packageName": "sdkwork-merchandise-repository-sqlx",
+          "manifest": "crates/sdkwork-merchandise-repository-sqlx/Cargo.toml",
+          "dependencies": [
+            "async-trait",
+            "chrono",
+            "serde",
+            "serde-json",
+            "sdkwork-contract-service",
+            "sdkwork-merchandise-service",
+            "sdkwork-database-id",
+            "sdkwork-database-sqlx",
+            "sqlx",
+            "uuid",
+            "tokio"
+          ]
+        },
+        {
+          "packageName": "sdkwork-merchandise-service-host",
+          "manifest": "crates/sdkwork-merchandise-service-host/Cargo.toml",
+          "dependencies": [
+            "sdkwork-merchandise-database-host",
+            "sdkwork-database-sqlx"
+          ]
+        },
+        {
+          "packageName": "sdkwork-merchandise-service",
+          "manifest": "crates/sdkwork-merchandise-service/Cargo.toml",
+          "dependencies": [
+            "async-trait",
+            "chrono",
+            "serde",
+            "serde-json",
+            "uuid",
+            "sdkwork-contract-service",
+            "sdkwork-utils-rust",
+            "tokio"
+          ]
+        },
+        {
+          "packageName": "sdkwork-merchandise-web-support",
+          "manifest": "crates/sdkwork-merchandise-web-support/Cargo.toml",
+          "dependencies": [
+            "axum",
+            "serde",
+            "serde-json",
+            "sqlx",
+            "sdkwork-contract-service",
+            "sdkwork-merchandise-repository-sqlx",
+            "sdkwork-merchandise-service",
+            "sdkwork-iam-context-service",
+            "sdkwork-web-core",
+            "sdkwork-utils-rust",
+            "uuid"
+          ]
+        },
+        {
+          "packageName": "sdkwork-routes-merchandise-backend-api",
+          "manifest": "crates/sdkwork-routes-merchandise-backend-api/Cargo.toml",
+          "dependencies": [
+            "axum",
+            "serde-json",
+            "sdkwork-merchandise-service-host",
+            "sdkwork-merchandise-web-support",
+            "sdkwork-database-sqlx",
+            "sdkwork-web-core",
+            "sdkwork-web-axum",
+            "sdkwork-web-bootstrap",
+            "sdkwork-iam-web-adapter",
+            "uuid"
+          ]
+        }
+      ]
+    },
+    "routes": {
+      "manifests": [
+        {
+          "source": "sdks/_route-manifests/backend-api/sdkwork-routes-merchandise-backend-api.route-manifest.json",
+          "packageName": "sdkwork-routes-merchandise-backend-api",
+          "surface": "backend-api",
+          "routeCount": 27
+        }
+      ]
+    },
+    "runtime": {
+      "dependencyApiSurfaces": []
+    }
   },
   "env": {},
-  "requiresPlatformGatewayProcess": false,
+  "requiresPlatformApiSurface": false,
   "issues": [],
   "meta": {
     "resolver": "sdkwork-specs/tools/lib/composition-resolver.mjs",
     "credentialModes": {
-      "sdkwork-merchandise-app-sdk": "authenticated-app-api"
+      "sdkwork-shop-backend-sdk": "authenticated-backend-admin"
     }
   }
 }

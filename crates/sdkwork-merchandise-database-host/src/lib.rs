@@ -6,12 +6,12 @@ use sdkwork_database_lifecycle::{lifecycle_options_from_env, LifecycleOrchestrat
 use sdkwork_database_spi::{DatabaseAssetProvider, DatabaseManifest, DefaultDatabaseModule};
 use sdkwork_database_sqlx::{create_pool_from_config, DatabasePool};
 
-pub struct ShopDatabaseHost {
+pub struct MerchandiseDatabaseHost {
     pool: DatabasePool,
     module: Arc<DefaultDatabaseModule>,
 }
 
-impl ShopDatabaseHost {
+impl MerchandiseDatabaseHost {
     pub fn pool(&self) -> &DatabasePool {
         &self.pool
     }
@@ -21,7 +21,9 @@ impl ShopDatabaseHost {
     }
 }
 
-pub async fn bootstrap_shop_database(pool: DatabasePool) -> Result<ShopDatabaseHost, String> {
+pub async fn bootstrap_merchandise_database(
+    pool: DatabasePool,
+) -> Result<MerchandiseDatabaseHost, String> {
     let app_root = resolve_app_root();
     let module = Arc::new(
         DefaultDatabaseModule::from_app_root(&app_root)
@@ -45,21 +47,21 @@ pub async fn bootstrap_shop_database(pool: DatabasePool) -> Result<ShopDatabaseH
             .map_err(|error| format!("merchandise database migrate failed: {error}"))?;
     }
 
-    Ok(ShopDatabaseHost { pool, module })
+    Ok(MerchandiseDatabaseHost { pool, module })
 }
 
-pub async fn bootstrap_shop_database_from_env() -> Result<ShopDatabaseHost, String> {
+pub async fn bootstrap_merchandise_database_from_env() -> Result<MerchandiseDatabaseHost, String> {
     let _ = dotenvy::dotenv();
-    let config = DatabaseConfig::from_env("SHOP")
+    let config = DatabaseConfig::from_env("MERCHANDISE")
         .map_err(|error| format!("read merchandise database config failed: {error}"))?;
     let pool = create_pool_from_config(config)
         .await
         .map_err(|error| format!("create merchandise database pool failed: {error}"))?;
-    bootstrap_shop_database(pool).await
+    bootstrap_merchandise_database(pool).await
 }
 
 fn resolve_app_root() -> PathBuf {
-    std::env::var("SDKWORK_SHOP_APP_ROOT")
+    std::env::var("SDKWORK_MERCHANDISE_APP_ROOT")
         .map(PathBuf::from)
         .unwrap_or_else(|_| {
             PathBuf::from(env!("CARGO_MANIFEST_DIR"))

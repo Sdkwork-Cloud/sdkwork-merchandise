@@ -1,4 +1,4 @@
-//! Backend admin catalog HTTP routes (owned by merchandise).
+//! Merchandise routes published through the SDKWork Shop backend authority.
 
 use std::sync::Arc;
 
@@ -25,13 +25,13 @@ use sqlx::{PgPool, SqlitePool};
 
 use super::{
     catalog_system_response, map_attribute, map_category, map_category_attribute, map_price_list,
-    map_sku, map_spu, not_found_response, success_accepted, success_list, success_resource,
-    unauthorized_response, validation_response, AttributeQueryParams, CatalogState,
-    CategoryAttributeQueryParams, CategoryQueryParams, CommerceCatalogStore, CreateAttributeBody,
-    CreateCategoryAttributeBody, CreateCategoryBody, CreatePriceListBody, CreateSkuBody,
-    CreateSpuBody, PriceListQueryParams, SkuListQueryParams, SpuListQueryParams,
-    UpdateCategoryAttributeBody, UpdateCategoryBody, UpdatePriceListBody, UpdateSkuBody,
-    UpdateSpuBody,
+    map_sku, map_spu, not_found_response, success_created_resource, success_list,
+    success_no_content, success_offset_page, success_resource, unauthorized_response,
+    validation_response, AttributeQueryParams, CatalogState, CategoryAttributeQueryParams,
+    CategoryQueryParams, CommerceCatalogStore, CreateAttributeBody, CreateCategoryAttributeBody,
+    CreateCategoryBody, CreatePriceListBody, CreateSkuBody, CreateSpuBody, PriceListQueryParams,
+    SkuListQueryParams, SpuListQueryParams, UpdateCategoryAttributeBody, UpdateCategoryBody,
+    UpdatePriceListBody, UpdateSkuBody, UpdateSpuBody,
 };
 use crate::subject::app_runtime_subject_from_extension;
 
@@ -126,12 +126,19 @@ async fn backend_list_categories(
             .or(params.organization_id.as_deref()),
         params.parent_id.as_deref(),
         params.status.as_deref(),
+        params.page,
+        params.page_size,
     ) {
         Ok(query) => query,
         Err(error) => return validation_response(error.message()),
     };
-    match state.store.list_categories(query).await {
-        Ok(data) => success_list(data.into_iter().map(map_category).collect()),
+    match state.store.list_categories_page(query).await {
+        Ok(data) => success_offset_page(
+            data.items.into_iter().map(map_category).collect(),
+            data.page,
+            data.page_size,
+            data.total_items,
+        ),
         Err(error) => catalog_system_response("category list is unavailable", error),
     }
 }
@@ -162,7 +169,7 @@ async fn backend_create_category(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.create_category(command).await {
-        Ok(data) => success_resource(map_category(data)),
+        Ok(data) => success_created_resource(map_category(data)),
         Err(error) => catalog_system_response("failed to create category", error),
     }
 }
@@ -213,7 +220,7 @@ async fn backend_delete_category(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.delete_category(command).await {
-        Ok(()) => success_accepted(),
+        Ok(()) => success_no_content(),
         Err(error) => catalog_system_response("failed to delete category", error),
     }
 }
@@ -242,8 +249,13 @@ async fn backend_list_products(
         Ok(query) => query,
         Err(error) => return validation_response(error.message()),
     };
-    match state.store.list_spus(query).await {
-        Ok(data) => success_list(data.into_iter().map(map_spu).collect()),
+    match state.store.list_spus_page(query).await {
+        Ok(data) => success_offset_page(
+            data.items.into_iter().map(map_spu).collect(),
+            data.page,
+            data.page_size,
+            data.total_items,
+        ),
         Err(error) => catalog_system_response("product list is unavailable", error),
     }
 }
@@ -297,7 +309,7 @@ async fn backend_create_product(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.create_spu(command).await {
-        Ok(data) => success_resource(map_spu(data)),
+        Ok(data) => success_created_resource(map_spu(data)),
         Err(error) => catalog_system_response("failed to create product", error),
     }
 }
@@ -349,7 +361,7 @@ async fn backend_delete_product(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.delete_spu(command).await {
-        Ok(()) => success_accepted(),
+        Ok(()) => success_no_content(),
         Err(error) => catalog_system_response("failed to delete product", error),
     }
 }
@@ -378,8 +390,13 @@ async fn backend_list_spus(
         Ok(query) => query,
         Err(error) => return validation_response(error.message()),
     };
-    match state.store.list_spus(query).await {
-        Ok(data) => success_list(data.into_iter().map(map_spu).collect()),
+    match state.store.list_spus_page(query).await {
+        Ok(data) => success_offset_page(
+            data.items.into_iter().map(map_spu).collect(),
+            data.page,
+            data.page_size,
+            data.total_items,
+        ),
         Err(error) => catalog_system_response("spu list is unavailable", error),
     }
 }
@@ -413,7 +430,7 @@ async fn backend_create_spu(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.create_spu(command).await {
-        Ok(data) => success_resource(map_spu(data)),
+        Ok(data) => success_created_resource(map_spu(data)),
         Err(error) => catalog_system_response("failed to create spu", error),
     }
 }
@@ -516,8 +533,13 @@ async fn backend_list_skus(
         Ok(query) => query,
         Err(error) => return validation_response(error.message()),
     };
-    match state.store.list_skus(query).await {
-        Ok(data) => success_list(data.into_iter().map(map_sku).collect()),
+    match state.store.list_skus_page(query).await {
+        Ok(data) => success_offset_page(
+            data.items.into_iter().map(map_sku).collect(),
+            data.page,
+            data.page_size,
+            data.total_items,
+        ),
         Err(error) => catalog_system_response("sku list is unavailable", error),
     }
 }
@@ -564,7 +586,7 @@ async fn backend_create_sku(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.create_sku(command).await {
-        Ok(data) => success_resource(map_sku(data)),
+        Ok(data) => success_created_resource(map_sku(data)),
         Err(error) => catalog_system_response("failed to create sku", error),
     }
 }
@@ -633,7 +655,7 @@ async fn backend_delete_sku(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.delete_sku(command).await {
-        Ok(()) => success_accepted(),
+        Ok(()) => success_no_content(),
         Err(error) => catalog_system_response("failed to delete sku", error),
     }
 }
@@ -654,12 +676,19 @@ async fn backend_list_attributes(
             .as_deref()
             .or(params.organization_id.as_deref()),
         params.status.as_deref(),
+        params.page,
+        params.page_size,
     ) {
         Ok(query) => query,
         Err(error) => return validation_response(error.message()),
     };
-    match state.store.list_attributes(query).await {
-        Ok(data) => success_list(data.into_iter().map(map_attribute).collect()),
+    match state.store.list_attributes_page(query).await {
+        Ok(data) => success_offset_page(
+            data.items.into_iter().map(map_attribute).collect(),
+            data.page,
+            data.page_size,
+            data.total_items,
+        ),
         Err(error) => catalog_system_response("attribute list is unavailable", error),
     }
 }
@@ -689,7 +718,7 @@ async fn backend_create_attribute(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.create_attribute(command).await {
-        Ok(data) => success_resource(map_attribute(data)),
+        Ok(data) => success_created_resource(map_attribute(data)),
         Err(error) => catalog_system_response("failed to create attribute", error),
     }
 }
@@ -748,7 +777,7 @@ async fn backend_create_category_attribute(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.create_category_attribute(command).await {
-        Ok(data) => success_resource(map_category_attribute(data)),
+        Ok(data) => success_created_resource(map_category_attribute(data)),
         Err(error) => catalog_system_response("failed to create category attribute", error),
     }
 }
@@ -799,7 +828,7 @@ async fn backend_delete_category_attribute(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.delete_category_attribute(command).await {
-        Ok(()) => success_accepted(),
+        Ok(()) => success_no_content(),
         Err(error) => catalog_system_response("failed to delete category attribute", error),
     }
 }
@@ -855,7 +884,7 @@ async fn backend_create_price_list(
         Err(error) => return validation_response(error.message()),
     }
     match state.store.create_price_list(command).await {
-        Ok(data) => success_resource(map_price_list(data)),
+        Ok(data) => success_created_resource(map_price_list(data)),
         Err(error) => catalog_system_response("failed to create price list", error),
     }
 }

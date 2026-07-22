@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@sdkwork/merchandise-pc-core": ["packages/sdkwork-merchandise-pc-core/src/index.ts"],
+      "@sdkwork/merchandise-pc-admin-core": ["packages/sdkwork-merchandise-pc-admin-core/src/index.ts"],
       "@sdkwork/merchandise-pc-shell": ["packages/sdkwork-merchandise-pc-shell/src/index.tsx"]
     }
   },

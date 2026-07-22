@@ -50,8 +50,8 @@ Snowflake provider. The boundary does not add tables or schema assets.
 | --- | --- | --- |
 | Service contract | `sdkwork-merchandise-service` | Validation, typed commands/queries, repository port |
 | Persistence adapter | `sdkwork-merchandise-repository-sqlx` | Tenant-scoped SQL, transactions, Snowflake ids, idempotency replay, bounded listing |
-| App routes | `sdkwork-routes-merchandise-app-api` | App HTTP contract and SDK authority |
-| Backend routes | `sdkwork-routes-merchandise-backend-api` | Operator/admin HTTP contract and SDK authority |
+| HTTP support | `sdkwork-merchandise-web-support` | Shared DTO, response, and store-port support without API ownership |
+| Backend routes | `sdkwork-routes-merchandise-backend-api` | Catalog operator routes contributed to the Shop backend authority |
 | Runtime composition | `sdkwork-api-merchandise-standalone-gateway` | Pool, IAM, route, and readiness wiring |
 | Database lifecycle | approved database host/framework | Existing schema, migrations, drift, and health |
 
@@ -62,7 +62,7 @@ payment owners. They do not own or write merchandise tables.
 
 - `crates/sdkwork-merchandise-service/`
 - `crates/sdkwork-merchandise-repository-sqlx/`
-- `crates/sdkwork-routes-merchandise-app-api/`
+- `crates/sdkwork-merchandise-web-support/`
 - `crates/sdkwork-routes-merchandise-backend-api/`
 - `crates/sdkwork-merchandise-database-host/`
 - `crates/sdkwork-merchandise-service-host/`
@@ -74,8 +74,10 @@ Each authored crate owns its local `specs/component.spec.json` contract.
 
 ## 5. API, SDK, And Data Ownership
 
-- App API prefix: `/app/v3/api/catalog/products`
-- Backend API prefix: `/backend/v3/api/catalog/products`
+- Backend API prefix: `/backend/v3/api/catalog`
+- Canonical API authority: `sdkwork-shop-backend-api`
+- Canonical generated SDK: `sdkwork-shop-backend-sdk`
+- No Merchandise-owned app-api, open-api, or standalone SDK family exists.
 - Table authority: existing `commerce_product_spu` and
   `commerce_product_sku` records supplied by the database lifecycle owner
 - New owner boundary: no DDL, migration, seed, or table-registry changes
@@ -85,8 +87,9 @@ Each authored crate owns its local `specs/component.spec.json` contract.
   deterministic SPU/SKU business numbers, atomic transaction, and conflict on
   idempotency payload mismatch
 
-HTTP handlers use `sdkwork-web-framework` response mapping; consumers use
-scoped composed SDK packages rather than generated transport internals.
+HTTP handlers use `sdkwork-web-framework` response mapping. Backend-admin
+consumers use `sdkwork-shop-backend-sdk`; the Shop assembly mounts this
+repository's backend route module in the same origin.
 
 ## 6. Security, Privacy, And Observability
 

@@ -5,16 +5,15 @@
 //! so `/healthz`, `/livez`, `/readyz`, and `/metrics` are not duplicated per surface.
 
 use axum::Router;
-use sdkwork_merchandise_service_host::ShopServiceHost;
+use sdkwork_merchandise_service_host::MerchandiseServiceHost;
 use std::sync::Arc;
 
 pub struct ApiAssembly {
     pub router: Router,
 }
 
-pub async fn assemble_api_router(host: Arc<ShopServiceHost>) -> ApiAssembly {
+pub async fn assemble_api_router(host: Arc<MerchandiseServiceHost>) -> ApiAssembly {
     let mut router = Router::new();
-    router = router.merge(sdkwork_routes_merchandise_app_api::gateway_mount(host.clone()).await);
-    router = router.merge(sdkwork_routes_merchandise_backend_api::gateway_mount(host.clone()).await);
+    router = router.merge(sdkwork_routes_merchandise_backend_api::gateway_mount(host).await);
     ApiAssembly { router }
 }

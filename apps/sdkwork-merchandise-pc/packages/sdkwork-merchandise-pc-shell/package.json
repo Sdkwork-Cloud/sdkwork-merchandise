@@ -11,7 +11,7 @@
     }
   },
   "dependencies": {
-    "@sdkwork/merchandise-pc-core": "workspace:*",
+    "@sdkwork/merchandise-pc-admin-core": "workspace:*",
     "react": "catalog:"
   }
 }

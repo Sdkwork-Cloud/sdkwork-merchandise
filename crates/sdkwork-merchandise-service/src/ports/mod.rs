@@ -175,7 +175,6 @@ pub struct AddressRecord {
     pub id: String,
     pub tenant_id: String,
     pub owner_user_id: String,
-    pub address_id: String,
     pub receiver_name: String,
     pub receiver_phone: String,
     pub country_code: String,

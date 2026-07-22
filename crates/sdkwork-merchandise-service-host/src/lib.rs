@@ -1,14 +1,11 @@
-use sdkwork_database_sqlx::DatabasePool;
-use sdkwork_merchandise_database_host::{bootstrap_shop_database_from_env, ShopDatabaseHost};
-use sdkwork_merchandise_repository_sqlx::SqlxShopRepository;
-use sdkwork_merchandise_service::ShopService;
+use sdkwork_database_sqlx::{process_shared_database_pool, DatabasePool};
+use sdkwork_merchandise_database_host::bootstrap_merchandise_database_from_env;
 
-pub struct ShopServiceHost {
-    database: ShopDatabaseHost,
-    shop_service: ShopService<SqlxShopRepository>,
+pub struct MerchandiseServiceHost {
+    database_pool: DatabasePool,
 }
 
-impl ShopServiceHost {
+impl MerchandiseServiceHost {
     pub async fn new() -> Self {
         Self::from_env()
             .await
@@ -16,24 +13,18 @@ impl ShopServiceHost {
     }
 
     pub async fn from_env() -> Result<Self, String> {
-        let database = bootstrap_shop_database_from_env().await?;
-        let repository = SqlxShopRepository::new(database.pool().clone());
+        if let Some(database_pool) = process_shared_database_pool() {
+            return Ok(Self { database_pool });
+        }
+
+        let database = bootstrap_merchandise_database_from_env().await?;
         Ok(Self {
-            shop_service: ShopService::new(repository),
-            database,
+            database_pool: database.pool().clone(),
         })
     }
 
-    pub fn shop_service(&self) -> &ShopService<SqlxShopRepository> {
-        &self.shop_service
-    }
-
     pub fn database_pool(&self) -> &DatabasePool {
-        self.database.pool()
-    }
-
-    pub fn database_module(&self) -> std::sync::Arc<sdkwork_database_spi::DefaultDatabaseModule> {
-        self.database.module()
+        &self.database_pool
     }
 }
 

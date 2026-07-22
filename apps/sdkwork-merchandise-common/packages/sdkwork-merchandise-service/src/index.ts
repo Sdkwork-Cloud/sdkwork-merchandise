@@ -1,8 +1,13 @@
 import { isBlank, slugify } from "@sdkwork/utils";
 
-import type { CreateShopInput, ShopProfile } from "@sdkwork/merchandise-contracts";
+import type {
+  CreateProductInput,
+  ProductProfile,
+} from "@sdkwork/merchandise-contracts";
 
-export function normalizeCreateShopInput(input: CreateShopInput): CreateShopInput {
+export function normalizeCreateProductInput(
+  input: CreateProductInput,
+): CreateProductInput {
   const name = input.name.trim();
   const slug = slugify(input.slug.trim() || name);
   if (isBlank(name)) {
@@ -14,6 +19,6 @@ export function normalizeCreateShopInput(input: CreateShopInput): CreateShopInpu
   return { name, slug };
 }
 
-export function formatShopHeadline(profile: ShopProfile): string {
+export function formatProductHeadline(profile: ProductProfile): string {
   return `${profile.name} (${profile.status})`;
 }

@@ -11,7 +11,7 @@
     "lint": "pnpm run typecheck"
   },
   "dependencies": {
-    "@sdkwork/merchandise-pc-core": "workspace:*",
+    "@sdkwork/merchandise-pc-admin-core": "workspace:*",
     "@sdkwork/merchandise-pc-shell": "workspace:*",
     "@sdkwork/merchandise-service": "workspace:*",
     "@sdkwork/utils": "workspace:*",

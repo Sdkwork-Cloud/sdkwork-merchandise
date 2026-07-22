@@ -6,6 +6,8 @@ pub struct CategoryListQuery {
     pub organization_id: Option<String>,
     pub parent_id: Option<String>,
     pub status: Option<String>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -19,6 +21,8 @@ pub struct AttributeListQuery {
     pub tenant_id: String,
     pub organization_id: Option<String>,
     pub status: Option<String>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -78,12 +82,16 @@ pub struct SkuPriceRetrieveQuery {
 pub struct CartRetrieveQuery {
     pub tenant_id: String,
     pub owner_user_id: String,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct AddressListQuery {
     pub tenant_id: String,
     pub owner_user_id: String,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
 }
 
 macro_rules! impl_query_new {
@@ -134,9 +142,9 @@ macro_rules! impl_query_new {
     };
 }
 
-impl_query_new!(CategoryListQuery, required: [tenant_id], optional: [organization_id, parent_id, status]);
+impl_query_new!(CategoryListQuery, required: [tenant_id], optional: [organization_id, parent_id, status], page: [page, page_size]);
 impl_query_new!(CategoryRetrieveQuery, required: [tenant_id, category_id], optional: []);
-impl_query_new!(AttributeListQuery, required: [tenant_id], optional: [organization_id, status]);
+impl_query_new!(AttributeListQuery, required: [tenant_id], optional: [organization_id, status], page: [page, page_size]);
 impl_query_new!(PriceListListQuery, required: [tenant_id], optional: [organization_id, status]);
 impl_query_new!(CategoryAttributeListQuery, required: [tenant_id], optional: [organization_id, category_id]);
 impl_query_new!(ProductSpuListQuery, required: [tenant_id], optional: [organization_id, category_id, product_type, status], page: [page, page_size]);
@@ -144,8 +152,8 @@ impl_query_new!(ProductSpuRetrieveQuery, required: [tenant_id, spu_id], optional
 impl_query_new!(ProductSkuListQuery, required: [tenant_id], optional: [organization_id, spu_id, status], page: [page, page_size]);
 impl_query_new!(ProductSkuRetrieveQuery, required: [tenant_id, sku_id], optional: []);
 impl_query_new!(SkuPriceRetrieveQuery, required: [tenant_id, sku_id], optional: []);
-impl_query_new!(CartRetrieveQuery, required: [tenant_id, owner_user_id], optional: []);
-impl_query_new!(AddressListQuery, required: [tenant_id, owner_user_id], optional: []);
+impl_query_new!(CartRetrieveQuery, required: [tenant_id, owner_user_id], optional: [], page: [page, page_size]);
+impl_query_new!(AddressListQuery, required: [tenant_id, owner_user_id], optional: [], page: [page, page_size]);
 
 fn required_text(field_name: &str, value: &str) -> Result<String, CommerceServiceError> {
     crate::validation::require_non_empty(field_name, value)?;
@@ -157,4 +165,24 @@ fn optional_text(value: Option<&str>) -> Option<String> {
         .map(str::trim)
         .filter(|value| !value.is_empty())
         .map(str::to_string)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::ProductSkuListQuery;
+
+    #[test]
+    fn product_sku_page_size_is_bounded() {
+        let error = ProductSkuListQuery::new(
+            "tenant-1",
+            None,
+            Some("product-1"),
+            Some("active"),
+            Some(1),
+            Some(201),
+        )
+        .unwrap_err();
+
+        assert_eq!(error.message(), "page_size must be between 1 and 200");
+    }
 }

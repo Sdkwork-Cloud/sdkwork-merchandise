@@ -46,8 +46,8 @@
       "@sdkwork/merchandise-service": [
         "apps/sdkwork-merchandise-common/packages/sdkwork-merchandise-service/src/index.ts"
       ],
-      "@sdkwork/merchandise-pc-core": [
-        "apps/sdkwork-merchandise-pc/packages/sdkwork-merchandise-pc-core/src/index.ts"
+      "@sdkwork/merchandise-pc-admin-core": [
+        "apps/sdkwork-merchandise-pc/packages/sdkwork-merchandise-pc-admin-core/src/index.ts"
       ],
       "@sdkwork/merchandise-pc-shell": [
         "apps/sdkwork-merchandise-pc/packages/sdkwork-merchandise-pc-shell/src/index.tsx"

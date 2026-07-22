@@ -2,10 +2,9 @@
 resolver = "2"
 members = [
     "crates/sdkwork-api-merchandise-assembly",
-    "crates/sdkwork-api-merchandise-assembly",
   "crates/sdkwork-merchandise-service",
   "crates/sdkwork-merchandise-repository-sqlx",
-  "crates/sdkwork-routes-merchandise-app-api",
+  "crates/sdkwork-merchandise-web-support",
   "crates/sdkwork-routes-merchandise-backend-api",
   "crates/sdkwork-merchandise-database-host",
   "crates/sdkwork-merchandise-service-host",
@@ -49,8 +48,8 @@ sdkwork-database-sqlx = { path = "../sdkwork-database/crates/sdkwork-database-sq
 sdkwork-database-ops-http = { path = "../sdkwork-database/crates/sdkwork-database-ops-http" }
 sdkwork_merchandise_service = { path = "crates/sdkwork-merchandise-service", package = "sdkwork-merchandise-service" }
 sdkwork_merchandise_repository_sqlx = { path = "crates/sdkwork-merchandise-repository-sqlx", package = "sdkwork-merchandise-repository-sqlx" }
-sdkwork_routes_merchandise_app_api = { path = "crates/sdkwork-routes-merchandise-app-api", package = "sdkwork-routes-merchandise-app-api" }
-sdkwork_routes_merchandise_backend_api = { path = "crates/sdkwork-routes-merchandise-backend-api", package = "sdkwork-routes-merchandise-backend-api" }
+sdkwork_merchandise_web_support = { path = "crates/sdkwork-merchandise-web-support", package = "sdkwork-merchandise-web-support" }
+sdkwork-routes-merchandise-backend-api = { path = "crates/sdkwork-routes-merchandise-backend-api" }
 sdkwork_merchandise_database_host = { path = "crates/sdkwork-merchandise-database-host", package = "sdkwork-merchandise-database-host" }
 sdkwork_merchandise_service_host = { path = "crates/sdkwork-merchandise-service-host", package = "sdkwork-merchandise-service-host" }
 sdkwork_api_merchandise_assembly = { path = "crates/sdkwork-api-merchandise-assembly", package = "sdkwork-api-merchandise-assembly" }
