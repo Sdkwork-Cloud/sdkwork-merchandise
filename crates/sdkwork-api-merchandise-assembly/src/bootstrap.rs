@@ -6,14 +6,36 @@
 
 use axum::Router;
 use sdkwork_merchandise_service_host::MerchandiseServiceHost;
+use sdkwork_web_bootstrap::{ApiAssemblyContribution, ReadinessCheck};
+use sdkwork_web_core::{DomainContextInjector, HttpRouteManifest};
 use std::sync::Arc;
 
-pub struct ApiAssembly {
-    pub router: Router,
+pub type ApiAssembly = ApiAssemblyContribution;
+
+pub struct ApiAssemblyContext {
+    pub host: Arc<MerchandiseServiceHost>,
+    pub domain_context_injectors: Vec<Arc<dyn DomainContextInjector>>,
+    pub readiness_check: Arc<dyn ReadinessCheck>,
 }
 
-pub async fn assemble_api_router(host: Arc<MerchandiseServiceHost>) -> ApiAssembly {
+pub async fn assemble_api_router(context: ApiAssemblyContext) -> Result<ApiAssembly, String> {
+    let ApiAssemblyContext {
+        host,
+        domain_context_injectors,
+        readiness_check,
+    } = context;
     let mut router = Router::new();
     router = router.merge(sdkwork_routes_merchandise_backend_api::gateway_mount(host).await);
-    ApiAssembly { router }
+    let mut routes = Vec::new();
+    routes.extend_from_slice(
+        sdkwork_routes_merchandise_backend_api::gateway_route_manifest().routes(),
+    );
+    ApiAssemblyContribution::from_manifest(
+        "sdkwork-merchandise",
+        "SDKWork merchandise API",
+        router,
+        HttpRouteManifest::from_owned_routes(routes),
+        domain_context_injectors,
+        readiness_check,
+    )
 }

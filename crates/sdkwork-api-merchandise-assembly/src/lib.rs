@@ -5,11 +5,16 @@
 mod bootstrap;
 mod generated;
 
-pub use bootstrap::{assemble_api_router, ApiAssembly};
+pub use bootstrap::{assemble_api_router, ApiAssembly, ApiAssemblyContext};
 
 pub async fn assemble_api_router_from_env() -> Result<ApiAssembly, String> {
     let host = sdkwork_merchandise_service_host::MerchandiseServiceHost::from_env().await?;
-    Ok(assemble_api_router(std::sync::Arc::new(host)).await)
+    assemble_api_router(ApiAssemblyContext {
+        host: std::sync::Arc::new(host),
+        domain_context_injectors: Vec::new(),
+        readiness_check: std::sync::Arc::new(sdkwork_web_bootstrap::AlwaysReady),
+    })
+    .await
 }
 
 pub fn assembly_route_count() -> usize {
