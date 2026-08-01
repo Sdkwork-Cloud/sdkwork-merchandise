@@ -1,15 +1,18 @@
-use sdkwork_api_merchandise_assembly::assemble_api_router;
-use sdkwork_merchandise_service_host::MerchandiseServiceHost;
+use sdkwork_api_merchandise_assembly::assemble_api_router_from_env;
 use sdkwork_web_bootstrap::{service_router, ServiceRouterConfig};
-use std::sync::Arc;
 
 #[tokio::main]
 async fn main() {
     tracing_subscriber::fmt::init();
     tracing::info!("Starting SDKWork Merchandise API Server...");
 
-    let host = Arc::new(MerchandiseServiceHost::new().await);
-    let assembly = assemble_api_router(host).await;
+    let assembly = match assemble_api_router_from_env().await {
+        Ok(assembly) => assembly,
+        Err(error) => {
+            tracing::error!(%error, "merchandise assembly failed");
+            std::process::exit(1);
+        }
+    };
 
     let business = assembly
         .router
