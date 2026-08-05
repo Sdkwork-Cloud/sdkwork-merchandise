@@ -26,6 +26,7 @@ packages:
   - "../sdkwork-app-topology"
   - "../sdkwork-shop/sdks/sdkwork-shop-backend-sdk/sdkwork-shop-backend-sdk-typescript"
 
+  - "../sdkwork-iam/apps/sdkwork-iam-pc/packages/sdkwork-user-center-core-pc-react"
 catalog:
   react: ^19.2.4
   react-dom: ^19.2.4

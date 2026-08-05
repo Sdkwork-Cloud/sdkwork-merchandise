@@ -1,11 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@sdkwork/merchandise-pc-admin-core": ["packages/sdkwork-merchandise-pc-admin-core/src/index.ts"],
-      "@sdkwork/merchandise-pc-shell": ["packages/sdkwork-merchandise-pc-shell/src/index.tsx"]
-    }
-  },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "packages/**/*.ts", "packages/**/*.tsx"]
+  "compilerOptions": {},
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "packages/**/*.ts",
+    "packages/**/*.tsx"
+  ]
 }
