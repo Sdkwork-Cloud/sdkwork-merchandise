@@ -11,11 +11,6 @@ use sdkwork_merchandise_service::{
 
 mod postgres;
 mod shared;
-#[cfg(test)]
-mod sqlite;
-
-#[cfg(test)]
-mod tests;
 
 #[derive(Clone)]
 pub struct SqlxSingleSkuMerchandiseRepository {

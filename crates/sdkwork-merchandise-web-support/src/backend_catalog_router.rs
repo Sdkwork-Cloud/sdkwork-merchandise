@@ -9,7 +9,7 @@ use axum::{Json, Router};
 use sdkwork_contract_service::CommerceMoney;
 use sdkwork_iam_context_service::IamAppContext;
 use sdkwork_merchandise_repository_sqlx::{
-    PostgresCommerceCatalogStore, SqliteCommerceCatalogStore,
+    PostgresCommerceCatalogStore,
 };
 use sdkwork_merchandise_service::{
     ArchiveSpuCommand, AttributeListQuery, CategoryAttributeListQuery, CategoryListQuery,
@@ -21,7 +21,7 @@ use sdkwork_merchandise_service::{
     UpdateCategoryCommand, UpdatePriceListCommand, UpdateProductSkuCommand,
     UpdateProductSpuCommand,
 };
-use sqlx::{PgPool, SqlitePool};
+use sqlx::PgPool;
 
 use super::{
     catalog_system_response, map_attribute, map_category, map_category_attribute, map_price_list,
@@ -34,10 +34,6 @@ use super::{
     UpdatePriceListBody, UpdateSkuBody, UpdateSpuBody,
 };
 use crate::subject::app_runtime_subject_from_extension;
-
-pub fn backend_catalog_router_with_sqlite_pool(pool: SqlitePool) -> Router {
-    build_backend_catalog_router(Arc::new(SqliteCommerceCatalogStore::new(pool)))
-}
 
 pub fn backend_catalog_router_with_postgres_pool(pool: PgPool) -> Router {
     build_backend_catalog_router(Arc::new(PostgresCommerceCatalogStore::new(pool)))
