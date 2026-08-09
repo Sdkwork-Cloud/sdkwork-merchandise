@@ -15,7 +15,7 @@
 CREATE TABLE IF NOT EXISTS commerce_product_spu (
     id TEXT NOT NULL PRIMARY KEY,
     tenant_id TEXT NOT NULL,
-    organization_id TEXT,
+    organization_id TEXT NOT NULL DEFAULT '0',
     spu_no TEXT NOT NULL,
     name TEXT,
     title TEXT,
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS commerce_product_spu (
 CREATE TABLE IF NOT EXISTS commerce_product_sku (
     id TEXT NOT NULL PRIMARY KEY,
     tenant_id TEXT NOT NULL,
-    organization_id TEXT,
+    organization_id TEXT NOT NULL DEFAULT '0',
     spu_id TEXT NOT NULL,
     sku_no TEXT NOT NULL,
     name TEXT,
@@ -64,7 +64,7 @@ CREATE INDEX IF NOT EXISTS idx_commerce_product_sku_tenant_status
 CREATE TABLE IF NOT EXISTS commerce_product_category (
     id TEXT NOT NULL PRIMARY KEY,
     tenant_id TEXT NOT NULL,
-    organization_id TEXT,
+    organization_id TEXT NOT NULL DEFAULT '0',
     category_no TEXT NOT NULL,
     parent_id TEXT,
     path TEXT,
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS commerce_product_category (
 CREATE TABLE IF NOT EXISTS commerce_product_attribute (
     id TEXT NOT NULL PRIMARY KEY,
     tenant_id TEXT NOT NULL,
-    organization_id TEXT,
+    organization_id TEXT NOT NULL DEFAULT '0',
     attribute_no TEXT NOT NULL,
     name TEXT NOT NULL,
     value_type TEXT NOT NULL DEFAULT 'enum',
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS commerce_product_attribute (
 CREATE TABLE IF NOT EXISTS commerce_product_attribute_value (
     id TEXT NOT NULL PRIMARY KEY,
     tenant_id TEXT NOT NULL,
-    organization_id TEXT,
+    organization_id TEXT NOT NULL DEFAULT '0',
     attribute_id TEXT NOT NULL,
     value_code TEXT NOT NULL,
     display_value TEXT NOT NULL,
@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS commerce_product_attribute_value (
 CREATE TABLE IF NOT EXISTS commerce_price_list (
     id TEXT NOT NULL PRIMARY KEY,
     tenant_id TEXT NOT NULL,
-    organization_id TEXT,
+    organization_id TEXT NOT NULL DEFAULT '0',
     price_list_no TEXT NOT NULL,
     currency_code TEXT NOT NULL DEFAULT 'CNY',
     market_code TEXT,
