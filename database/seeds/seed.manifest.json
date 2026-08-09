@@ -9,7 +9,14 @@
         "common/001_merchandise_bootstrap.sql",
         "001_bootstrap.sql"
       ],
-      "locales": {}
+      "locales": {
+        "zh-CN": [
+          "001_sku_locale.sql"
+        ],
+        "en-US": [
+          "001_sku_locale.sql"
+        ]
+      }
     }
   },
   "i18nVersion": "1.0.0",
@@ -31,14 +38,18 @@
     "zh-CN": {
       "version": "1.0.0",
       "required": true,
-      "checksum": "sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-      "files": []
+      "checksum": "sha256:5cfec4e9ad3a38b49caa95c499c3d81262aa29c706c3222acf6f6f31a3561da4",
+      "files": [
+        "locales/zh-CN/001_sku_locale.sql"
+      ]
     },
     "en-US": {
       "version": "1.0.0",
       "required": false,
-      "checksum": "sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-      "files": []
+      "checksum": "sha256:00f8f19db94d32fef672285c8313032a978587487bf278855cae292908e928d6",
+      "files": [
+        "locales/en-US/001_sku_locale.sql"
+      ]
     }
   }
 }
