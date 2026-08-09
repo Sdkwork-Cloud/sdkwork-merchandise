@@ -9,12 +9,21 @@ engines:
   - postgres
 table_prefix: commerce_
 tables:
-  - name: commerce_shop
+  - name: commerce_product_spu
     lifecycle_status: active
     owner: merchandise-platform
-  - name: commerce_shop_application
+  - name: commerce_product_sku
     lifecycle_status: active
     owner: merchandise-platform
-  - name: commerce_shop_status_event
+  - name: commerce_product_category
+    lifecycle_status: active
+    owner: merchandise-platform
+  - name: commerce_product_attribute
+    lifecycle_status: active
+    owner: merchandise-platform
+  - name: commerce_product_attribute_value
+    lifecycle_status: active
+    owner: merchandise-platform
+  - name: commerce_price_list
     lifecycle_status: active
     owner: merchandise-platform
