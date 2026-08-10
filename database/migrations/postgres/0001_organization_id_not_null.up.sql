@@ -18,26 +18,32 @@
 
 BEGIN;
 
+ALTER TABLE commerce_product_spu ADD COLUMN IF NOT EXISTS organization_id TEXT NOT NULL DEFAULT '0';
 UPDATE commerce_product_spu SET organization_id = '0' WHERE organization_id IS NULL;
 ALTER TABLE commerce_product_spu ALTER COLUMN organization_id SET DEFAULT '0';
 ALTER TABLE commerce_product_spu ALTER COLUMN organization_id SET NOT NULL;
 
+ALTER TABLE commerce_product_sku ADD COLUMN IF NOT EXISTS organization_id TEXT NOT NULL DEFAULT '0';
 UPDATE commerce_product_sku SET organization_id = '0' WHERE organization_id IS NULL;
 ALTER TABLE commerce_product_sku ALTER COLUMN organization_id SET DEFAULT '0';
 ALTER TABLE commerce_product_sku ALTER COLUMN organization_id SET NOT NULL;
 
+ALTER TABLE commerce_product_category ADD COLUMN IF NOT EXISTS organization_id TEXT NOT NULL DEFAULT '0';
 UPDATE commerce_product_category SET organization_id = '0' WHERE organization_id IS NULL;
 ALTER TABLE commerce_product_category ALTER COLUMN organization_id SET DEFAULT '0';
 ALTER TABLE commerce_product_category ALTER COLUMN organization_id SET NOT NULL;
 
+ALTER TABLE commerce_product_attribute ADD COLUMN IF NOT EXISTS organization_id TEXT NOT NULL DEFAULT '0';
 UPDATE commerce_product_attribute SET organization_id = '0' WHERE organization_id IS NULL;
 ALTER TABLE commerce_product_attribute ALTER COLUMN organization_id SET DEFAULT '0';
 ALTER TABLE commerce_product_attribute ALTER COLUMN organization_id SET NOT NULL;
 
+ALTER TABLE commerce_product_attribute_value ADD COLUMN IF NOT EXISTS organization_id TEXT NOT NULL DEFAULT '0';
 UPDATE commerce_product_attribute_value SET organization_id = '0' WHERE organization_id IS NULL;
 ALTER TABLE commerce_product_attribute_value ALTER COLUMN organization_id SET DEFAULT '0';
 ALTER TABLE commerce_product_attribute_value ALTER COLUMN organization_id SET NOT NULL;
 
+ALTER TABLE commerce_price_list ADD COLUMN IF NOT EXISTS organization_id TEXT NOT NULL DEFAULT '0';
 UPDATE commerce_price_list SET organization_id = '0' WHERE organization_id IS NULL;
 ALTER TABLE commerce_price_list ALTER COLUMN organization_id SET DEFAULT '0';
 ALTER TABLE commerce_price_list ALTER COLUMN organization_id SET NOT NULL;
