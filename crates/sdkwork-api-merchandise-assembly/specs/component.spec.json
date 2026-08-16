@@ -43,11 +43,15 @@
   ],
   "contracts": {
     "publicExports": [
-      "."
+      "sdkwork_api_merchandise_assembly::assemble_api_router",
+      "sdkwork_api_merchandise_assembly::assemble_api_router_from_env",
+      "sdkwork_api_merchandise_assembly::assemble_api_router_with_pool",
+      "sdkwork_api_merchandise_assembly::ApiAssembly"
     ],
     "runtimeEntrypoints": [
       "sdkwork_api_merchandise_assembly::assemble_api_router",
-      "sdkwork_api_merchandise_assembly::assemble_api_router_from_env"
+      "sdkwork_api_merchandise_assembly::assemble_api_router_from_env",
+      "sdkwork_api_merchandise_assembly::assemble_api_router_with_pool"
     ],
     "routeManifest": "assembly-manifest.json",
     "sdkClients": [],
